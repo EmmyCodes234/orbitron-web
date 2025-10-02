@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="PANASA" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>PANASA | Pan African Scrabble Association</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'JetBrains Mono', monospace;
+        background: linear-gradient(135deg, #0a0f1e 0%, #0f172a 50%, #0a0f1e 100%);
+        color: #e2e8f0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .font-orbitron {
+        font-family: 'Orbitron', sans-serif;
+      }
+      .font-jetbrains-mono {
+        font-family: 'JetBrains Mono', monospace;
+      }
+      
+      /* Enhanced scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f172a;
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, #00ff99, #00ccff);
+        border-radius: 5px;
+        border: 2px solid #0f172a;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, #00ff99, #00ccff, #9933ff);
+      }
+      
+      /* Smooth animations */
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      
+      /* Typing effect */
+      .typing-effect {
+        width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        animation: typing 2.5s steps(30, end) forwards;
+      }
+      @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+      }
+      
+      /* Flag Scroller Animation */
+      .flag-scroller {
+        max-width: 100%;
+        overflow: hidden;
+        -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+        mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+      }
+      .flag-scroller__inner {
+        display: flex;
+        flex-wrap: nowrap;
+        width: max-content;
+        animation: scroll 40s linear infinite;
+      }
+      .flag-scroller:hover .flag-scroller__inner {
+        animation-play-state: paused;
+      }
+
+      @keyframes scroll {
+        to {
+          transform: translate(calc(-50%));
+        }
+      }
+      
+      /* Enhanced hover effects */
+      .hover-lift {
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+      }
+      .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3);
+      }
+      
+      .hover-scale {
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .hover-scale:hover {
+        transform: scale(1.03);
+      }
+      
+      /* Fade in up animation */
+      @keyframes fade-in-up {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fade-in-up {
+        animation: fade-in-up 0.8s ease-out forwards;
+      }
+      
+      /* Slide in animations */
+      @keyframes slide-in-left {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .animate-slide-in-left {
+        animation: slide-in-left 0.8s ease-out forwards;
+      }
+      
+      @keyframes slide-in-right {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .animate-slide-in-right {
+        animation: slide-in-right 0.8s ease-out forwards;
+      }
+      
+      /* Float animation */
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+      .animate-float {
+        animation: float 4s ease-in-out infinite;
+      }
+      
+      /* Mobile Optimizations */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.75rem !important;
+          line-height: 1.1 !important;
+        }
+        .hero-subtitle {
+          font-size: 1.1rem !important;
+          padding: 0 1.5rem;
+        }
+        .mobile-padding {
+          padding-left: 1.5rem;
+          padding-right: 1.5rem;
+        }
+        .mobile-text-sm {
+          font-size: 0.9rem;
+        }
+        .mobile-gap-4 {
+          gap: 1.25rem;
+        }
+        .mobile-py-12 {
+          padding-top: 3.5rem;
+          padding-bottom: 3.5rem;
+        }
+      }
+
+      /* Touch-friendly interactions */
+      @media (hover: none) and (pointer: coarse) {
+        .hover-lift:hover {
+          transform: none;
+        }
+        .hover-scale:hover {
+          transform: none;
+        }
+        button, a {
+          min-height: 48px;
+          min-width: 48px;
+        }
+      }
+
+      /* Reduce motion for accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      /* Safe area handling for notched devices */
+      .safe-area-top {
+        padding-top: env(safe-area-inset-top);
+      }
+      .safe-area-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      
+      /* Focus styles for accessibility */
+      button:focus-visible, a:focus-visible {
+        outline: 2px solid #00ff99;
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+      
+      /* Selection styles */
+      ::selection {
+        background: rgba(0, 255, 153, 0.3);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.23.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/src/global.css">
+<link rel="stylesheet" href="/src/animations.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
