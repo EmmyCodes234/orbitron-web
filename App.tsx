@@ -12,11 +12,12 @@ import GalleryPage from './pages/GalleryPage';
 import ContactPage from './pages/ContactPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import AdminPage from './pages/AdminPage';
+import PaymentsPage from './pages/PaymentsPage';
 import { LocalizationProvider } from './contexts/LocalizationContext';
 
 // Loading component for Suspense
 const LoadingSpinner = () => (
-  <div className="flex justify-center items-center min-h-screen">
+  <div className="flex justify-center items-center min-h-screen w-full">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400"></div>
   </div>
 );
@@ -51,6 +52,7 @@ const AppContent: React.FC = () => {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/payments" element={<PaymentsPage />} />
         </Routes>
       </Layout>
     </>

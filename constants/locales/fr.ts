@@ -1,4 +1,4 @@
-export default {
+const fr = {
   // Navigation
   navigation: {
     home: 'Accueil',
@@ -10,7 +10,10 @@ export default {
     resources: 'Ressources',
     gallery: 'Galerie',
     contact: 'Contact',
-    admin: 'Admin'
+    admin: 'Admin',
+    payments: 'Paiements',
+    activity: 'Activité',
+    support: 'Support'
   },
 
   // Homepage
@@ -107,10 +110,10 @@ export default {
     checkBack: 'Veuillez revenir bientôt pour les mises à jour !',
     officialRules: 'Règles Officielles',
     rulesDescription: 'Livres de règles complets et réglementations de tournoi',
-    trainingMaterials: 'Matériaux de Formation',
-    trainingDescription: 'Guides et ressources pour les joueurs et entraîneurs',
     wordLists: 'Listes de Mots',
-    wordListsDescription: 'Dictionnaires officiels et sources de mots'
+    wordListsDescription: 'Dictionnaires officiels et sources de mots',
+    tournamentResources: 'Ressources de Tournoi',
+    tournamentResourcesDescription: 'Matériaux pour les organisateurs et officiels de tournoi'
   },
 
   // Gallery Page
@@ -192,6 +195,16 @@ export default {
     introduction: 'PANASA est une association sportive internationale, une organisation non gouvernementale ayant son propre statut juridique. Nous sommes l\'organisme officiel de gouvernance du Scrabble compétitif à travers le continent africain, composé de toutes les associations nationales africaines de Scrabble qui participent aux Championnats Mondiaux de Scrabble (WSC) et sont reconnues par le Conseil Mondial de Scrabble (WSB).',
     leadershipPhoto: 'Photo de la Direction de PANASA',
     placeholderPhoto: 'Emplacement pour la photo officielle du groupe',
+    meetTheTeam: 'Rencontrez l\'Équipe',
+    leadershipDescription: 'Les leaders dévoués qui font avancer PANASA',
+    lesterMorrisBio: 'Un Libérien passionné par le développement du Scrabble au Libéria. Un dirigeant, homme d\'affaires et agriculteur engagé dans le développement du sport à travers la nation.',
+    adekoyejoBio: 'Consultant en tests logiciels de formation, son leadership a apporté un nouveau souffle et de l\'innovation au Scrabble africain depuis son élection en octobre 2022. Il a lancé des initiatives majeures, notamment la création de la Coupe du Président PANASA et l\'inclusion historique du Scrabble en tant que sport de démonstration aux Jeux africains. Joueur actif et très classé, il s\'efforce d\'élargir la base du jeu et de mettre en place des structures pour le développement des jeunes africains à travers le continent.',
+    umarFaruqBio: 'Ancien président du Comité de bien-être, ancien directeur technique et responsable des classements de la Fédération nigériane de Scrabble (NSF), il occupe actuellement le poste de responsable des classements de l\'Association pan-africaine de Scrabble (PANASA). En tant que directeur général du Centre IBI de Yola, il anime des cliniques et des compétitions de Scrabble qui favorisent l\'alphabétisation, la pensée critique et l\'engagement communautaire. Passionné par le développement des jeunes, il utilise le Scrabble comme un puissant outil d\'éducation, de mentorat et de croissance sociale.',
+    firstBlackChampion: 'Le premier et seul homme noir à avoir remporté le Championnat mondial d\'orthographe en anglais (WESPAC) à Perth, en Australie, en 2015.',
+    vicePresident2: 'Vice-Président 2',
+    president: 'Président',
+    ratingsOfficer: 'Responsable des Classements',
+    viewFullProfile: 'Voir le profil complet',
     howItBegan: 'Comment Tout a Commencé',
     founded1994: 'Fondée en 1994',
     bornFromVision: 'PANASA est née de la vision d\'unir les communautés africaines de Scrabble. L\'idée d\'un Championnat Panafricain de Scrabble était l\'idée de l\'Association Amateur de Scrabble du Kenya (maintenant Scrabble Kenya), avec le soutien total de l\'Association de Scrabble du Nigeria (maintenant la Fédération Nigérienne de Scrabble) et d\'autres organismes de Scrabble à travers l\'Afrique.',
@@ -201,19 +214,19 @@ export default {
     foundingMembers1994: 'Membres Fondateurs (1994)',
     threeCountries: 'Il n\'y avait que trois pays présents lors de la première réunion de PANASA.',
     foundingMeeting: 'Réunion de Fondation 1994',
-    historicalPhoto: 'Emplacement de photo historique',
-    metricsSayItAll: 'Nos Statistiques Disent Tout',
-    successSeries: 'Le succès est une série de petites victoires !',
+    historicalPhoto: 'Photo historique',
+    metricsSayItAll: 'Nos Statistiques Parlent d\'Elles-Mêmes',
+    successSeries: 'Le Succès est une Série de Petites Victoires !',
     memberCountries: 'Pays Membres 12',
     acrossAfrica: 'À travers le continent africain',
-    registeredPlayers: 'Joueurs Inscrits 15 000+',
+    registeredPlayers: 'Joueurs Enregistrés 15 000+',
     tournamentParticipants: 'Participants aux tournois',
     worldChampions: 'Champion du Monde 1',
     producedIn2015: 'L\'Afrique a produit en 2015',
-    yearsStrong: 'Années Solides 29',
+    yearsStrong: 'Années de Force 29',
     since1994: 'Depuis la fondation en 1994',
     scrabbleMillions: 'Le Scrabble est joué dans des millions de foyers à travers le continent africain. Ces statistiques représentent l\'aspect compétitif organisé du sport en Afrique.',
-    tournamentAction: 'Action du Tournoi',
+    tournamentAction: 'Action des Tournois',
     playersAction: 'Joueurs en Action',
     championshipMoments: 'Moments de Championnat',
     currentlyConsists: 'PANASA comprend actuellement',
@@ -221,21 +234,21 @@ export default {
     acrossContinent: 'à travers le continent africain :',
     africaMap: 'Carte de l\'Afrique',
     showingMemberCountries: 'Affichant les pays membres de PANASA',
-    interactiveMap: 'Emplacement de carte interactive',
+    interactiveMap: 'Carte interactive',
     ourChampionships: 'Nos Championnats',
-    biAnnualChampionship: 'Championnat Panafricain de Scrabble Bi-annuel',
+    biAnnualChampionship: 'Championnat d\'Afrique Bi-Annuel',
     premierChampionship: 'Le championnat continental de premier plan rassemblant les meilleurs joueurs d\'Afrique.',
-    eastCentralChampionship: 'Championnat de l\'Afrique de l\'Est et Centrale',
-    regionalChampionshipEast: 'Championnat régional pour les nations d\'Afrique de l\'Est et Centrale.',
-    westAfricaChampionship: 'Championnat de l\'Afrique de l\'Ouest',
+    eastCentralChampionship: 'Championnat d\'Afrique de l\'Est et du Centre',
+    regionalChampionshipEast: 'Championnat régional pour les nations d\'Afrique de l\'Est et du Centre.',
+    westAfricaChampionship: 'Championnat d\'Afrique de l\'Ouest',
     regionalChampionshipWest: 'Championnat régional pour les nations d\'Afrique de l\'Ouest.',
-    youthChampionship: 'Championnat Africain Jeunes de Scrabble',
+    youthChampionship: 'Championnat Africain de Scrabble Jeunes',
     developingNextGeneration: 'Développement de la prochaine génération de champions africains de Scrabble.',
-    presidentsCup: 'Coupe du Président',
+    presidentsCup: "Coupe du Président",
     eliteTournament: 'Tournoi d\'élite ajouté au calendrier PANASA en 2023.',
     additionalTournaments: 'De plus, plusieurs tournois sont organisés par les nations membres dans leurs pays respectifs tout au long de l\'année.',
-    worldChampionAchievement: 'Réalisations de Champion du Monde',
-    africaProduced: 'L\'Afrique a produit un Champion Mondial de Scrabble en 2015',
+    worldChampionAchievement: 'Réalisations du Champion du Monde',
+    africaProduced: 'L\'Afrique a produit un Champion du Monde de Scrabble en 2015',
     historicMilestone: ', marquant une étape historique pour le continent et démontrant le talent exceptionnel et le dévouement des joueurs africains de Scrabble sur la scène mondiale.',
     worldChampion2015: 'Champion du Monde 2015',
     victoryCelebration: 'Photo de célébration de la victoire'
@@ -243,15 +256,56 @@ export default {
 
   // Footer
   footer: {
-    description: 'Le hub officiel de l\'Association Panafricaine de Scrabble. Promouvoir l\'excellence dans le Scrabble à travers l\'Afrique.',
+    description: 'Le hub officiel de l\'Association Pan Africaine de Scrabble. Promouvoir l\'excellence dans le Scrabble à travers l\'Afrique.',
     navigation: 'Navigation',
     connect: 'Connecter',
-    copyright: 'Association Panafricaine de Scrabble. Tous droits réservés.'
+    copyright: 'Association Pan Africaine de Scrabble. Tous droits réservés.'
   },
 
   // Common
   loading: 'Chargement...',
   error: 'Une erreur s\'est produite. Veuillez réessayer.',
   goBack: 'Retour',
-  close: 'Fermer'
+  close: 'Fermer',
+
+  // Payments Page
+  payments: {
+    title: 'Paiements de Tournoi et Demandes de Classement',
+    subtitle: 'Gérez les paiements de tournoi et demandez des classements PANASA pour vos événements',
+    paymentPortal: 'Portail de Paiement',
+    ratingApplication: 'Demande de Classement',
+    tournamentPayments: 'Paiements de Tournoi',
+    paymentDescription: 'Effectuez des paiements sécurisés pour les tournois et événements PANASA. Tous les paiements sont traités en toute sécurité et les reçus seront envoyés à votre email.',
+    howItWorks: 'Comment ça Marche',
+    step1: 'Sélectionnez le tournoi pour lequel vous souhaitez payer',
+    step2: 'Entrez le montant du paiement et vos coordonnées',
+    step3: 'Terminez le processus de paiement sécurisé',
+    makePayment: 'Effectuer un Paiement',
+    tournamentName: 'Nom du Tournoi',
+    enterTournament: 'Entrez le nom du tournoi',
+    amount: 'Montant',
+    playerName: 'Nom du Joueur',
+    enterPlayerName: 'Entrez votre nom complet',
+    processPayment: 'Traiter le Paiement',
+    ratingDescription: 'Demandez des classements officiels PANASA pour votre tournoi de Scrabble. Notre équipe examinera votre demande et vous contactera pour les étapes suivantes.',
+    organizerName: 'Nom de l\'Organisateur',
+    enterOrganizer: 'Entrez le nom de l\'organisateur',
+    email: 'Adresse Email',
+    enterEmail: 'Entrez votre adresse email',
+    eventName: 'Nom de l\'Événement',
+    enterEvent: 'Entrez le nom de l\'événement',
+    startDate: 'Date de Début',
+    endDate: 'Date de Fin',
+    location: 'Lieu',
+    enterLocation: 'Entrez le lieu de l\'événement',
+    expectedParticipants: 'Participants Attendus',
+    enterParticipants: 'Entrez le nombre de participants attendus',
+    additionalInfo: 'Informations Supplémentaires',
+    enterAdditionalInfo: 'Fournissez des détails supplémentaires sur votre événement',
+    agreeToTerms: 'J\'accepte les',
+    termsAndConditions: 'Termes et Conditions',
+    submitApplication: 'Soumettre la Demande'
+  }
 };
+
+export default fr;

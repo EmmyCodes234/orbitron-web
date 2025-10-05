@@ -1,4 +1,4 @@
-export default {
+const en = {
   // Navigation
   navigation: {
     home: 'Home',
@@ -10,7 +10,10 @@ export default {
     resources: 'Resources',
     gallery: 'Gallery',
     contact: 'Contact',
-    admin: 'Admin'
+    admin: 'Admin',
+    payments: 'Payments',
+    activity: 'Activity',
+    support: 'Support'
   },
 
   // Homepage
@@ -107,10 +110,10 @@ export default {
     checkBack: 'Please check back soon for updates!',
     officialRules: 'Official Rules',
     rulesDescription: 'Complete rulebooks and tournament regulations',
-    trainingMaterials: 'Training Materials',
-    trainingDescription: 'Guides and resources for players and coaches',
     wordLists: 'Word Lists',
-    wordListsDescription: 'Official dictionaries and word sources'
+    wordListsDescription: 'Official dictionaries and word sources',
+    tournamentResources: 'Tournament Resources',
+    tournamentResourcesDescription: 'Materials for tournament organizers and officials'
   },
 
   // Gallery Page
@@ -192,6 +195,17 @@ export default {
     introduction: 'PANASA is an international sporting association, a non-governmental organization having its own juridical status. We are the official governing body for competitive Scrabble across the African continent, consisting of all African National Scrabble Associations which participate in the World Scrabble Championships (WSC) and are recognized by the World Scrabble Board (WSB).',
     leadershipPhoto: 'PANASA Leadership Photo',
     placeholderPhoto: 'Placeholder for official group photo',
+    meetTheTeam: 'Meet the Team',
+    leadershipDescription: 'The dedicated leaders driving PANASA forward',
+    lesterMorrisBio: 'A Liberian passionate about the development of Scrabble in Liberia. An executive, businessman, and farmer committed to growing the sport across the nation.',
+    adekoyejoBio: 'A Software Test Consultant by profession, his leadership has brought a renewed focus and innovation to African Scrabble since his election in October 2022. He has spearheaded major initiatives, including the launch of the PANASA President\'s Cup and the historic inclusion of Scrabble as a demonstration sport at the African Games. An active and highly-rated player, he is dedicated to widening the game\'s base and establishing structures for African youth development across the continent.',
+    umarFaruqBio: 'A former Chairman of the Welfare Committee, former Technical Director, and Rating Officer of the Nigeria Scrabble Federation (NSF), and currently serves as the Rating Officer of the Pan African Scrabble Association (PANASA). As Chief Operations Officer of IBI Centre Yola, he drives Scrabble clinics and competitions that promote literacy, critical thinking, and community engagement. Passionate about youth development, he leverages Scrabble as a powerful tool for education, mentorship, and social growth.',
+    firstBlackChampion: 'The first and only black man to have won the World English-Language Scrabble Championship (WESPAC) in Perth, Australia, 2015.',
+    historicMilestone: ' historic milestone for the continent and demonstrating the exceptional talent and dedication of African Scrabble players on the global stage.',
+    vicePresident2: 'Vice-President 2',
+    president: 'President',
+    ratingsOfficer: 'Ratings Officer',
+    viewFullProfile: 'View full profile',
     howItBegan: 'How It All Began',
     founded1994: 'Founded in 1994',
     bornFromVision: 'PANASA was born from the vision of uniting African Scrabble communities. The idea of a Pan-African Scrabble Championship was the brainchild of the Kenya Amateur Scrabble Association (now Scrabble Kenya), with full support from the Scrabble Association of Nigeria (now Nigeria Scrabble Federation) and other Scrabble bodies across Africa.',
@@ -236,7 +250,6 @@ export default {
     additionalTournaments: 'Additionally, several tournaments are organized by member nations in their respective countries throughout the year.',
     worldChampionAchievement: 'World Champion Achievement',
     africaProduced: 'Africa produced a World Scrabble Champion in 2015',
-    historicMilestone: ', marking a historic milestone for the continent and demonstrating the exceptional talent and dedication of African Scrabble players on the global stage.',
     worldChampion2015: '2015 World Champion',
     victoryCelebration: 'Victory celebration photo'
   },
@@ -253,5 +266,46 @@ export default {
   loading: 'Loading...',
   error: 'An error occurred. Please try again.',
   goBack: 'Go Back',
-  close: 'Close'
+  close: 'Close',
+
+  // Payments Page
+  payments: {
+    title: 'Tournament Payments & Rating Applications',
+    subtitle: 'Manage tournament payments and apply for PANASA ratings for your events',
+    paymentPortal: 'Payment Portal',
+    ratingApplication: 'Rating Application',
+    tournamentPayments: 'Tournament Payments',
+    paymentDescription: 'Make secure payments for PANASA tournaments and events. All payments are processed securely and receipts will be sent to your email.',
+    howItWorks: 'How It Works',
+    step1: 'Select the tournament you wish to pay for',
+    step2: 'Enter the payment amount and your details',
+    step3: 'Complete the secure payment process',
+    makePayment: 'Make a Payment',
+    tournamentName: 'Tournament Name',
+    enterTournament: 'Enter tournament name',
+    amount: 'Amount',
+    playerName: 'Player Name',
+    enterPlayerName: 'Enter your full name',
+    processPayment: 'Process Payment',
+    ratingDescription: 'Apply for official PANASA ratings for your Scrabble tournament. Our team will review your application and contact you with next steps.',
+    organizerName: 'Organizer Name',
+    enterOrganizer: 'Enter organizer name',
+    email: 'Email Address',
+    enterEmail: 'Enter your email address',
+    eventName: 'Event Name',
+    enterEvent: 'Enter event name',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    location: 'Location',
+    enterLocation: 'Enter event location',
+    expectedParticipants: 'Expected Participants',
+    enterParticipants: 'Enter number of expected participants',
+    additionalInfo: 'Additional Information',
+    enterAdditionalInfo: 'Provide any additional details about your event',
+    agreeToTerms: 'I agree to the',
+    termsAndConditions: 'Terms and Conditions',
+    submitApplication: 'Submit Application'
+  }
 };
+
+export default en;

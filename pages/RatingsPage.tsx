@@ -944,7 +944,7 @@ const RatingsPage: React.FC = () => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 1.25rem;
+          padding: 1rem;
           background: rgba(17, 24, 39, 0.8);
           border-bottom: 1px solid #374151;
         }
@@ -972,31 +972,31 @@ const RatingsPage: React.FC = () => {
         }
 
         .card-body {
-          padding: 1.25rem;
+          padding: 1rem;
         }
 
         .player-main {
-          margin-bottom: 1.25rem;
-          padding-bottom: 1.25rem;
+          margin-bottom: 1rem;
+          padding-bottom: 1rem;
           border-bottom: 1px solid #374151;
         }
 
         .player-name-mobile {
-          font-size: 1.25rem;
+          font-size: 1.125rem;
           font-weight: 700;
           color: #f9fafb;
-          margin-bottom: 0.375rem;
+          margin-bottom: 0.25rem;
         }
 
         .player-nick-mobile {
-          font-size: 0.9375rem;
+          font-size: 0.875rem;
           color: #94a3b8;
         }
 
         .player-stats {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1.25rem;
+          gap: 1rem;
         }
 
         .stat-item {
@@ -1008,13 +1008,13 @@ const RatingsPage: React.FC = () => {
           font-size: 0.75rem;
           color: #94a3b8;
           text-transform: uppercase;
-          margin-bottom: 0.375rem;
+          margin-bottom: 0.25rem;
           letter-spacing: 0.025em;
           font-weight: 600;
         }
 
         .stat-value {
-          font-size: 0.9375rem;
+          font-size: 0.875rem;
           color: #f9fafb;
           font-weight: 600;
         }
@@ -1022,12 +1022,12 @@ const RatingsPage: React.FC = () => {
         .country-info-mobile {
           display: flex;
           align-items: center;
-          gap: 0.625rem;
+          gap: 0.5rem;
         }
 
         .country-flag-mobile {
-          width: 24px;
-          height: 16px;
+          width: 20px;
+          height: 14px;
           object-fit: cover;
           border-radius: 3px;
           border: 1px solid #374151;
@@ -1041,12 +1041,12 @@ const RatingsPage: React.FC = () => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 1.25rem;
-          margin-top: 2.5rem;
+          gap: 1rem;
+          margin-top: 2rem;
         }
 
         .pagination-info {
-          font-size: 0.9375rem;
+          font-size: 0.875rem;
           color: #94a3b8;
           font-weight: 500;
         }
@@ -1054,15 +1054,15 @@ const RatingsPage: React.FC = () => {
         .pagination-controls {
           display: flex;
           align-items: center;
-          gap: 0.625rem;
+          gap: 0.5rem;
         }
 
         .pagination-btn {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 2.75rem;
-          height: 2.75rem;
+          width: 2.5rem;
+          height: 2.5rem;
           background: #1f2937;
           border: 1px solid #374151;
           border-radius: 12px;
@@ -1070,6 +1070,8 @@ const RatingsPage: React.FC = () => {
           cursor: pointer;
           transition: all 0.2s ease;
           font-weight: 600;
+          min-height: 44px; /* Touch-friendly minimum size */
+          min-width: 44px;
         }
 
         .pagination-btn:hover:not(:disabled) {
@@ -1087,8 +1089,8 @@ const RatingsPage: React.FC = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 2.75rem;
-          height: 2.75rem;
+          width: 2.5rem;
+          height: 2.5rem;
           background: #1f2937;
           border: 1px solid #374151;
           border-radius: 12px;
@@ -1096,6 +1098,8 @@ const RatingsPage: React.FC = () => {
           cursor: pointer;
           transition: all 0.2s ease;
           font-weight: 600;
+          min-height: 44px; /* Touch-friendly minimum size */
+          min-width: 44px;
         }
 
         .pagination-number:hover {
@@ -1113,28 +1117,29 @@ const RatingsPage: React.FC = () => {
 
         @media (max-width: 768px) {
           .hero-section {
-            padding: 2.5rem 1.25rem;
+            padding: 2rem 1rem;
           }
 
           .hero-section h1 {
-            font-size: 2.25rem;
+            font-size: 2rem;
           }
 
           .hero-section p {
-            font-size: 1.0625rem;
+            font-size: 1rem;
           }
 
           .ratings-content {
-            padding: 1.25rem;
+            padding: 1rem;
           }
 
           .controls-section {
-            padding: 1.25rem;
+            padding: 1rem;
           }
 
           .filters-row {
             flex-direction: column;
             align-items: stretch;
+            gap: 1rem;
           }
 
           .search-container {
@@ -1152,10 +1157,154 @@ const RatingsPage: React.FC = () => {
           .stats-row {
             flex-direction: column;
             align-items: stretch;
+            gap: 1rem;
           }
 
           .player-stats {
             grid-template-columns: 1fr;
+            gap: 0.75rem;
+          }
+
+          .card-header {
+            padding: 0.875rem;
+          }
+
+          .card-body {
+            padding: 0.875rem;
+          }
+
+          .player-main {
+            margin-bottom: 0.875rem;
+            padding-bottom: 0.875rem;
+          }
+
+          .player-name-mobile {
+            font-size: 1rem;
+          }
+
+          .player-nick-mobile {
+            font-size: 0.8125rem;
+          }
+
+          .stat-label {
+            font-size: 0.6875rem;
+          }
+
+          .stat-value {
+            font-size: 0.8125rem;
+          }
+
+          .pagination-section {
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+          }
+
+          .pagination-info {
+            font-size: 0.8125rem;
+          }
+
+          .pagination-controls {
+            gap: 0.375rem;
+          }
+
+          .pagination-btn {
+            width: 2.25rem;
+            height: 2.25rem;
+          }
+
+          .pagination-number {
+            width: 2.25rem;
+            height: 2.25rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-section {
+            padding: 1.5rem 0.75rem;
+          }
+
+          .hero-section h1 {
+            font-size: 1.75rem;
+          }
+
+          .hero-section p {
+            font-size: 0.9375rem;
+          }
+
+          .ratings-content {
+            padding: 0.75rem;
+          }
+
+          .controls-section {
+            padding: 0.75rem;
+          }
+
+          .search-input,
+          .country-select,
+          .items-select {
+            padding: 0.75rem;
+            font-size: 0.875rem;
+          }
+
+          .items-label {
+            font-size: 0.8125rem;
+          }
+
+          .results-count,
+          .filter-indicator {
+            font-size: 0.8125rem;
+          }
+
+          .clear-filters {
+            font-size: 0.8125rem;
+            padding: 0.25rem 0.5rem;
+          }
+
+          .card-header {
+            padding: 0.75rem;
+          }
+
+          .card-body {
+            padding: 0.75rem;
+          }
+
+          .player-main {
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+          }
+
+          .player-name-mobile {
+            font-size: 0.9375rem;
+          }
+
+          .player-nick-mobile {
+            font-size: 0.75rem;
+          }
+
+          .stat-label {
+            font-size: 0.625rem;
+          }
+
+          .stat-value {
+            font-size: 0.75rem;
+          }
+
+          .rank-badge,
+          .rating-badge-mobile {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8125rem;
+          }
+
+          .pagination-btn {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.75rem;
+          }
+
+          .pagination-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.75rem;
           }
         }
 

@@ -3,26 +3,26 @@
 export const MOCK_EVENTS = [
   {
     id: '1',
-    title: 'PANASA Championship 2025',
-    date: '2025-03-15',
-    location: 'Lagos, Nigeria',
-    description: 'The premier Pan-African Scrabble championship featuring players from across the continent.',
+    title: 'WESPAC 2025 - World English Scrabble Championship',
+    date: '2025-11-12',
+    location: 'Accra, Ghana',
+    description: 'The prestigious World English Scrabble Championship featuring players from English-speaking nations worldwide. Main event runs November 12-16, 2025.',
     image: '/event1.jpg'
   },
   {
     id: '2',
-    title: 'Youth Scrabble Tournament',
-    date: '2025-06-20',
-    location: 'Accra, Ghana',
-    description: 'A tournament dedicated to nurturing the next generation of African Scrabble champions.',
+    title: 'PANASA Championship 2025',
+    date: '2025-03-15',
+    location: 'Lagos, Nigeria',
+    description: 'The premier Pan-African Scrabble championship featuring players from across the continent.',
     image: '/event2.jpg'
   },
   {
     id: '3',
-    title: 'Blitz Championship',
-    date: '2025-09-10',
-    location: 'Nairobi, Kenya',
-    description: 'Fast-paced Scrabble action with quick matches and exciting prizes.',
+    title: 'Youth Scrabble Tournament',
+    date: '2025-06-20',
+    location: 'Accra, Ghana',
+    description: 'A tournament dedicated to nurturing the next generation of African Scrabble champions.',
     image: '/event3.jpg'
   }
 ];
