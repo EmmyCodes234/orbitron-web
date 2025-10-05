@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { getPlayers, getNews, getEvents, getFederations } from '../src/services/supabaseService';
+import { useLocalization } from '../contexts/LocalizationContext';
 
 interface SearchResult {
   id: string;
@@ -13,6 +14,7 @@ interface SearchResult {
 }
 
 const SearchResultsPage: React.FC = () => {
+  const { t, language } = useLocalization();
   const location = useLocation();
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +42,7 @@ const SearchResultsPage: React.FC = () => {
       // Fetch all data types
       const [players, news, events, federations] = await Promise.all([
         getPlayers().catch(() => []),
-        getNews().catch(() => []),
+        getNews(language).catch(() => []), // Pass language parameter
         getEvents().catch(() => []),
         getFederations().catch(() => [])
       ]);

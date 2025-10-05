@@ -101,7 +101,7 @@ const NewsList: React.FC<{ articles: any[] }> = ({ articles }) => {
 };
 
 const NewsPage: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
     const { id } = useParams<{ id: string }>();
     const [articles, setArticles] = useState<any[]>([]);
     const [article, setArticle] = useState<any | null>(null);
@@ -115,7 +115,7 @@ const NewsPage: React.FC = () => {
                 setLoading(true);
                 if (id) {
                     // Fetch single article
-                    const articleData = await getNewsById(id);
+                    const articleData = await getNewsById(id, language);
                     if (articleData) {
                         setArticle(articleData);
                     } else {
@@ -123,7 +123,7 @@ const NewsPage: React.FC = () => {
                     }
                 } else {
                     // Fetch all articles
-                    const articlesData = await getNews();
+                    const articlesData = await getNews(language);
                     if (articlesData && articlesData.length > 0) {
                         setArticles(articlesData);
                     } else {
@@ -139,27 +139,32 @@ const NewsPage: React.FC = () => {
         };
 
         fetchData();
-    }, [id]);
+    }, [id, language, t]);
 
     // Subscribe to real-time updates
     useEffect(() => {
         if (!id) { // Only subscribe on the list page, not the detail page
           const unsubscribe = subscribeToNews(
             (updatedArticles) => {
-              setArticles(updatedArticles);
+              // Filter articles by language
+              const filteredArticles = updatedArticles.filter((article: any) => 
+                article.language === language
+              );
+              setArticles(filteredArticles.length > 0 ? filteredArticles : updatedArticles.filter((article: any) => article.language === 'en'));
               setIsSubscribed(true);
             },
             (error) => {
               console.error('Real-time subscription error:', error);
               setIsSubscribed(false);
-            }
+            },
+            language
           );
 
           return () => {
             unsubscribe();
           };
         }
-      }, [id]);
+      }, [id, language]);
 
     if (loading) {
         return (

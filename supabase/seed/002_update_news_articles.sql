@@ -33,15 +33,19 @@ DELETE FROM public.news;
 
 INSERT INTO public.news (
     title,
+    author,
+    date,
     summary,
     content,
-    author,
     image,
     published,
     created_at,
-    updated_at
+    updated_at,
+    language
 ) VALUES (
     'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship',
+    'PANASA Communications',
+    'November 2025',
     'The global Scrabble community is gearing up for a historic moment this November as Accra, Ghana, prepares to host the World English Scrabble Players Association Championship (WESPAC) for the first time.',
     'ACCRA, GHANA—The global Scrabble community is gearing up for a historic moment this November as Accra, Ghana, prepares to host the *World English Scrabble Players Association Championship (WESPAC)*. This marks the first time Ghana will serve as the host nation for the prestigious event, a testament to the country''s rising prominence in the world of competitive Scrabble.
 
@@ -52,11 +56,11 @@ The Scrabble Association of Ghana (SCAG), led by President Haruna Adamu, has wor
 The nine-day "Scrabble fiesta" is about more than just a game; it''s a celebration of culture and community. The organizers have planned several side events with local names, including the "Akwaaba" (Welcome) tournament and the "Sika" (Gold) Challenge. These events will offer opportunities for players who didn''t qualify for the main championship to still be a part of the action.
 
 Hosting WESPAC is a landmark achievement for Ghana and the entire African Scrabble community. It provides an incredible opportunity to showcase the continent''s talent, organization, and passion for the game to a global audience. The countdown is officially on for what promises to be an unforgettable championship.',
-    'PANASA Communications',
     'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=400&fit=crop&crop=center&q=80',
     true,
     NOW(),
-    NOW()
+    NOW(),
+    'en'
 );
 
 -- =============================================
@@ -66,15 +70,19 @@ Hosting WESPAC is a landmark achievement for Ghana and the entire African Scrabb
 -- Add the African Youth Scrabble Championship article as second story
 INSERT INTO public.news (
     title,
+    author,
+    date,
     summary,
     content,
-    author,
     image,
     published,
     created_at,
-    updated_at
+    updated_at,
+    language
 ) VALUES (
     'Future of African Scrabble Shines Bright as Nigeria Sweeps Youth Championship Titles',
+    'PANASA Youth Committee',
+    'October 2025',
     'The African Youth Scrabble Championship in Nairobi proved to be a powerful showcase of the continent''s burgeoning talent, with Team Nigeria sweeping all available titles.',
     'NAIROBI, KENYA—The *African Youth Scrabble Championship (AYSC)*, which recently concluded in Nairobi, proved to be a powerful showcase of the continent''s burgeoning talent. In a remarkable display of skill, **Team Nigeria** swept all available titles, reaffirming its status as a powerhouse in youth Scrabble.
 
@@ -87,14 +95,16 @@ In the Under-19 division, *Prestige Archibong*, also from Nigeria, clinched the 
 Beyond the individual triumphs, Team Nigeria secured the team crowns in both the Under-15 and Under-19 divisions, with Ghana and Kenya putting up strong competition to secure the podium spots. This level of participation and achievement from multiple countries highlights the growing interest and development of Scrabble across the continent. 
 
 The next African Youth Scrabble Championship is scheduled for 2027 in Ghana, promising to be an even bigger event.',
-    'PANASA Youth Committee',
     'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=400&fit=crop&crop=center&q=80',
     true,
     NOW() - INTERVAL '10 days',
-    NOW() - INTERVAL '10 days'
+    NOW() - INTERVAL '10 days',
+    'en'
 ),
 (
     'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi',
+    'PANASA Tournament Committee',
+    'September 2025',
     'The PANASA President''s Cup introduced a thrilling new team format, with Team Blitzkrieg emerging as the first champions of the Triumvirate Showdown.',
     'NAIROBI, KENYA—The Pan African Scrabble Federation (PANASA) President''s Cup, dubbed the *Triumvirate Showdown*, wrapped up in Nairobi, delivering a thrilling new format and crowning **Team Blitzkrieg** as its first champions. This unique tournament broke from the traditional individual-play style, pitting teams of three against each other in a series of intense battles.
 
@@ -105,11 +115,11 @@ While Blitzkrieg took the top spot, the tournament showcased talent across all d
 Some notable standout performances included *Team Mavericks* in the Challenger round, who won 12 of their 15 matches, and *Team Wazito*, who dominated the Bowl round with a nearly perfect 12–3 record. Each round had its own story of hard-fought victories and narrow defeats.
 
 The event, which took place in Nairobi, brought together players from across the African continent and beyond, strengthening the Scrabble community and setting a high bar for future team-based tournaments. The successful execution of this new format signals a promising new direction for the sport, focusing not just on individual genius but on collaborative strategy. The players and fans alike are already looking forward to the next time they can team up for glory.',
-    'PANASA Tournament Committee',
     'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop&crop=center&q=80',
     true,
     NOW() - INTERVAL '20 days',
-    NOW() - INTERVAL '20 days'
+    NOW() - INTERVAL '20 days',
+    'en'
 );
 
 -- =============================================

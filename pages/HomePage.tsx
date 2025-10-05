@@ -6,18 +6,24 @@ import { getNews, getEvents } from '../src/services/supabaseService';
 import { useLocalization } from '../contexts/LocalizationContext';
 
 const HomePage: React.FC = () => {
-  const { t } = useLocalization();
+  const { t, language } = useLocalization();
   const [useVideoBackground, setUseVideoBackground] = useState(true);
   const [videoError, setVideoError] = useState(false);
   const [latestNews, setLatestNews] = useState<any[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Check if device is mobile
+  const isMobile = () => {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  };
+
   useEffect(() => {
-    // Detect low power mode to optimize performance (removed mobile detection to allow video on mobile)
+    // Detect low power mode to optimize performance
     const isLowPowerMode = (navigator as any).connection && (navigator as any).connection.saveData;
     
-    if (isLowPowerMode) {
+    // On mobile devices, prefer image over video for better performance
+    if (isMobile() || isLowPowerMode) {
       setUseVideoBackground(false);
     }
   }, []);
@@ -29,7 +35,7 @@ const HomePage: React.FC = () => {
         setLoading(true);
         
         // Fetch news
-        const newsData = await getNews();
+        const newsData = await getNews(language);
         if (newsData) {
           // Get only the first 2 articles for the homepage
           setLatestNews(newsData.slice(0, 2));
@@ -49,7 +55,7 @@ const HomePage: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [language]);
 
   // Handle video error and fallback to image
   const handleVideoError = () => {

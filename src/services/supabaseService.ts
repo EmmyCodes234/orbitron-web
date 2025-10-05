@@ -106,6 +106,7 @@ export const subscribeToPlayers = (
       {
         event: 'UPDATE',
         schema: 'public',
+        table: 'players',
       },
       (payload) => {
         // Fetch updated data
@@ -281,66 +282,113 @@ export const subscribeToEvents = (
 };
 
 // News operations
-export const getNews = async (): Promise<any[] | null> => {
+export const getNews = async (language: string = 'en'): Promise<any[] | null> => {
   try {
     // Check if supabase client is available
     if (!supabase) {
-      return MOCK_NEWS;
+      // Filter mock data by language
+      const filteredNews = MOCK_NEWS.filter(article => article.language === language);
+      // If no articles found for specific language, fall back to English
+      return filteredNews.length > 0 ? filteredNews : MOCK_NEWS.filter(article => article.language === 'en');
     }
     
     const { data, error } = await supabase
       .from('news')
       .select('*')
       .eq('published', true)
+      .eq('language', language)
       .order('created_at', { ascending: false });
     
     if (error) {
       // Fallback to mock data
-      return MOCK_NEWS;
+      const filteredNews = MOCK_NEWS.filter(article => article.language === language);
+      return filteredNews.length > 0 ? filteredNews : MOCK_NEWS.filter(article => article.language === 'en');
+    }
+    
+    // If no data found for specific language, try English as fallback
+    if (!data || data.length === 0) {
+      const { data: englishData, error: englishError } = await supabase
+        .from('news')
+        .select('*')
+        .eq('published', true)
+        .eq('language', 'en')
+        .order('created_at', { ascending: false });
+      
+      if (!englishError && englishData && englishData.length > 0) {
+        return englishData;
+      }
     }
     
     return data;
   } catch (error) {
     // Fallback to mock data
-    return MOCK_NEWS;
+    const filteredNews = MOCK_NEWS.filter(article => article.language === language);
+    return filteredNews.length > 0 ? filteredNews : MOCK_NEWS.filter(article => article.language === 'en');
   }
 };
 
-export const getNewsById = async (id: string): Promise<any | null> => {
+export const getNewsById = async (id: string, language: string = 'en'): Promise<any | null> => {
   try {
     // Check if supabase client is available
     if (!supabase) {
-      return MOCK_NEWS.find(news => news.id === id) || null;
+      // Filter mock data by language and id
+      const article = MOCK_NEWS.find(news => news.id === id && news.language === language) || 
+                     MOCK_NEWS.find(news => news.id === id && news.language === 'en');
+      return article || null;
     }
     
-    const { data, error } = await supabase
+    // First try to find article in the requested language
+    let { data, error } = await supabase
       .from('news')
       .select('*')
       .eq('id', id)
       .eq('published', true)
+      .eq('language', language)
       .single();
+    
+    // If not found, try English as fallback
+    if (error || !data) {
+      const { data: englishData, error: englishError } = await supabase
+        .from('news')
+        .select('*')
+        .eq('id', id)
+        .eq('published', true)
+        .eq('language', 'en')
+        .single();
+      
+      if (!englishError && englishData) {
+        return englishData;
+      }
+    }
     
     if (error) {
       // Fallback to mock data
-      return MOCK_NEWS.find(news => news.id === id) || null;
+      const article = MOCK_NEWS.find(news => news.id === id && news.language === language) || 
+                     MOCK_NEWS.find(news => news.id === id && news.language === 'en');
+      return article || null;
     }
     
     return data;
   } catch (error) {
     // Fallback to mock data
-    return MOCK_NEWS.find(news => news.id === id) || null;
+    const article = MOCK_NEWS.find(news => news.id === id && news.language === language) || 
+                   MOCK_NEWS.find(news => news.id === id && news.language === 'en');
+    return article || null;
   }
 };
 
 // Subscribe to real-time news updates
 export const subscribeToNews = (
   callback: SubscriptionCallback<any>,
-  errorCallback?: SubscriptionErrorCallback
+  errorCallback?: SubscriptionErrorCallback,
+  language: string = 'en'
 ) => {
   if (!supabase) {
     // If Supabase is not available, use mock data with periodic updates
     const interval = setInterval(() => {
-      callback(MOCK_NEWS);
+      // Filter mock data by language
+      const filteredNews = MOCK_NEWS.filter(article => article.language === language);
+      callback(filteredNews.length > 0 ? filteredNews : MOCK_NEWS.filter(article => article.language === 'en'));
     }, 30000); // Update every 30 seconds
     
     return () => clearInterval(interval);
@@ -357,7 +405,7 @@ export const subscribeToNews = (
       },
       (payload) => {
         // Fetch updated data
-        getNews().then(data => {
+        getNews(language).then(data => {
           if (data) {
             callback(data);
           }
@@ -377,7 +425,7 @@ export const subscribeToNews = (
       },
       (payload) => {
         // Fetch updated data
-        getNews().then(data => {
+        getNews(language).then(data => {
           if (data) {
             callback(data);
           }
@@ -397,7 +445,7 @@ export const subscribeToNews = (
       },
       (payload) => {
         // Fetch updated data
-        getNews().then(data => {
+        getNews(language).then(data => {
           if (data) {
             callback(data);
           }
@@ -529,11 +577,4 @@ export const subscribeToFederations = (
   return () => {
     supabase?.removeChannel(subscription);
   };
-};
-
-// Resource operations (if you want to move resources to Supabase in the future)
-export const getResources = async (): Promise<any[] | null> => {
-  // For now, we'll return null since resources are still in constants
-  // You can implement this later if you want to move resources to Supabase
-  return null;
 };
