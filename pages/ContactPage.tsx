@@ -43,7 +43,7 @@ const ContactPage: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs sm:text-sm font-medium mb-1">{t('contact.generalInquiries')}</p>
-                  <p className="text-white font-bold text-base sm:text-lg group-hover:text-green-400 transition-colors break-words">info@panafricanscrabbleassociation.com</p>
+                  <p className="text-white font-bold text-base sm:text-lg group-hover:text-green-400 transition-colors break-words">info@panafricanscrabble.com</p>
                 </div>
               </div>
               
