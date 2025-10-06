@@ -13,6 +13,7 @@ import ContactPage from './pages/ContactPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import AdminPage from './pages/AdminPage';
 import PaymentsPage from './pages/PaymentsPage';
+import CollectionPage from './pages/CollectionPage';
 import { LocalizationProvider } from './contexts/LocalizationContext';
 
 // Loading component for Suspense
@@ -48,6 +49,7 @@ const AppContent: React.FC = () => {
           <Route path="/events/:id" element={<EventsPage />} />
           <Route path="/federations" element={<FederationsPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/gallery/:collectionId" element={<CollectionPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/search" element={<SearchResultsPage />} />
