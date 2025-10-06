@@ -258,13 +258,13 @@ const GalleryPage: React.FC = () => {
   // Get responsive values based on screen size
   const getResponsiveValues = () => {
     if (screenSize.width < 480) {
-      return { minRadius: 150, segments: 25, height: 'h-[200px]' };
+      return { minRadius: 150, segments: 35, height: 'h-[200px]' };
     } else if (screenSize.width < 768) {
-      return { minRadius: 250, segments: 30, height: 'h-[300px]' };
+      return { minRadius: 250, segments: 40, height: 'h-[300px]' };
     } else if (screenSize.width < 1024) {
-      return { minRadius: 300, segments: 35, height: 'h-[400px]' };
+      return { minRadius: 300, segments: 50, height: 'h-[400px]' };
     } else {
-      return { minRadius: 350, segments: 40, height: 'h-[500px]' };
+      return { minRadius: 350, segments: 60, height: 'h-[500px]' };
     }
   };
 
@@ -366,7 +366,7 @@ const GalleryPage: React.FC = () => {
                 : 'bg-slate-800/60 text-gray-300 hover:bg-slate-700/60'
             }`}
           >
-            President's Cup
+            President's Cup - Triumvirate Showdown
           </button>
           <button
             onClick={() => {
@@ -431,10 +431,12 @@ const GalleryPage: React.FC = () => {
         {/* Gallery Collections Section */}
         <div className="mt-8 sm:mt-12 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
           <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-green-400/30 hover:border-green-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+              <img 
+                src="https://flagcdn.com/w40/tg.png" 
+                alt="Togo Flag" 
+                className="w-full h-full object-contain p-2"
+              />
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-green-400 mb-3 sm:mb-4 group-hover:text-cyan-400 transition-colors">AYSC 2025 Trophy Tour - Kpalime</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Visit and coaching clinic in Kpalime, Togo as part of the AYSC 2025 Trophy Tour.</p>
@@ -447,10 +449,12 @@ const GalleryPage: React.FC = () => {
           </div>
           
           <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2 1l-3 4v7h2v7h3v-7h1v7h3z"/>
-              </svg>
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+              <img 
+                src="https://flagcdn.com/w40/ug.png" 
+                alt="Uganda Flag" 
+                className="w-full h-full object-contain p-2"
+              />
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-cyan-400 mb-3 sm:mb-4 group-hover:text-purple-400 transition-colors">AYSC 2025 Trophy Tour - Uganda</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Trophy presentation tour across Uganda as part of the AYSC 2025 Trophy Tour.</p>
@@ -463,13 +467,15 @@ const GalleryPage: React.FC = () => {
           </div>
           
           <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-yellow-400/30 hover:border-yellow-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+              <img 
+                src="https://flagcdn.com/w40/ke.png" 
+                alt="Kenya Flag" 
+                className="w-full h-full object-contain p-2"
+              />
             </div>
-            <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-yellow-400 mb-3 sm:mb-4 group-hover:text-orange-400 transition-colors">President's Cup 2025</h3>
-            <p className="text-gray-400 text-sm sm:text-base mb-4">Annual President's Cup championship event featuring top players from across Africa.</p>
+            <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-yellow-400 mb-3 sm:mb-4 group-hover:text-orange-400 transition-colors">President's Cup 2025 - Triumvirate Showdown</h3>
+            <p className="text-gray-400 text-sm sm:text-base mb-4">Biennial President's Cup championship event held at the Trademark Hotel, Nairobi, Kenya, featuring top players from across Africa in the Triumvirate Showdown.</p>
             <button 
               onClick={() => navigate('/gallery/presidentsCup')}
               className="mt-2 px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg hover:bg-yellow-500/30 transition-colors font-medium text-sm sm:text-base"
@@ -479,10 +485,12 @@ const GalleryPage: React.FC = () => {
           </div>
           
           <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-red-400/30 hover:border-red-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+              <img 
+                src="https://flagcdn.com/w40/ke.png" 
+                alt="Kenya Flag" 
+                className="w-full h-full object-contain p-2"
+              />
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-red-400 mb-3 sm:mb-4 group-hover:text-pink-400 transition-colors">AYSC Trophy Tour - Kenya</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Trophy presentation tour across Kenya celebrating Scrabble champions and promoting the game.</p>
@@ -495,10 +503,12 @@ const GalleryPage: React.FC = () => {
           </div>
           
           <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-blue-400/30 hover:border-blue-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+              <img 
+                src="https://flagcdn.com/w40/lr.png" 
+                alt="Liberia Flag" 
+                className="w-full h-full object-contain p-2"
+              />
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-blue-400 mb-3 sm:mb-4 group-hover:text-indigo-400 transition-colors">AYSC Trophy Tour - Liberia</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Trophy presentation tour in Liberia as part of the AYSC 2025 Trophy Tour series.</p>
@@ -511,10 +521,12 @@ const GalleryPage: React.FC = () => {
           </div>
           
           <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-indigo-400/30 hover:border-indigo-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2 1l-3 4v7h2v7h3v-7h1v7h3z"/>
-              </svg>
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+              <img 
+                src="https://flagcdn.com/w40/tg.png" 
+                alt="Togo Flag" 
+                className="w-full h-full object-contain p-2"
+              />
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-indigo-400 mb-3 sm:mb-4 group-hover:text-purple-400 transition-colors">Press Conference - Togo</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Press conference at the American Corner, University of Lome, Togo as part of the AYSC 2025 Trophy Tour.</p>
@@ -523,22 +535,6 @@ const GalleryPage: React.FC = () => {
               className="mt-2 px-4 py-2 bg-indigo-500/20 text-indigo-400 rounded-lg hover:bg-indigo-500/30 transition-colors font-medium text-sm sm:text-base"
             >
               View Collection
-            </button>
-          </div>
-          
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2 1l-3 4v7h2v7h3v-7h1v7h3z"/>
-              </svg>
-            </div>
-            <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-cyan-400 mb-3 sm:mb-4 group-hover:text-purple-400 transition-colors">All Collections</h3>
-            <p className="text-gray-400 text-sm sm:text-base mb-4">Browse all PANASA events and tournaments from across the African continent.</p>
-            <button 
-              onClick={() => navigate('/gallery/all')}
-              className="mt-2 px-4 py-2 bg-cyan-500/20 text-cyan-400 rounded-lg hover:bg-cyan-500/30 transition-colors font-medium text-sm sm:text-base"
-            >
-              View All
             </button>
           </div>
         </div>

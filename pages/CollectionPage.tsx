@@ -49,8 +49,8 @@ const collectionData: Record<CollectionType, CollectionInfo> = {
     borderColor: 'border-purple-400/30'
   },
   presidentsCup: {
-    title: 'President\'s Cup 2025',
-    description: 'Annual President\'s Cup championship event featuring top players from across Africa.',
+    title: 'President\'s Cup 2025 - Triumvirate Showdown',
+    description: 'Biennial President\'s Cup championship event held at the Trademark Hotel, Nairobi, Kenya, featuring top players from across Africa in the Triumvirate Showdown.',
     images: presidentsCupImages.filter(img => img.src && img.src.trim() !== ''),
     bgColor: 'from-yellow-500/20 to-yellow-600/20',
     textColor: 'text-yellow-400',
