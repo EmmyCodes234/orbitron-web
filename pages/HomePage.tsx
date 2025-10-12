@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import FlagLoop from '../components/FlagLoop';
 import { getNews, getEvents } from '../src/services/supabaseService';
 import { useLocalization } from '../contexts/LocalizationContext';
+import TechButton from '../components/TechButton';
 
 const HomePage: React.FC = () => {
   const { t, language } = useLocalization();
@@ -65,7 +66,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="pb-20">
       {/* Hero Section */}
-      <section className="relative text-center py-20 sm:py-28 md:py-32 lg:py-40 overflow-hidden mt-0 mx-0 px-4 sm:px-6 safe-area-top">
+      <section className="relative text-center py-20 sm:py-28 md:py-32 lg:py-40 overflow-hidden mt-0 mx-0 px-4 sm:px-6 safe-area-top hero-bg">
         {/* Hero Background */}
         <div className="absolute inset-0">
           {useVideoBackground && !videoError ? (
@@ -130,7 +131,7 @@ const HomePage: React.FC = () => {
           <div className="mt-8 sm:mt-10 md:mt-12 flex flex-col sm:flex-row justify-center gap-4 sm:gap-5 md:gap-7 animate-fade-in-up opacity-0 px-4 hero-buttons" style={{ animationDelay: '1.5s', animationFillMode: 'forwards' }}>
             <Link 
               to="/ratings" 
-              className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm sm:text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-green-400 to-cyan-500 group-hover:from-green-400 group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 min-h-[48px] sm:min-h-[52px] touch-manipulation hero-button shadow-xl w-full sm:w-auto"
+              className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm sm:text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-green-400 to-cyan-500 group-hover:from-green-400 group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 min-h-[48px] sm:min-h-[52px] touch-manipulation hero-button shadow-xl w-full sm:w-auto tech-btn"
             >
               <span className="relative px-6 sm:px-7 md:px-9 py-3 sm:py-4 transition-all ease-in duration-300 bg-slate-900 rounded-lg group-hover:bg-opacity-0 flex items-center justify-center gap-2 sm:gap-3 w-full text-white font-bold tracking-wide">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -141,7 +142,7 @@ const HomePage: React.FC = () => {
             </Link>
             <Link 
               to="/federations" 
-              className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm sm:text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30 min-h-[48px] sm:min-h-[52px] touch-manipulation hero-button shadow-xl w-full sm:w-auto"
+              className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm sm:text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30 min-h-[48px] sm:min-h-[52px] touch-manipulation hero-button shadow-xl w-full sm:w-auto tech-btn"
             >
               <span className="relative px-6 sm:px-7 md:px-9 py-3 sm:py-4 transition-all ease-in duration-300 bg-slate-900 rounded-lg group-hover:bg-opacity-0 flex items-center justify-center gap-2 sm:gap-3 w-full text-white font-bold tracking-wide">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -154,19 +155,19 @@ const HomePage: React.FC = () => {
           
           {/* Enhanced stats with better styling */}
           <div className="mt-12 sm:mt-16 md:mt-20 lg:mt-24 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 md:gap-7 animate-fade-in-up opacity-0 px-2 hero-stats" style={{ animationDelay: '2s', animationFillMode: 'forwards' }}>
-            <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-green-400/30 hover:border-green-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl">
+            <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-green-400/30 hover:border-green-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl tech-card">
               <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-green-400 animate-pulse stat-number">14</div>
               <div className="text-xs sm:text-xs md:text-sm text-gray-300 uppercase tracking-widest mt-2 stat-label font-bold">{t('home.countries')}</div>
             </div>
-            <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl">
+            <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl tech-card">
               <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-cyan-400 animate-pulse stat-number">15K+</div>
               <div className="text-xs sm:text-xs md:text-sm text-gray-300 uppercase tracking-widest mt-2 stat-label font-bold">{t('home.players')}</div>
             </div>
-            <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-purple-400/30 hover:border-purple-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl">
+            <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-purple-400/30 hover:border-purple-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl tech-card">
               <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-purple-400 animate-pulse stat-number">29</div>
               <div className="text-xs sm:text-xs md:text-sm text-gray-300 uppercase tracking-widest mt-2 stat-label font-bold">{t('home.years')}</div>
             </div>
-            <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-yellow-400/30 hover:border-yellow-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl">
+            <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-yellow-400/30 hover:border-yellow-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl tech-card">
               <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-yellow-400 animate-pulse stat-number">1</div>
               <div className="text-xs sm:text-xs md:text-sm text-gray-300 uppercase tracking-widest mt-2 stat-label font-bold">{t('home.worldChampions')}</div>
             </div>
@@ -176,8 +177,8 @@ const HomePage: React.FC = () => {
 
       <div className="space-y-16 sm:space-y-20 md:space-y-24 lg:space-y-28 mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-4 sm:px-6 max-w-7xl mx-auto">
         {/* Member Nations Section with enhanced styling */}
-        <section className="animate-fade-in-up opacity-0" style={{ animationDelay: '3s', animationFillMode: 'forwards' }}>
-          <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-6 sm:mb-8 md:mb-10 text-gray-100 uppercase tracking-wider">
+        <section className="animate-fade-in-up opacity-0 content-group" style={{ animationDelay: '3s', animationFillMode: 'forwards' }}>
+          <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-6 sm:mb-8 md:mb-10 text-gray-100 uppercase tracking-wider section-title">
             {t('home.memberNations')}
           </h2>
           <div className="animate-float">
@@ -186,9 +187,9 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* Latest News Section with enhanced styling */}
-        <section className="animate-slide-in-left opacity-0" style={{ animationDelay: '3.5s', animationFillMode: 'forwards' }}>
+        <section className="animate-slide-in-left opacity-0 content-group" style={{ animationDelay: '3.5s', animationFillMode: 'forwards' }}>
           <div className="flex items-center justify-between mb-6 sm:mb-8 md:mb-10">
-            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-extrabold text-left text-gray-100">
+            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-extrabold text-left text-gray-100 section-title">
               {t('home.latestNews')}
             </h2>
             <Link to="/news" className="text-green-400 hover:text-cyan-400 text-sm sm:text-base font-bold flex items-center group transition-colors duration-300 ml-auto touch-target">
@@ -231,6 +232,54 @@ const HomePage: React.FC = () => {
           )}
         </section>
 
+        {/* Divider with tech feel */}
+        <div className="tech-divider"></div>
+
+        {/* Upcoming Events Section */}
+        <section className="animate-slide-in-right opacity-0 content-group" style={{ animationDelay: '4s', animationFillMode: 'forwards' }}>
+          <div className="flex items-center justify-between mb-6 sm:mb-8 md:mb-10">
+            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-extrabold text-left text-gray-100 section-title">
+              {t('home.upcomingEvents')}
+            </h2>
+            <Link to="/events" className="text-green-400 hover:text-cyan-400 text-sm sm:text-base font-bold flex items-center group transition-colors duration-300 ml-auto touch-target">
+              {t('home.viewAll')}
+              <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 7l-8 8-4-4-6 6" />
+              </svg>
+            </Link>
+          </div>
+          {loading ? (
+            <div className="flex justify-center items-center h-32 sm:h-40">
+              <div className="animate-spin rounded-full h-8 w-8 sm:h-10 sm:w-10 border-b-2 border-green-400"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-7 lg:gap-9">
+              {upcomingEvents.map((event, index) => (
+                <div 
+                  key={event.id} 
+                  className={`hover-lift animate-fade-in-up opacity-0 stagger-${index + 1}`}
+                  style={{ animationDelay: `${4.5 + index * 0.2}s`, animationFillMode: 'forwards' }}
+                >
+                  <Card
+                    title={event.title}
+                    subtitle={`${event.date} | ${event.location}`}
+                    description={event.description.substring(0, 150) + '...'}
+                    linkTo={`/events/${event.id}`}
+                    imageUrl={
+                      event.title === 'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship' 
+                        ? '/kofiBingo.png' 
+                        : event.title === 'Future of African Scrabble Shines Bright as Nigeria Sweeps Youth Championship Titles'
+                        ? '/ayscbanner.png'
+                        : event.title === 'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi'
+                        ? '/triumvirate.png'
+                        : event.image
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );

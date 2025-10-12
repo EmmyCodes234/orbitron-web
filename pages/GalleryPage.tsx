@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalization } from '../contexts/LocalizationContext';
 import DomeGallery from '../components/DomeGallery';
+import TechButton from '../components/TechButton';
 
 // Images from kpalime folder (AYSC 2025 Trophy Tour visit and coaching clinic in Kpalime, Togo)
 export const kpalimeImages = [
@@ -305,112 +306,91 @@ const GalleryPage: React.FC = () => {
   return (
     <div className="min-h-screen py-8 sm:py-12 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <h1 className="font-orbitron text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 sm:mb-5 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16 section-header">
+          <h1 className="font-orbitron text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 sm:mb-5 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 section-title">
             {t('gallery.title')}
           </h1>
-          <p className="text-gray-400 text-base sm:text-lg md:text-xl max-w-2xl sm:max-w-3xl mx-auto font-medium">
+          <p className="text-gray-400 text-base sm:text-lg md:text-xl max-w-2xl sm:max-w-3xl mx-auto font-medium section-subtitle">
             {t('gallery.subtitle')}
           </p>
         </div>
 
-        {/* Collection Filter Buttons */}
+        {/* Collection Filter Buttons - Using standardized TechButton component */}
         <div className="flex justify-center mb-6 sm:mb-8 gap-2 sm:gap-4 flex-wrap relative" style={{ zIndex: 30 }}>
-          <button
+          <TechButton
+            variant={activeCollection === 'all' ? 'primary' : 'secondary'}
+            size="md"
             onClick={() => {
               console.log('All Collections clicked');
               setActiveCollection('all');
             }}
-            className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-orbitron font-bold text-sm sm:text-base transition-all duration-300 ${
-              activeCollection === 'all'
-                ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
-                : 'bg-slate-800/60 text-gray-300 hover:bg-slate-700/60'
-            }`}
           >
             All Collections
-          </button>
-          <button
+          </TechButton>
+          <TechButton
+            variant={activeCollection === 'kpalime' ? 'primary' : 'secondary'}
+            size="md"
             onClick={() => {
               console.log('Kpalime Event clicked');
               setActiveCollection('kpalime');
             }}
-            className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-orbitron font-bold text-sm sm:text-base transition-all duration-300 ${
-              activeCollection === 'kpalime'
-                ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
-                : 'bg-slate-800/60 text-gray-300 hover:bg-slate-700/60'
-            }`}
           >
-            Kpalime Event
-          </button>
-          <button
+            AYSC 2025 Trophy Tour - Kpalime, Togo
+          </TechButton>
+          <TechButton
+            variant={activeCollection === 'uganda' ? 'primary' : 'secondary'}
+            size="md"
             onClick={() => {
               console.log('Uganda Trophy Tour clicked');
               setActiveCollection('uganda');
             }}
-            className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-orbitron font-bold text-sm sm:text-base transition-all duration-300 ${
-              activeCollection === 'uganda'
-                ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/30'
-                : 'bg-slate-800/60 text-gray-300 hover:bg-slate-700/60'
-            }`}
           >
-            Uganda Trophy Tour
-          </button>
-          <button
+            AYSC 2025 Trophy Tour - Uganda
+          </TechButton>
+          <TechButton
+            variant={activeCollection === 'presidentsCup' ? 'primary' : 'secondary'}
+            size="md"
             onClick={() => {
               console.log('President\'s Cup clicked');
               setActiveCollection('presidentsCup');
             }}
-            className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-orbitron font-bold text-sm sm:text-base transition-all duration-300 ${
-              activeCollection === 'presidentsCup'
-                ? 'bg-yellow-500 text-white shadow-lg shadow-yellow-500/30'
-                : 'bg-slate-800/60 text-gray-300 hover:bg-slate-700/60'
-            }`}
           >
             President's Cup - Triumvirate Showdown
-          </button>
-          <button
+          </TechButton>
+          <TechButton
+            variant={activeCollection === 'kenya' ? 'primary' : 'secondary'}
+            size="md"
             onClick={() => {
               console.log('Kenya Trophy Tour clicked');
               setActiveCollection('kenya');
             }}
-            className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-orbitron font-bold text-sm sm:text-base transition-all duration-300 ${
-              activeCollection === 'kenya'
-                ? 'bg-red-500 text-white shadow-lg shadow-red-500/30'
-                : 'bg-slate-800/60 text-gray-300 hover:bg-slate-700/60'
-            }`}
           >
-            Kenya Trophy Tour
-          </button>
-          <button
+            AYSC 2025 Trophy Tour - Kenya
+          </TechButton>
+          <TechButton
+            variant={activeCollection === 'liberia' ? 'primary' : 'secondary'}
+            size="md"
             onClick={() => {
               console.log('Liberia Trophy Tour clicked');
               setActiveCollection('liberia');
             }}
-            className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-orbitron font-bold text-sm sm:text-base transition-all duration-300 ${
-              activeCollection === 'liberia'
-                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
-                : 'bg-slate-800/60 text-gray-300 hover:bg-slate-700/60'
-            }`}
           >
-            Liberia Trophy Tour
-          </button>
-          <button
+            AYSC 2025 Trophy Tour - Liberia
+          </TechButton>
+          <TechButton
+            variant={activeCollection === 'pressConference' ? 'primary' : 'secondary'}
+            size="md"
             onClick={() => {
               console.log('Press Conference Togo clicked');
               setActiveCollection('pressConference');
             }}
-            className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-orbitron font-bold text-sm sm:text-base transition-all duration-300 ${
-              activeCollection === 'pressConference'
-                ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/30'
-                : 'bg-slate-800/60 text-gray-300 hover:bg-slate-700/60'
-            }`}
           >
-            Press Conference Togo
-          </button>
+            AYSC 2025 Trophy Tour - Press Conference
+          </TechButton>
         </div>
 
         {/* Dome Gallery Component */}
-        <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 md:p-8 max-w-6xl mx-auto border border-cyan-400/30 shadow-2xl mb-8 sm:mb-12 relative" style={{ zIndex: 10 }}>
+        <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 md:p-8 max-w-6xl mx-auto border border-cyan-400/30 shadow-2xl mb-8 sm:mb-12 relative tech-card" style={{ zIndex: 10 }}>
           <div className="h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] w-full">
             <DomeGallery 
               key={activeCollection} // Add key to force re-render when collection changes
@@ -430,7 +410,7 @@ const GalleryPage: React.FC = () => {
 
         {/* Gallery Collections Section */}
         <div className="mt-8 sm:mt-12 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-green-400/30 hover:border-green-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
+          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-green-400/30 hover:border-green-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center tech-card">
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
               <img 
                 src="https://flagcdn.com/w40/tg.png" 
@@ -440,15 +420,17 @@ const GalleryPage: React.FC = () => {
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-green-400 mb-3 sm:mb-4 group-hover:text-cyan-400 transition-colors">AYSC 2025 Trophy Tour - Kpalime</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Visit and coaching clinic in Kpalime, Togo as part of the AYSC 2025 Trophy Tour.</p>
-            <button 
+            <TechButton
+              variant="secondary"
+              size="md"
               onClick={() => navigate('/gallery/kpalime')}
-              className="mt-2 px-4 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors font-medium text-sm sm:text-base"
+              className="mt-2"
             >
               View Collection
-            </button>
+            </TechButton>
           </div>
           
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
+          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center tech-card">
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
               <img 
                 src="https://flagcdn.com/w40/ug.png" 
@@ -458,15 +440,17 @@ const GalleryPage: React.FC = () => {
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-cyan-400 mb-3 sm:mb-4 group-hover:text-purple-400 transition-colors">AYSC 2025 Trophy Tour - Uganda</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Trophy presentation tour across Uganda as part of the AYSC 2025 Trophy Tour.</p>
-            <button 
+            <TechButton
+              variant="secondary"
+              size="md"
               onClick={() => navigate('/gallery/uganda')}
-              className="mt-2 px-4 py-2 bg-cyan-500/20 text-cyan-400 rounded-lg hover:bg-cyan-500/30 transition-colors font-medium text-sm sm:text-base"
+              className="mt-2"
             >
               View Collection
-            </button>
+            </TechButton>
           </div>
           
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-yellow-400/30 hover:border-yellow-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
+          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-yellow-400/30 hover:border-yellow-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center tech-card">
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
               <img 
                 src="https://flagcdn.com/w40/ke.png" 
@@ -476,15 +460,17 @@ const GalleryPage: React.FC = () => {
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-yellow-400 mb-3 sm:mb-4 group-hover:text-orange-400 transition-colors">President's Cup 2025 - Triumvirate Showdown</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Biennial President's Cup championship event held at the Trademark Hotel, Nairobi, Kenya, featuring top players from across Africa in the Triumvirate Showdown.</p>
-            <button 
+            <TechButton
+              variant="secondary"
+              size="md"
               onClick={() => navigate('/gallery/presidentsCup')}
-              className="mt-2 px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg hover:bg-yellow-500/30 transition-colors font-medium text-sm sm:text-base"
+              className="mt-2"
             >
               View Collection
-            </button>
+            </TechButton>
           </div>
           
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-red-400/30 hover:border-red-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
+          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-red-400/30 hover:border-red-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center tech-card">
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
               <img 
                 src="https://flagcdn.com/w40/ke.png" 
@@ -494,15 +480,17 @@ const GalleryPage: React.FC = () => {
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-red-400 mb-3 sm:mb-4 group-hover:text-pink-400 transition-colors">AYSC Trophy Tour - Kenya</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Trophy presentation tour across Kenya celebrating Scrabble champions and promoting the game.</p>
-            <button 
+            <TechButton
+              variant="secondary"
+              size="md"
               onClick={() => navigate('/gallery/kenya')}
-              className="mt-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors font-medium text-sm sm:text-base"
+              className="mt-2"
             >
               View Collection
-            </button>
+            </TechButton>
           </div>
           
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-blue-400/30 hover:border-blue-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
+          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-blue-400/30 hover:border-blue-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center tech-card">
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
               <img 
                 src="https://flagcdn.com/w40/lr.png" 
@@ -512,15 +500,17 @@ const GalleryPage: React.FC = () => {
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-blue-400 mb-3 sm:mb-4 group-hover:text-indigo-400 transition-colors">AYSC Trophy Tour - Liberia</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Trophy presentation tour in Liberia as part of the AYSC 2025 Trophy Tour series.</p>
-            <button 
+            <TechButton
+              variant="secondary"
+              size="md"
               onClick={() => navigate('/gallery/liberia')}
-              className="mt-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors font-medium text-sm sm:text-base"
+              className="mt-2"
             >
               View Collection
-            </button>
+            </TechButton>
           </div>
           
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-indigo-400/30 hover:border-indigo-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center">
+          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 md:p-7 border border-indigo-400/30 hover:border-indigo-400/50 transition-all duration-300 group shadow-lg hover:shadow-xl text-center tech-card">
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
               <img 
                 src="https://flagcdn.com/w40/tg.png" 
@@ -530,12 +520,14 @@ const GalleryPage: React.FC = () => {
             </div>
             <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-indigo-400 mb-3 sm:mb-4 group-hover:text-purple-400 transition-colors">Press Conference - Togo</h3>
             <p className="text-gray-400 text-sm sm:text-base mb-4">Press conference at the American Corner, University of Lome, Togo as part of the AYSC 2025 Trophy Tour.</p>
-            <button 
+            <TechButton
+              variant="secondary"
+              size="md"
               onClick={() => navigate('/gallery/pressConference')}
-              className="mt-2 px-4 py-2 bg-indigo-500/20 text-indigo-400 rounded-lg hover:bg-indigo-500/30 transition-colors font-medium text-sm sm:text-base"
+              className="mt-2"
             >
               View Collection
-            </button>
+            </TechButton>
           </div>
         </div>
       </div>

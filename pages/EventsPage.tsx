@@ -21,7 +21,7 @@ const EventDetail: React.FC<{ event: any }> = ({ event }) => {
     const imageUrl = getImageUrl(event);
 
     return (
-        <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl p-5 sm:p-9 max-w-5xl mx-auto relative border border-slate-700/40 shadow-2xl">
+        <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl p-5 sm:p-9 max-w-5xl mx-auto relative border border-slate-700/40 shadow-2xl content-group tech-card">
             <Link to="/events" className="text-green-400 hover:text-cyan-400 mb-5 sm:mb-9 inline-block font-bold transition-colors duration-300 flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -32,9 +32,9 @@ const EventDetail: React.FC<{ event: any }> = ({ event }) => {
                 <img src={imageUrl} alt={event.title} className="w-full h-52 sm:h-80 object-contain rounded-xl mb-5 p-3 bg-slate-900/50" />
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-slate-900/70 to-transparent"></div>
             </div>
-            <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold mb-5 text-gray-100 tracking-tight">{event.title}</h1>
+            <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold mb-5 text-gray-100 tracking-tight section-title">{event.title}</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-7 sm:mb-9">
-                <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm p-5 sm:p-7 rounded-xl border border-slate-700/30">
+                <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm p-5 sm:p-7 rounded-xl border border-slate-700/30 tech-card">
                     <h2 className="font-orbitron text-xl sm:text-2xl font-bold mb-4 text-cyan-400">{t('events.eventDetails')}</h2>
                     <div className="space-y-4 sm:space-y-5 text-base sm:text-lg">
                         <div className="flex items-center group">
@@ -72,7 +72,7 @@ const EventDetail: React.FC<{ event: any }> = ({ event }) => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm p-5 sm:p-7 rounded-xl border border-slate-700/30">
+                <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm p-5 sm:p-7 rounded-xl border border-slate-700/30 tech-card">
                     <h2 className="font-orbitron text-xl sm:text-2xl font-bold mb-4 text-cyan-400">{t('events.contact')}</h2>
                     <div className="space-y-4 sm:space-y-5 text-base sm:text-lg">
                         <div className="flex items-center group">
@@ -130,7 +130,7 @@ const EventDetail: React.FC<{ event: any }> = ({ event }) => {
                     href={event.registrationLink} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex-1 relative inline-flex items-center justify-center p-0.5 overflow-hidden text-base sm:text-lg font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-green-400 to-cyan-500 group-hover:from-green-400 group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/30"
+                    className="flex-1 relative inline-flex items-center justify-center p-0.5 overflow-hidden text-base sm:text-lg font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-green-400 to-cyan-500 group-hover:from-green-400 group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/30 tech-btn"
                 >
                     <span className="w-full relative px-6 py-3.5 transition-all ease-in duration-300 bg-slate-900 rounded-lg group-hover:bg-opacity-0 text-center">
                         {t('events.register')}
@@ -138,7 +138,7 @@ const EventDetail: React.FC<{ event: any }> = ({ event }) => {
                 </a>
                 <Link 
                     to="/events" 
-                    className="flex-1 text-center px-6 py-3.5 border-2 border-slate-700 text-gray-300 rounded-xl hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 font-bold text-base sm:text-lg"
+                    className="flex-1 text-center px-6 py-3.5 border-2 border-slate-700 text-gray-300 rounded-xl hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 font-bold text-base sm:text-lg tech-btn tech-btn-secondary"
                 >
                     {t('events.backToEvents')}
                 </Link>
@@ -162,12 +162,12 @@ const EventsList: React.FC<{ events: any[] }> = ({ events }) => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="text-center mb-10 sm:mb-14">
-                <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold mb-5 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 content-group">
+            <div className="text-center mb-10 sm:mb-14 section-header">
+                <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold mb-5 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 section-title">
                     {t('events.title')}
                 </h1>
-                <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto font-medium">
+                <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto font-medium section-subtitle">
                     {t('events.subtitle')}
                 </p>
             </div>
@@ -204,98 +204,98 @@ const EventsList: React.FC<{ events: any[] }> = ({ events }) => {
 };
 
 const EventsPage: React.FC = () => {
-  const { t } = useLocalization();
-  const { id } = useParams<{ id: string }>();
-  const [events, setEvents] = useState<any[]>([]);
-  const [event, setEvent] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isSubscribed, setIsSubscribed] = useState(false);
+    const { t, language } = useLocalization();
+    const { id } = useParams<{ id: string }>();
+    const [events, setEvents] = useState<any[]>([]);
+    const [event, setEvent] = useState<any | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [isSubscribed, setIsSubscribed] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        if (id) {
-          // Fetch single event
-          const eventData = await getEventById(id);
-          if (eventData) {
-            setEvent(eventData);
-          } else {
-            setError(t('events.eventNotFound'));
-          }
-        } else {
-          // Fetch all events
-          const eventsData = await getEvents();
-          if (eventsData && eventsData.length > 0) {
-            setEvents(eventsData);
-          } else {
-            setError(t('events.noEvents'));
-          }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                if (id) {
+                    // Fetch single event
+                    const eventData = await getEventById(id);
+                    if (eventData) {
+                        setEvent(eventData);
+                    } else {
+                        setError(t('events.eventNotFound'));
+                    }
+                } else {
+                    // Fetch all events
+                    const eventsData = await getEvents();
+                    if (eventsData && eventsData.length > 0) {
+                        setEvents(eventsData);
+                    } else {
+                        setError(t('events.noEvents'));
+                    }
+                }
+            } catch (err) {
+                setError(t('error'));
+                console.error('Error fetching data:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [id, language, t]);
+
+    // Subscribe to real-time updates
+    useEffect(() => {
+        if (!id) { // Only subscribe on the list page, not the detail page
+          const unsubscribe = subscribeToEvents(
+            (updatedEvents) => {
+              setEvents(updatedEvents);
+              setIsSubscribed(true);
+            },
+            (error) => {
+              console.error('Real-time subscription error:', error);
+              setIsSubscribed(false);
+            }
+          );
+
+          return () => {
+            unsubscribe();
+          };
         }
-      } catch (err) {
-        setError(t('error'));
-        console.error('Error fetching data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      }, [id]);
 
-    fetchData();
-  }, [id]);
-
-  // Subscribe to real-time updates
-  useEffect(() => {
-    if (!id) { // Only subscribe on the list page, not the detail page
-      const unsubscribe = subscribeToEvents(
-        (updatedEvents) => {
-          setEvents(updatedEvents);
-          setIsSubscribed(true);
-        },
-        (error) => {
-          console.error('Real-time subscription error:', error);
-          setIsSubscribed(false);
-        }
-      );
-
-      return () => {
-        unsubscribe();
-      };
+    if (loading) {
+        return (
+            <div className="py-8 sm:py-12">
+                <div className="flex justify-center items-center h-64">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400"></div>
+                </div>
+            </div>
+        );
     }
-  }, [id]);
 
-  if (loading) {
+    if (error) {
+        return (
+            <div className="py-8 sm:py-12">
+                <div className="flex justify-center items-center h-64">
+                    <div className="text-red-400 bg-red-900/30 px-6 py-4 rounded-xl border border-red-700/50">
+                        <p className="font-bold text-lg mb-2">{t('error')}</p>
+                        <p>{error}</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
-      <div className="py-8 sm:py-12">
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400"></div>
+        <div className="py-8 sm:py-12">
+            {id ? (
+                event ? <EventDetail event={event} /> : <div className="text-center py-12 text-red-400">{t('events.eventNotFound')}</div>
+            ) : (
+                <EventsList events={events} />
+            )}
         </div>
-      </div>
     );
-  }
-
-  if (error) {
-    return (
-      <div className="py-8 sm:py-12">
-        <div className="flex justify-center items-center h-64">
-          <div className="text-red-400 bg-red-900/30 px-6 py-4 rounded-xl border border-red-700/50">
-            <p className="font-bold text-lg mb-2">{t('error')}</p>
-            <p>{error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="py-8 sm:py-12">
-      {id ? (
-        event ? <EventDetail event={event} /> : <div className="text-center py-12 text-red-400">{t('events.eventNotFound')}</div>
-      ) : (
-        <EventsList events={events} />
-      )}
-    </div>
-  );
 };
 
 export default EventsPage;

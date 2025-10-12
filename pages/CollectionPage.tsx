@@ -102,7 +102,7 @@ const CollectionPage: React.FC = () => {
   return (
     <div className="min-h-screen py-8 sm:py-12 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16 section-header">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -118,10 +118,10 @@ const CollectionPage: React.FC = () => {
             Back to Gallery
           </button>
           
-          <h1 className="font-orbitron text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 sm:mb-5 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500">
+          <h1 className="font-orbitron text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 sm:mb-5 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 section-title">
             {collection.title}
           </h1>
-          <p className="text-gray-400 text-base sm:text-lg md:text-xl max-w-2xl sm:max-w-3xl mx-auto font-medium">
+          <p className="text-gray-400 text-base sm:text-lg md:text-xl max-w-2xl sm:max-w-3xl mx-auto font-medium section-subtitle">
             {collection.description}
           </p>
         </div>
@@ -133,7 +133,7 @@ const CollectionPage: React.FC = () => {
             .map((image, index) => (
               <div 
                 key={index}
-                className={`relative group overflow-hidden rounded-2xl bg-gradient-to-br ${collection.bgColor} backdrop-blur-sm border ${collection.borderColor} hover:border-cyan-400/50 transition-all duration-300 shadow-lg hover:shadow-xl ${getBentoClass(index)}`}
+                className={`relative group overflow-hidden rounded-2xl bg-gradient-to-br ${collection.bgColor} backdrop-blur-sm border ${collection.borderColor} hover:border-cyan-400/50 transition-all duration-300 shadow-lg hover:shadow-xl ${getBentoClass(index)} tech-card`}
               >
                 <div className="aspect-square w-full overflow-hidden rounded-xl">
                   <img 

@@ -21,7 +21,7 @@ const NewsDetail: React.FC<{ article: any }> = ({ article }) => {
     const imageUrl = getImageUrl(article);
 
     return (
-        <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl p-5 sm:p-9 max-w-5xl mx-auto relative border border-slate-700/40 shadow-2xl">
+        <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl p-5 sm:p-9 max-w-5xl mx-auto relative border border-slate-700/40 shadow-2xl content-group tech-card">
             <Link to="/news" className="text-green-400 hover:text-cyan-400 mb-5 sm:mb-9 inline-block font-bold transition-colors duration-300 flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -29,10 +29,10 @@ const NewsDetail: React.FC<{ article: any }> = ({ article }) => {
                 {t('news.backToNews')}
             </Link>
             <div className="relative overflow-hidden rounded-xl mb-5 sm:mb-7">
-                <img src={imageUrl} alt={article.title} className="w-full h-52 sm:h-80 object-contain rounded-xl mb-5 p-3 bg-slate-900/50" />
+                <img src={imageUrl} alt={article.title} className="w-full h-52 sm:h-80 object-cover rounded-xl mb-5 p-3 bg-slate-900/50" />
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-slate-900/70 to-transparent"></div>
             </div>
-            <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold mb-5 text-gray-100 tracking-tight">{article.title}</h1>
+            <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold mb-5 text-gray-100 tracking-tight section-title">{article.title}</h1>
             <div className="flex flex-wrap gap-x-5 sm:gap-x-7 gap-y-3 text-cyan-400 mb-6 sm:mb-8 font-jetbrains-mono text-sm sm:text-base font-bold">
                 <span className="bg-cyan-400/10 px-3 py-1.5 rounded-lg">{t('news.author')}: {article.author}</span>
                 <span className="bg-green-400/10 px-3 py-1.5 rounded-lg">{t('news.published')}: {new Date(article.created_at).toLocaleDateString()}</span>
@@ -59,12 +59,12 @@ const NewsList: React.FC<{ articles: any[] }> = ({ articles }) => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="text-center mb-10 sm:mb-14">
-                <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold mb-5 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 content-group">
+            <div className="text-center mb-10 sm:mb-14 section-header">
+                <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold mb-5 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 section-title">
                     {t('news.title')}
                 </h1>
-                <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto font-medium">
+                <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto font-medium section-subtitle">
                     {t('news.subtitle')}
                 </p>
             </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocalization } from '../contexts/LocalizationContext';
+import ChromaGrid, { ChromaItem } from '../components/ChromaGrid';
 
 const AboutPage: React.FC = () => {
   const { t } = useLocalization();
@@ -28,35 +29,81 @@ const AboutPage: React.FC = () => {
     { number: '29', label: t('about.yearsStrong'), description: t('about.since1994') },
   ];
 
-  // Executive team members
-  const executives = [
+  // Executive team members adapted for ChromaGrid
+  const executives: ChromaItem[] = [
     {
-      name: 'Adekoyejo Adegbesan',
-      title: t('about.president'),
-      country: 'Nigeria',
-      countryCode: 'ng',
+      image: '/adekoyejo.jpg',
+      title: 'Adekoyejo Adegbesan',
+      subtitle: t('about.president'),
+      location: 'Nigeria',
+      borderColor: '#10B981',
+      gradient: 'linear-gradient(145deg, #10B981, #065F46)',
       bio: t('about.adekoyejoBio'),
-      photo: '/adekoyejo.jpg'
+      countryCode: 'ng'
     },
     {
-      name: 'Lester Morris',
-      title: t('about.vicePresident2'),
-      country: 'Liberia',
-      countryCode: 'lr',
+      image: '/anaclet.jpg',
+      title: 'Anaclet Ruzindana',
+      subtitle: t('about.vicePresident1'),
+      location: 'Rwanda',
+      borderColor: '#8B5CF6',
+      gradient: 'linear-gradient(145deg, #8B5CF6, #5B21B6)',
+      bio: 'Retired Educational and Sports Administrator. Former National Director for Special Olympics in Rwanda and Chairman of Special Olympics Africa Advisory Council, Supreme body of Special Olympics Africa. Current president of the Rwanda Scrabble Federation.',
+      countryCode: 'rw'
+    },
+    {
+      image: '/lestermorris.jpg',
+      title: 'Lester Morris',
+      subtitle: t('about.vicePresident2'),
+      location: 'Liberia',
+      borderColor: '#3B82F6',
+      gradient: 'linear-gradient(145deg, #3B82F6, #1E40AF)',
       bio: t('about.lesterMorrisBio'),
-      photo: '/lestermorris.jpg'
+      countryCode: 'lr'
     },
     {
-      name: 'Umar Faruq Baba-Inna',
-      title: t('about.ratingsOfficer'),
-      country: 'Nigeria',
-      countryCode: 'ng',
+      image: '/fbi.jpg',
+      title: 'Umar Faruq Baba-Inna',
+      subtitle: t('about.ratingsOfficer'),
+      location: 'Nigeria',
+      borderColor: '#F59E0B',
+      gradient: 'linear-gradient(145deg, #F59E0B, #B45309)',
       bio: t('about.umarFaruqBio'),
-      photo: '/fbi.jpg'
+      countryCode: 'ng'
+    },
+    {
+      image: '/doko.jpg',
+      title: 'Komi Saka',
+      subtitle: t('about.treasurer'),
+      location: 'Togo',
+      borderColor: '#EF4444',
+      gradient: 'linear-gradient(145deg, #EF4444, #B91C1C)',
+      bio: 'Treasurer overseeing financial operations and budget management.',
+      countryCode: 'tg'
+    },
+    {
+      image: '/triumvirate.png',
+      title: 'Triumvirate',
+      subtitle: t('about.directors'),
+      location: 'Multiple',
+      borderColor: '#06B6D4',
+      gradient: 'linear-gradient(145deg, #06B6D4, #0E7490)',
+      bio: 'Board of Directors providing strategic guidance and oversight.',
+      countryCode: 'za'
+    },
+    {
+      image: '/kofiBingo.png',
+      title: 'Kofi Asamoah',
+      subtitle: t('about.tournamentDirector'),
+      location: 'Ghana',
+      borderColor: '#10B981',
+      gradient: 'linear-gradient(145deg, #10B981, #065F46)',
+      bio: 'Tournament Director coordinating championship events across Africa.',
+      countryCode: 'gh'
     }
   ];
 
-  const openModal = (executive: any) => {
+  const openModal = (executive: ChromaItem) => {
     setSelectedExecutive(executive);
     setIsModalOpen(true);
   };
@@ -95,61 +142,17 @@ const AboutPage: React.FC = () => {
             </div>
           </section>
 
-          {/* Meet the Team */}
+          {/* Meet the Team - now using ChromaGrid */}
           <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-7 sm:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
             <h2 className="font-orbitron text-2xl sm:text-3xl font-bold text-green-400 mb-6 sm:mb-8 text-center">{t('about.meetTheTeam')}</h2>
             <p className="text-center text-lg sm:text-xl text-cyan-400 mb-8 sm:mb-10 font-medium">{t('about.leadershipDescription')}</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {executives.map((executive, index) => (
-                <div 
-                  key={index} 
-                  className="team-member-card bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl overflow-hidden border border-slate-700/20 hover:border-green-400/40 transition-all duration-300 group cursor-pointer"
-                  onClick={() => openModal(executive)}
-                >
-                  <div className="relative">
-                    {executive.photo ? (
-                      <div className="relative h-72 overflow-hidden">
-                        <img 
-                          src={executive.photo} 
-                          alt={executive.name} 
-                          className="team-member-image w-full h-full"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
-                      </div>
-                    ) : (
-                      <div className="w-full h-72 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
-                        <svg className="w-20 h-20 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                      </div>
-                    )}
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="font-bold text-2xl text-white group-hover:text-green-400 transition-colors duration-300">{executive.name}</h3>
-                      <p className="text-cyan-400 font-semibold text-lg">{executive.title}</p>
-                    </div>
-                  </div>
-                  <div className="team-member-content p-6">
-                    <div className="flex items-center text-gray-400 mb-4">
-                      <img 
-                        src={`https://flagcdn.com/24x18/${executive.countryCode}.png`} 
-                        alt={executive.country} 
-                        className="team-member-flag"
-                      />
-                      <span className="font-medium">{executive.country}</span>
-                    </div>
-                    <p className="text-gray-300 text-base leading-relaxed line-clamp-3">
-                      {executive.bio}
-                    </p>
-                    <div className="mt-4 text-cyan-400 font-medium flex items-center">
-                      {t('about.viewFullProfile')}
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-10">
+              <ChromaGrid 
+                items={executives} 
+                className="min-h-[500px]" 
+                onCardClick={openModal}
+              />
             </div>
           </section>
 
@@ -359,22 +362,34 @@ const AboutPage: React.FC = () => {
                 <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl p-6 border border-slate-700/30">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
                     <div>
-                      <h2 className="font-orbitron text-3xl sm:text-4xl font-bold text-white mb-2">{selectedExecutive.name}</h2>
-                      <p className="text-cyan-400 font-semibold text-xl sm:text-2xl">{selectedExecutive.title}</p>
+                      <h2 className="font-orbitron text-3xl sm:text-4xl font-bold text-white mb-2">{selectedExecutive.title}</h2>
+                      <p className="text-cyan-400 font-semibold text-xl sm:text-2xl">{selectedExecutive.subtitle}</p>
                     </div>
                     <div className="flex items-center mt-4 sm:mt-0 bg-slate-700/50 rounded-lg px-4 py-2">
                       <img 
                         src={`https://flagcdn.com/32x24/${selectedExecutive.countryCode}.png`} 
-                        alt={selectedExecutive.country} 
+                        alt={selectedExecutive.location} 
                         className="team-member-flag w-8 h-6"
                       />
-                      <span className="text-white font-medium text-lg">{selectedExecutive.country}</span>
+                      <span className="text-white font-medium text-lg ml-2">{selectedExecutive.location}</span>
                     </div>
+                  </div>
+                  
+                  <div className="flex justify-center mb-6">
+                    <img 
+                      src={selectedExecutive.image} 
+                      alt={selectedExecutive.title} 
+                      className="w-48 h-48 object-cover rounded-xl border-2 border-white/20"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80';
+                      }}
+                    />
                   </div>
                   
                   <div className="prose prose-invert max-w-none">
                     <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
-                      {selectedExecutive.bio}
+                      {selectedExecutive.bio || t('about.defaultBio')}
                     </p>
                   </div>
                 </div>
