@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^8.9.2",
     "@supabase/supabase-js": "^2.57.4",
     "@use-gesture/react": "^10.3.1",
     "gsap": "^3.13.0",

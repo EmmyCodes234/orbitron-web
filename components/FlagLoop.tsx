@@ -1,27 +1,21 @@
 import React from 'react';
 
-// PANASA member nations with real flag images from flagcdn.com
+// PANASA member nations based on federations data with real flag images from flagcdn.com
 const memberNations = [
     { name: 'Nigeria', code: 'ng' },
     { name: 'Ghana', code: 'gh' },
     { name: 'Kenya', code: 'ke' },
-    { name: 'Uganda', code: 'ug' },
     { name: 'South Africa', code: 'za' },
+    { name: 'Uganda', code: 'ug' },
+    { name: 'Tanzania', code: 'tz' },
+    { name: 'Zambia', code: 'zm' },
+    { name: 'Botswana', code: 'bw' },
+    { name: 'Cameroon', code: 'cm' },
+    { name: 'Gambia', code: 'gm' },
     { name: 'Liberia', code: 'lr' },
     { name: 'Sierra Leone', code: 'sl' },
-    { name: 'Rwanda', code: 'rw' },
-    { name: 'Togo', code: 'tg' },
-    { name: 'Cameroon', code: 'cm' },
-    { name: 'Botswana', code: 'bw' },
-    { name: 'Gambia', code: 'gm' },
     { name: 'Mauritius', code: 'mu' },
-    { name: 'Zambia', code: 'zm' },
-    { name: 'Tanzania', code: 'tz' },
-    { name: 'Ethiopia', code: 'et' },
-    { name: 'Morocco', code: 'ma' },
-    { name: 'Tunisia', code: 'tn' },
-    { name: 'Egypt', code: 'eg' },
-    { name: 'Algeria', code: 'dz' },
+    { name: 'Togo', code: 'tg' }
 ];
 
 const FlagLoop: React.FC = () => {
