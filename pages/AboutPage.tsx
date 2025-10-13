@@ -20,14 +20,14 @@ const AboutPage: React.FC = () => {
   const memberCountries = [
     'Nigeria', 'Ghana', 'Kenya', 'South Africa', 'Uganda', 'Tanzania', 
     'Zambia', 'Botswana', 'Cameroon', 'Gambia', 'Liberia', 'Sierra Leone', 
-    'Mauritius', 'Togo', 'Rwanda'
+    'Mauritius', 'Togo', 'Rwanda', 'Malawi', 'Zimbabwe', 'Lesotho'
   ];
 
   const keyMetrics = [
-    { number: '15', label: 'Member Countries', description: t('about.acrossAfrica') },
+    { number: '18', label: 'Member Countries', description: t('about.acrossAfrica') },
     { number: '15,000+', label: 'Registered Players', description: t('about.tournamentParticipants') },
     { number: '1', label: 'World Champion', description: t('about.producedIn2015') },
-    { number: '29', label: 'Years Strong', description: t('about.since1994') },
+    { number: '31', label: 'Years Strong', description: t('about.since1994') },
   ];
 
   // Executive team members adapted for ChromaGrid

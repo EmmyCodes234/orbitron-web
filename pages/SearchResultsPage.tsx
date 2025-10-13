@@ -47,93 +47,146 @@ const SearchResultsPage: React.FC = () => {
         getFederations().catch(() => [])
       ]);
 
-      const allResults: SearchResult[] = [];
+      // Create an array with relevance scores for sorting
+      const allResultsWithScores: Array<SearchResult & { relevance: number }> = [];
 
-      // Search players
+      // Search players with enhanced matching
       if (players && players.length > 0) {
         players.forEach((player: any) => {
-          if (
-            player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            player.nick.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            player.country.toLowerCase().includes(searchQuery.toLowerCase())
-          ) {
-            allResults.push({
+          // Calculate relevance score based on multiple factors
+          let relevanceScore = 0;
+          const searchLower = searchQuery.toLowerCase();
+          
+          // Exact matches get higher scores
+          if (player.name.toLowerCase() === searchLower) relevanceScore += 10;
+          else if (player.name.toLowerCase().includes(searchLower)) relevanceScore += 5;
+          
+          if (player.nick.toLowerCase() === searchLower) relevanceScore += 8;
+          else if (player.nick.toLowerCase().includes(searchLower)) relevanceScore += 4;
+          
+          if (player.country.toLowerCase() === searchLower) relevanceScore += 7;
+          else if (player.country.toLowerCase().includes(searchLower)) relevanceScore += 3;
+          
+          // Partial matches in any field
+          if (player.name.toLowerCase().includes(searchLower) ||
+              player.nick.toLowerCase().includes(searchLower) ||
+              player.country.toLowerCase().includes(searchLower)) {
+            relevanceScore += 2;
+          }
+          
+          // If we have a relevance score, add to results
+          if (relevanceScore > 0) {
+            allResultsWithScores.push({
               id: player.nick,
               title: player.name,
               description: `${player.nick} - Rating: ${player.rating}`,
               type: 'player',
               url: `/ratings`,
               meta: `${player.country} | ${player.games} games`,
-              image: `https://flagcdn.com/w40/${getPlayerCountryCode(player.country)}.png`
+              image: `https://flagcdn.com/w40/${getPlayerCountryCode(player.country)}.png`,
+              relevance: relevanceScore
             });
           }
         });
       }
 
-      // Search news
+      // Search news with enhanced matching
       if (news && news.length > 0) {
         news.forEach((article: any) => {
-          if (
-            article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            article.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            article.summary.toLowerCase().includes(searchQuery.toLowerCase())
-          ) {
-            allResults.push({
+          let relevanceScore = 0;
+          const searchLower = searchQuery.toLowerCase();
+          
+          // Check title, content, and summary
+          if (article.title.toLowerCase().includes(searchLower)) relevanceScore += 5;
+          if (article.content.toLowerCase().includes(searchLower)) relevanceScore += 3;
+          if (article.summary.toLowerCase().includes(searchLower)) relevanceScore += 4;
+          if (article.author && article.author.toLowerCase().includes(searchLower)) relevanceScore += 2;
+          
+          // Exact matches in title get highest score
+          if (article.title.toLowerCase() === searchLower) relevanceScore += 10;
+          
+          if (relevanceScore > 0) {
+            allResultsWithScores.push({
               id: article.id,
               title: article.title,
               description: article.summary,
               type: 'news',
               url: `/news/${article.id}`,
               meta: `By ${article.author} on ${new Date(article.created_at).toLocaleDateString()}`,
-              image: getArticleImage(article)
+              image: getArticleImage(article),
+              relevance: relevanceScore
             });
           }
         });
       }
 
-      // Search events
+      // Search events with enhanced matching
       if (events && events.length > 0) {
         events.forEach((event: any) => {
-          if (
-            event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            event.location.toLowerCase().includes(searchQuery.toLowerCase())
-          ) {
-            allResults.push({
+          let relevanceScore = 0;
+          const searchLower = searchQuery.toLowerCase();
+          
+          // Check title, description, and location
+          if (event.title.toLowerCase().includes(searchLower)) relevanceScore += 5;
+          if (event.description.toLowerCase().includes(searchLower)) relevanceScore += 3;
+          if (event.location && event.location.toLowerCase().includes(searchLower)) relevanceScore += 4;
+          
+          // Exact matches in title get highest score
+          if (event.title.toLowerCase() === searchLower) relevanceScore += 10;
+          
+          if (relevanceScore > 0) {
+            allResultsWithScores.push({
               id: event.id,
               title: event.title,
               description: event.description.substring(0, 150) + '...',
               type: 'event',
               url: `/events/${event.id}`,
               meta: `${event.date} | ${event.location}`,
-              image: getEventImage(event)
+              image: getEventImage(event),
+              relevance: relevanceScore
             });
           }
         });
       }
 
-      // Search federations
+      // Search federations with enhanced matching
       if (federations && federations.length > 0) {
         federations.forEach((federation: any) => {
-          if (
-            federation.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            federation.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            federation.president.toLowerCase().includes(searchQuery.toLowerCase())
-          ) {
-            allResults.push({
+          let relevanceScore = 0;
+          const searchLower = searchQuery.toLowerCase();
+          
+          // Check country, name, president, and address
+          if (federation.country.toLowerCase().includes(searchLower)) relevanceScore += 5;
+          if (federation.name.toLowerCase().includes(searchLower)) relevanceScore += 4;
+          if (federation.president.toLowerCase().includes(searchLower)) relevanceScore += 3;
+          if (federation.address && federation.address.toLowerCase().includes(searchLower)) relevanceScore += 2;
+          
+          // Exact matches get highest score
+          if (federation.country.toLowerCase() === searchLower) relevanceScore += 10;
+          if (federation.name.toLowerCase() === searchLower) relevanceScore += 8;
+          
+          if (relevanceScore > 0) {
+            allResultsWithScores.push({
               id: federation.id,
               title: `${federation.country} - ${federation.name}`,
               description: `President: ${federation.president}`,
               type: 'federation',
               url: `/federations`,
               meta: federation.address,
-              image: `https://flagcdn.com/w40/${getFederationCountryCode(federation.country)}.png`
+              image: `https://flagcdn.com/w40/${getFederationCountryCode(federation.country)}.png`,
+              relevance: relevanceScore
             });
           }
         });
       }
 
-      setResults(allResults);
+      // Sort results by relevance score (highest first)
+      allResultsWithScores.sort((a, b) => b.relevance - a.relevance);
+      
+      // Remove relevance property before setting results
+      const finalResults = allResultsWithScores.map(({ relevance, ...rest }) => rest);
+      
+      setResults(finalResults);
     } catch (err) {
       setError('An error occurred while searching. Please try again.');
       console.error('Search error:', err);

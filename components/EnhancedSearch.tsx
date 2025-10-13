@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getPlayers, getNews, getEvents, getFederations } from '../src/services/supabaseService';
+import { useLocalization } from '../contexts/LocalizationContext';
 
 export interface SearchSuggestion {
   id: string;
@@ -18,25 +20,151 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   placeholder = "Search...",
   suggestions = [] 
 }) => {
+  const { language } = useLocalization();
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<SearchSuggestion[]>([]);
+  const [dynamicSuggestions, setDynamicSuggestions] = useState<SearchSuggestion[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Filter suggestions based on query
   useEffect(() => {
     if (query.trim() === '') {
       setFilteredSuggestions([]);
+      setDynamicSuggestions([]);
       return;
     }
 
-    const filtered = suggestions.filter(suggestion => 
+    // Filter static suggestions
+    const filteredStatic = suggestions.filter(suggestion => 
       suggestion.title.toLowerCase().includes(query.toLowerCase()) ||
       (suggestion.description && suggestion.description.toLowerCase().includes(query.toLowerCase()))
     );
 
-    setFilteredSuggestions(filtered.slice(0, 8)); // Limit to 8 suggestions
-  }, [query, suggestions]);
+    // Combine static and dynamic suggestions
+    const combinedSuggestions = [...filteredStatic, ...dynamicSuggestions];
+    
+    // Remove duplicates based on title
+    const uniqueSuggestions = combinedSuggestions.filter((suggestion, index, self) => 
+      index === self.findIndex(s => s.title === suggestion.title)
+    );
+
+    setFilteredSuggestions(uniqueSuggestions.slice(0, 8)); // Limit to 8 suggestions
+  }, [query, suggestions, dynamicSuggestions]);
+
+  // Fetch dynamic suggestions with debounce
+  useEffect(() => {
+    if (query.trim() === '') {
+      setDynamicSuggestions([]);
+      return;
+    }
+
+    // Clear previous timer
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    // Set new timer
+    debounceTimer.current = setTimeout(async () => {
+      setIsLoading(true);
+      try {
+        // Fetch all data types
+        const [players, news, events, federations] = await Promise.all([
+          getPlayers().catch(() => []),
+          getNews(language).catch(() => []),
+          getEvents().catch(() => []),
+          getFederations().catch(() => [])
+        ]);
+
+        const dynamicResults: SearchSuggestion[] = [];
+
+        // Get top 3 players that match the query
+        if (players && players.length > 0) {
+          const playerMatches = players
+            .filter((player: any) => 
+              player.name.toLowerCase().includes(query.toLowerCase()) ||
+              player.nick.toLowerCase().includes(query.toLowerCase()) ||
+              player.country.toLowerCase().includes(query.toLowerCase())
+            )
+            .slice(0, 3)
+            .map((player: any) => ({
+              id: `player-${player.nick}`,
+              title: player.name,
+              type: 'player' as const,
+              description: `${player.nick} - ${player.country} (Rating: ${player.rating})`
+            }));
+          dynamicResults.push(...playerMatches);
+        }
+
+        // Get top 2 news articles that match the query
+        if (news && news.length > 0) {
+          const newsMatches = news
+            .filter((article: any) => 
+              article.title.toLowerCase().includes(query.toLowerCase()) ||
+              article.summary.toLowerCase().includes(query.toLowerCase())
+            )
+            .slice(0, 2)
+            .map((article: any) => ({
+              id: `news-${article.id}`,
+              title: article.title,
+              type: 'news' as const,
+              description: article.summary.substring(0, 100) + '...'
+            }));
+          dynamicResults.push(...newsMatches);
+        }
+
+        // Get top 2 events that match the query
+        if (events && events.length > 0) {
+          const eventMatches = events
+            .filter((event: any) => 
+              event.title.toLowerCase().includes(query.toLowerCase()) ||
+              event.location.toLowerCase().includes(query.toLowerCase())
+            )
+            .slice(0, 2)
+            .map((event: any) => ({
+              id: `event-${event.id}`,
+              title: event.title,
+              type: 'event' as const,
+              description: `${event.location} - ${new Date(event.date).toLocaleDateString()}`
+            }));
+          dynamicResults.push(...eventMatches);
+        }
+
+        // Get top 2 federations that match the query
+        if (federations && federations.length > 0) {
+          const federationMatches = federations
+            .filter((federation: any) => 
+              federation.country.toLowerCase().includes(query.toLowerCase()) ||
+              federation.name.toLowerCase().includes(query.toLowerCase()) ||
+              federation.president.toLowerCase().includes(query.toLowerCase())
+            )
+            .slice(0, 2)
+            .map((federation: any) => ({
+              id: `federation-${federation.id}`,
+              title: `${federation.country} - ${federation.name}`,
+              type: 'federation' as const,
+              description: `President: ${federation.president}`
+            }));
+          dynamicResults.push(...federationMatches);
+        }
+
+        setDynamicSuggestions(dynamicResults);
+      } catch (error) {
+        console.error('Error fetching dynamic suggestions:', error);
+        setDynamicSuggestions([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 300); // 300ms debounce
+
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
+  }, [query, language]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -68,7 +196,6 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
     setQuery(suggestion.title);
     setIsOpen(false);
-    // You can add specific handling for different suggestion types here
     onSearch(suggestion.title);
   };
 
@@ -155,7 +282,14 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
 
       {isOpen && (filteredSuggestions.length > 0 || query) && (
         <div className="absolute z-20 mt-2 w-full bg-slate-800/90 border border-slate-700 rounded-xl shadow-2xl overflow-hidden backdrop-blur-xl">
-          {filteredSuggestions.length > 0 ? (
+          {isLoading ? (
+            <div className="px-4 py-4 text-sm text-gray-400 text-center">
+              <div className="flex items-center justify-center gap-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-400"></div>
+                <span>Searching...</span>
+              </div>
+            </div>
+          ) : filteredSuggestions.length > 0 ? (
             <ul className="py-2 max-h-72 overflow-auto">
               {filteredSuggestions.map((suggestion) => (
                 <li
@@ -188,7 +322,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
             </div>
           )}
           
-          {query && (
+          {query && !isLoading && (
             <div className="border-t border-slate-700 px-4 py-3 bg-slate-900/80">
               <button
                 onClick={() => handleSearch()}
