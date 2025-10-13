@@ -168,6 +168,32 @@ The website integrates with Chatbase for an AI-powered assistant:
 - Optimized animations
 - Caching strategies
 
+## 🚀 Deployment
+
+### Netlify Deployment
+The website is configured for deployment on Netlify with the following settings:
+
+#### Configuration Files
+- `netlify.toml` - Build settings and environment configuration
+- `.npmrc` - npm configuration to resolve dependency issues
+- `vite.config.ts` - Vite build optimization for Netlify
+
+#### Environment Variables
+Configure the following environment variables in Netlify:
+- `VITE_CHATBASE_API_KEY` - Chatbase API key
+- `VITE_CHATBASE_CHATBOT_ID` - Chatbase chatbot ID
+- `VITE_ELEVENLABS_API_KEY` - ElevenLabs API key (optional)
+
+#### Build Settings
+- **Build command**: `npm run build`
+- **Publish directory**: `dist`
+
+### Troubleshooting
+Common deployment issues and solutions:
+- **Rollup dependency errors**: See [DEPLOYMENT_FIXES_SUMMARY.md](DEPLOYMENT_FIXES_SUMMARY.md)
+- **Optional dependency conflicts**: Use `legacy-peer-deps=true` in `.npmrc`
+- **Build failures**: See [NETLIFY_DEPLOYMENT_TROUBLESHOOTING.md](NETLIFY_DEPLOYMENT_TROUBLESHOOTING.md)
+
 ## 🛠️ Technologies Used
 
 - **Frontend**: React, TypeScript, Vite

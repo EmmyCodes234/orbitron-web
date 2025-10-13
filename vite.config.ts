@@ -7,8 +7,9 @@ export default defineConfig(({ mode }) => {
     return {
       plugins: [react()],
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'import.meta.env.VITE_CHATBASE_API_KEY': JSON.stringify(env.VITE_CHATBASE_API_KEY),
+        'import.meta.env.VITE_CHATBASE_CHATBOT_ID': JSON.stringify(env.VITE_CHATBASE_CHATBOT_ID),
+        'import.meta.env.VITE_ELEVENLABS_API_KEY': JSON.stringify(env.VITE_ELEVENLABS_API_KEY)
       },
       resolve: {
         alias: {
@@ -20,9 +21,12 @@ export default defineConfig(({ mode }) => {
         outDir: 'dist',
         assetsDir: 'assets',
         rollupOptions: {
+          external: ['node:child_process', 'node:stream', 'crypto'], // Externalize Node.js modules for browser compatibility
           output: {
             manualChunks: {
               vendor: ['react', 'react-dom', 'react-router-dom'],
+              ui: ['@supabase/supabase-js', 'gsap'],
+              audio: ['@elevenlabs/elevenlabs-js']
             }
           }
         }
@@ -31,7 +35,7 @@ export default defineConfig(({ mode }) => {
       base: '/',
       // Optimize for production
       optimizeDeps: {
-        include: ['react', 'react-dom', 'react-router-dom']
+        include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js', '@elevenlabs/elevenlabs-js']
       }
     };
 });
