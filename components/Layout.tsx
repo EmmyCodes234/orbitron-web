@@ -113,9 +113,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <Link to="/ratings" className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-slate-700/50 rounded-t-md transition-colors touch-target focus:outline-none focus:bg-slate-700/70 focus:text-white" role="menuitem">
                       {t('navigation.ratings')}
                     </Link>
-                    <Link to="/events" className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-slate-700/50 transition-colors touch-target focus:outline-none focus:bg-slate-700/70 focus:text-white" role="menuitem">
-                      {t('navigation.events')}
-                    </Link>
                     <Link to="/news" className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-slate-700/50 transition-colors touch-target focus:outline-none focus:bg-slate-700/70 focus:text-white" role="menuitem">
                       {t('navigation.news')}
                     </Link>
@@ -208,7 +205,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <LanguageSelector />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-400 hover:text-white focus:outline-none focus:text-white p-1.5 rounded-md hover:bg-slate-800/50 transition-all duration-300 touch-target bg-white" // Solid white background as per user preference
+                className="text-gray-400 hover:text-white focus:outline-none focus:text-white p-1.5 rounded-md hover:bg-slate-800/50 transition-all duration-300 touch-target"
                 aria-label="Toggle menu"
                 aria-expanded={isMenuOpen}
               >
@@ -246,7 +243,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {isActivityDropdownOpen && (
                   <div className="pl-6 space-y-1">
                     <Link to="/ratings" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.ratings')}</Link>
-                    <Link to="/events" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.events')}</Link>
                     <Link to="/news" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.news')}</Link>
                     <Link to="/gallery" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.gallery')}</Link>
                   </div>
@@ -340,7 +336,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <li><Link to="/" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.home')}</Link></li>
                 <li><Link to="/about" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.about')}</Link></li>
                 <li><Link to="/ratings" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.ratings')}</Link></li>
-                <li><Link to="/events" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.events')}</Link></li>
                 <li><Link to="/news" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.news')}</Link></li>
               </ul>
             </div>

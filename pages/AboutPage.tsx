@@ -20,7 +20,7 @@ const AboutPage: React.FC = () => {
   const memberCountries = [
     'Nigeria', 'Ghana', 'Kenya', 'South Africa', 'Uganda', 'Tanzania', 
     'Zambia', 'Botswana', 'Cameroon', 'Gambia', 'Liberia', 'Sierra Leone', 
-    'Mauritius', 'Togo'
+    'Mauritius', 'Togo', 'Rwanda'
   ];
 
   const keyMetrics = [
@@ -71,36 +71,6 @@ const AboutPage: React.FC = () => {
       gradient: 'linear-gradient(145deg, #F59E0B, #B45309)',
       bio: t('about.umarFaruqBio'),
       countryCode: 'ng'
-    },
-    {
-      image: '/doko.jpg',
-      title: 'Komi Saka',
-      subtitle: t('about.treasurer'),
-      location: 'Togo',
-      borderColor: '#EF4444',
-      gradient: 'linear-gradient(145deg, #EF4444, #B91C1C)',
-      bio: 'Treasurer overseeing financial operations and budget management.',
-      countryCode: 'tg'
-    },
-    {
-      image: '/triumvirate.png',
-      title: 'Triumvirate',
-      subtitle: t('about.directors'),
-      location: 'Multiple',
-      borderColor: '#06B6D4',
-      gradient: 'linear-gradient(145deg, #06B6D4, #0E7490)',
-      bio: 'Board of Directors providing strategic guidance and oversight.',
-      countryCode: 'za'
-    },
-    {
-      image: '/kofiBingo.png',
-      title: 'Kofi Asamoah',
-      subtitle: t('about.tournamentDirector'),
-      location: 'Ghana',
-      borderColor: '#10B981',
-      gradient: 'linear-gradient(145deg, #10B981, #065F46)',
-      bio: 'Tournament Director coordinating championship events across Africa.',
-      countryCode: 'gh'
     }
   ];
 

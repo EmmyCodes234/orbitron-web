@@ -5,7 +5,6 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import RatingsPage from './pages/RatingsPage';
 import NewsPage from './pages/NewsPage';
-import EventsPage from './pages/EventsPage';
 import FederationsPage from './pages/FederationsPage';
 import ResourcesPage from './pages/ResourcesPage';
 import GalleryPage from './pages/GalleryPage';
@@ -45,8 +44,7 @@ const AppContent: React.FC = () => {
           <Route path="/ratings" element={<RatingsPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:id" element={<NewsPage />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/events/:id" element={<EventsPage />} />
+          {/* Removed Events routes as requested */}
           <Route path="/federations" element={<FederationsPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
           <Route path="/gallery/:collectionId" element={<CollectionPage />} />

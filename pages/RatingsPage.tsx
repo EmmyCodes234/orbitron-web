@@ -655,7 +655,7 @@ const RatingsPage: React.FC = () => {
 
         .search-input {
           width: 100%;
-          padding: 0.875rem 0.875rem 0.875rem 2.75rem;
+          padding: 0.875rem 2.75rem;
           border: 1px solid #374151;
           border-radius: 12px;
           background: #1f2937;

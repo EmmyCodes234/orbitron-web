@@ -42,10 +42,10 @@ const ParticleBackground: React.FC = () => {
           },
           links: {
             color: "#00ff99",
-            distance: 100,
+            distance: 150,
             enable: true,
-            opacity: 0.3,
-            width: 0.2,
+            opacity: 0.5,
+            width: 1,
           },
           move: {
             direction: "none",
@@ -54,7 +54,7 @@ const ParticleBackground: React.FC = () => {
               default: "bounce",
             },
             random: true,
-            speed: 0.5,
+            speed: 1,
             straight: false,
           },
           number: {
@@ -62,21 +62,21 @@ const ParticleBackground: React.FC = () => {
               enable: true,
               area: 800,
             },
-            value: 40,
+            value: 80,
           },
           opacity: {
-            value: 0.7,
+            value: 0.8,
           },
           shape: {
             type: "circle",
           },
           size: {
-            value: { min: 0.8, max: 2 },
+            value: { min: 1, max: 3 },
           },
         },
         detectRetina: true,
       }}
-      className="fixed top-0 left-0 w-full h-full -z-10 opacity-20"
+      className="fixed top-0 left-0 w-full h-full -z-10 opacity-50"
     />
   );
 };

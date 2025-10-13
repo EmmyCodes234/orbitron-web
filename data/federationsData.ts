@@ -3,12 +3,12 @@ export const MOCK_FEDERATIONS = [
     id: '1',
     country: 'Nigeria',
     name: 'Nigeria Scrabble Federation',
-    president: 'Adebayo Ogundimu',
+    president: 'Engr. Olobatoke Aka',
     secretary: null,
     email: 'info@nigeriascrabble.org',
     phone: '+234 803 123 4567',
     address: 'Lagos, Nigeria',
-    website: 'http://www.nigeriascrabble.org',
+    website: 'http://www.nigeriascrabble.com',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   },
@@ -178,6 +178,19 @@ export const MOCK_FEDERATIONS = [
     phone: '+228 96 50 08 01',
     address: 'Kodjoviakope, Golfe 4',
     website: 'https://www.linkedin.com/company/togo-english-scrabble-players-association-tespa/',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: '15',
+    country: 'Rwanda',
+    name: 'Rwanda Scrabble Federation',
+    president: 'Anaclet Ruzindana',
+    secretary: null,
+    email: 'info@rwandascrabble.org',
+    phone: '+250 788 123 456',
+    address: 'Kigali, Rwanda',
+    website: 'http://www.rwandascrabble.com',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   }

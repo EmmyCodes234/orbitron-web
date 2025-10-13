@@ -31,7 +31,8 @@ const countryFlags: { [key: string]: string } = {
   'Liberia': 'lr',
   'Sierra Leone': 'sl',
   'Mauritius': 'mu',
-  'Togo': 'tg'
+  'Togo': 'tg',
+  'Rwanda': 'rw'
 };
 
 const FederationsPage: React.FC = () => {
