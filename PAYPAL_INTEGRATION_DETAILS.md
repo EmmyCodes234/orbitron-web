@@ -6,7 +6,7 @@ The PayPal integration is now fully production-ready with the following configur
 
 ```typescript
 <PayPalScriptProvider options={{ 
-  "clientId": "AbrAXPbS6vtukD877HcafP42En6qVfZUwocLmEWN7sFYrshKuJjRvdJDDyHqV3g08JmfKfZ1afkXTLgO",
+  "clientId": "ATVeDvB8w2Xaf2OtP5O8un3oZQy1r_ahR3-rlzhJJPP6rJ5TPkyKki6KsdtRA44JeokoRNNMYHk6BXD_",
   currency: "USD",
   intent: "capture"
 }}>
@@ -14,24 +14,22 @@ The PayPal integration is now fully production-ready with the following configur
 
 Key points:
 - The `intent: "capture"` parameter ensures immediate payment capture (production mode)
-- Without this parameter, PayPal would default to authorization mode which requires a separate capture step
-- The Client ID provided is ready for production use
+- The new Client ID provided is ready for production use
+- Both tournament registrations and rating applications now use the same production-ready PayPal integration
 
 ## What Payers Will See
 
 When users make payments through the PANASA website, here's what they will experience:
 
 ### 1. Initial Payment Screen
-- Users will see the PayPal button on either the tournament registration form or rating application form
-- After clicking "Proceed to PayPal", they'll be presented with the PayPal checkout interface
+- Users will see the PayPal button on the rating application form
+- After clicking "Proceed to Payment", they'll be presented with the PayPal checkout interface
 
 ### 2. PayPal Checkout Interface
 - **Header**: Shows "Paying to PANASA" (or your configured business name)
 - **Payment Details**:
-  - Exact amount in USD
-  - Description of what they're paying for:
-    - For tournament registrations: "Tournament Registration: [Tournament Name] for [Player Name]"
-    - For rating applications: "Rating Application: [Event Name] by [Organizer Name]"
+  - Fixed amount of $20.00 USD
+  - Description: "Rating Application: [Event Name] by [Organizer Name]"
 - **Account Selection**: Users can choose their payment method (PayPal balance, bank account, or card)
 - **Security Features**: PayPal's standard security measures and buyer protection information
 
@@ -42,9 +40,7 @@ When users make payments through the PANASA website, here's what they will exper
 
 ### 4. Post-Payment Experience
 - After successful payment, users are redirected back to the PANASA website
-- They see a success message: 
-  - For tournament payments: "Tournament payment processed successfully! A confirmation email will be sent to your address."
-  - For rating applications: "Rating application and payment processed successfully! Our team will review your application and contact you within 3-5 business days."
+- They see a success message: "Rating application and payment processed successfully! Our team will review your application and contact you within 3-5 business days."
 
 ## Important Notes for Production
 
@@ -62,15 +58,15 @@ When users make payments through the PANASA website, here's what they will exper
 
 4. **Payment Reconciliation**:
    - Regularly check PayPal transaction reports
-   - Match payments with tournament registrations/rating applications
+   - Match payments with rating applications
    - Use the descriptions provided in each payment for easy identification
 
-## Testing Before Going Live
+## Testing and Verification
 
-1. Use PayPal's sandbox environment with test accounts before processing real payments
-2. Test both tournament registration and rating application payment flows
-3. Verify that success messages appear correctly
-4. Check that error handling works properly for declined payments
+1. Test the rating application payment flow with small amounts if needed for verification
+2. Verify that success messages appear correctly
+3. Check that error handling works properly for declined payments
+4. Confirm payment notifications are received properly
 
 ## Support and Troubleshooting
 

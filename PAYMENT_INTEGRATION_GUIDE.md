@@ -244,3 +244,142 @@ For implementation help, contact:
 3. Implement the integration
 4. Test thoroughly
 5. Go live
+
+# Payment Integration Guide
+
+## Overview
+
+This guide explains how the payment system is implemented in the PANASA website. The system currently supports rating application payments with a fixed fee of $20 USD through PayPal.
+
+## Architecture
+
+### Frontend
+- **Framework**: React with TypeScript
+- **Payment Processing**: [@paypal/react-paypal-js](https://www.npmjs.com/package/@paypal/react-paypal-js)
+- **UI Components**: Custom styled components with Tailwind CSS
+
+### Backend
+- **Database**: Supabase (PostgreSQL)
+- **Payment Verification**: Custom PayPal service with real API integration
+- **Data Storage**: Rating applications stored in `rating_applications` table
+
+### Payment Flow
+
+1. User fills out rating application form
+2. User clicks "Proceed to Payment"
+3. PayPal checkout is initiated with fixed $20 amount
+4. User completes payment on PayPal
+5. Payment details are sent to backend for verification
+6. Backend verifies payment with PayPal API
+7. Rating application is stored in database
+8. Success message is displayed to user
+
+## Implementation Details
+
+### PayPal Integration
+
+The PayPal integration uses the [@paypal/react-paypal-js](https://www.npmjs.com/package/@paypal/react-paypal-js) library with the following configuration:
+
+```typescript
+<PayPalScriptProvider options={{ 
+  "clientId": "ATVeDvB8w2Xaf2OtP5O8un3oZQy1r_ahR3-rlzhJJPP6rJ5TPkyKki6KsdtRA44JeokoRNNMYHk6BXD_",
+  currency: "USD",
+  intent: "capture"
+}}>
+```
+
+### Backend Services
+
+The backend service is implemented in [src/services/paypalService.ts](file:///c:/LitoCodes/panasaweb/src/services/paypalService.ts) and includes:
+
+1. **Payment Verification**: Real API calls to PayPal to verify payment status and amount
+2. **Data Storage**: Functions to store rating applications in Supabase
+3. **Status Management**: Functions to update payment status in the database
+
+### Database Schema
+
+The `rating_applications` table is defined in [supabase/migrations/004_create_rating_applications_table.sql](file:///c:/LitoCodes/panasaweb/supabase/migrations/004_create_rating_applications_table.sql):
+
+```sql
+CREATE TABLE IF NOT EXISTS rating_applications (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  organizer_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  event_name VARCHAR(255) NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  location TEXT,
+  expected_participants INTEGER DEFAULT 0,
+  additional_info TEXT,
+  amount DECIMAL(10, 2) NOT NULL,
+  payment_id VARCHAR(255) UNIQUE NOT NULL,
+  payment_status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+## Security Features
+
+1. **Payment Verification**: All payments are verified with PayPal's API before storing applications
+2. **Amount Validation**: Payments are checked to ensure they are exactly $20 USD
+3. **Database Security**: Row Level Security (RLS) policies protect data access
+4. **Environment Variables**: Sensitive credentials are stored in environment variables
+
+## Error Handling
+
+The system includes comprehensive error handling for:
+
+1. **Payment Verification Failures**: Invalid or incomplete payments are rejected
+2. **Database Errors**: Failed data storage operations are logged and reported
+3. **Network Issues**: Connection problems with PayPal API are handled gracefully
+4. **User Input Validation**: Form data is validated before processing
+
+## Testing
+
+### Manual Testing
+
+1. Navigate to the Payments page
+2. Fill out the rating application form with valid data
+3. Click "Proceed to Payment"
+4. Complete the PayPal checkout process
+5. Verify that the success message is displayed
+6. Check the Supabase dashboard to confirm the application was stored
+
+### Automated Testing
+
+Unit tests for the PayPal service can be found in [src/services/paypalService.test.ts](file:///c:/LitoCodes/panasaweb/src/services/paypalService.test.ts).
+
+## Configuration
+
+### Environment Variables
+
+See [PAYPAL_ENV_SETUP.md](file:///c:/LitoCodes/panasaweb/PAYPAL_ENV_SETUP.md) for detailed instructions on setting up environment variables.
+
+### Production Deployment
+
+1. Ensure all environment variables are set in your production environment
+2. Verify PayPal account is in live mode (not sandbox)
+3. Test the payment flow with a small amount before going live
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Payment Verification Failures**: Check PayPal credentials in environment variables
+2. **Database Connection Errors**: Verify Supabase URL and anon key
+3. **TypeScript Errors**: Ensure all dependencies are installed with `npm install`
+
+### Support
+
+For issues with the payment integration:
+- PayPal Merchant Support: https://www.paypal.com/mysaccount/sell/support
+- Supabase Support: https://supabase.com/support
+
+## Future Enhancements
+
+Potential improvements to the payment system:
+1. **Webhook Integration**: Implement PayPal webhooks for real-time payment notifications
+2. **Email Notifications**: Send automatic confirmation emails upon successful payments
+3. **Admin Dashboard**: Create an admin interface for viewing and managing applications
+4. **Refund Processing**: Add functionality for processing refunds through the PayPal API

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocalization } from '../contexts/LocalizationContext';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { processCompletedPayment } from '../src/services/paypalService';
 
 // Types for our payment system
 interface PaymentData {
@@ -20,12 +21,12 @@ interface RatingApplicationData {
   expectedParticipants: number;
   additionalInfo: string;
   agreedToTerms: boolean;
-  amount: number; // Add amount for rating application payment
+  amount: number; // This will now be fixed at 20
 }
 
 const PaymentsPage: React.FC = () => {
   const { t } = useLocalization();
-  const [activeTab, setActiveTab] = useState<'payment' | 'rating'>('payment');
+  const [activeTab, setActiveTab] = useState<'rating'>('rating');
   
   // Payment form state
   const [paymentData, setPaymentData] = useState<PaymentData>({
@@ -46,16 +47,15 @@ const PaymentsPage: React.FC = () => {
     expectedParticipants: 0,
     additionalInfo: '',
     agreedToTerms: false,
-    amount: 50 // Default amount for rating application
+    amount: 20 // Fixed amount for rating application
   });
   
   // UI states
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [applicationSuccess, setApplicationSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPayPal, setShowPayPal] = useState(false);
-  const [payPalContext, setPayPalContext] = useState<'tournament' | 'rating'>('tournament'); // Track which form is using PayPal
+  const [payPalContext, setPayPalContext] = useState<'tournament' | 'rating'>('rating'); // Track which form is using PayPal
   
   // Handle payment form changes
   const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +70,11 @@ const PaymentsPage: React.FC = () => {
   const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     
+    // Prevent changing the fixed amount
+    if (name === 'amount') {
+      return;
+    }
+    
     // Type guard for checkbox inputs
     if (type === 'checkbox') {
       const checkbox = e.target as HTMLInputElement;
@@ -80,34 +85,8 @@ const PaymentsPage: React.FC = () => {
     } else {
       setRatingData(prev => ({
         ...prev,
-        [name]: name === 'expectedParticipants' || name === 'amount' ? parseInt(value) || 0 : value
+        [name]: name === 'expectedParticipants' ? parseInt(value) || 0 : value
       }));
-    }
-  };
-  
-  // Process payment - now with PayPal integration
-  const processPayment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      // Validate payment data
-      if (paymentData.amount <= 0) {
-        throw new Error('Please enter a valid amount');
-      }
-      
-      if (!paymentData.tournamentName.trim()) {
-        throw new Error('Please enter a tournament name');
-      }
-      
-      if (!paymentData.playerName.trim()) {
-        throw new Error('Please enter your name');
-      }
-      
-      // Show PayPal buttons for tournament payment
-      setPayPalContext('tournament');
-      setShowPayPal(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred processing your payment');
     }
   };
   
@@ -137,10 +116,6 @@ const PaymentsPage: React.FC = () => {
         throw new Error('You must agree to the terms and conditions');
       }
       
-      if (ratingData.amount <= 0) {
-        throw new Error('Please enter a valid application fee amount');
-      }
-      
       // Show PayPal buttons for rating application payment
       setPayPalContext('rating');
       setShowPayPal(true);
@@ -150,43 +125,66 @@ const PaymentsPage: React.FC = () => {
   };
   
   // Handle PayPal payment success
-  const onPayPalSuccess = (details: any) => {
+  const onPayPalSuccess = async (details: any) => {
     console.log("Payment successful:", details);
     
-    if (payPalContext === 'tournament') {
-      setPaymentSuccess(true);
-    } else {
-      // For rating applications, we would submit the application data to backend
-      setApplicationSuccess(true);
+    try {
+      setIsProcessing(true);
+      
+      // Process the completed payment with our backend service
+      const success = await processCompletedPayment(
+        details.id, // PayPal order ID
+        details.payer?.payer_id || 'N/A', // Payer ID
+        {
+          organizerName: ratingData.organizerName,
+          email: ratingData.email,
+          eventName: ratingData.eventName,
+          startDate: ratingData.startDate,
+          endDate: ratingData.endDate,
+          location: ratingData.location,
+          expectedParticipants: ratingData.expectedParticipants,
+          additionalInfo: ratingData.additionalInfo,
+          amount: 20.00 // Fixed amount
+        }
+      );
+      
+      if (success) {
+        setApplicationSuccess(true);
+      } else {
+        setError("Payment was processed but there was an error saving your application. Please contact support.");
+      }
+    } catch (err) {
+      console.error("Error processing payment:", err);
+      setError("An error occurred while processing your payment. Please contact support.");
+    } finally {
+      setIsProcessing(false);
+      setShowPayPal(false);
+      
+      // Reset forms after success
+      setTimeout(() => {
+        setPaymentData({
+          tournamentName: '',
+          amount: 0,
+          playerName: '',
+          currency: 'USD'
+        });
+        
+        setRatingData({
+          organizerName: '',
+          email: '',
+          eventName: '',
+          startDate: '',
+          endDate: '',
+          location: '',
+          expectedParticipants: 0,
+          additionalInfo: '',
+          agreedToTerms: false,
+          amount: 20 // Fixed amount for rating application
+        });
+        
+        setApplicationSuccess(false);
+      }, 5000);
     }
-    
-    setShowPayPal(false);
-    
-    // Reset forms after success
-    setTimeout(() => {
-      setPaymentData({
-        tournamentName: '',
-        amount: 0,
-        playerName: '',
-        currency: 'USD'
-      });
-      
-      setRatingData({
-        organizerName: '',
-        email: '',
-        eventName: '',
-        startDate: '',
-        endDate: '',
-        location: '',
-        expectedParticipants: 0,
-        additionalInfo: '',
-        agreedToTerms: false,
-        amount: 50
-      });
-      
-      setPaymentSuccess(false);
-      setApplicationSuccess(false);
-    }, 5000);
   };
   
   // Handle PayPal payment cancellation
@@ -212,7 +210,7 @@ const PaymentsPage: React.FC = () => {
   
   return (
     <PayPalScriptProvider options={{ 
-      "clientId": "AbrAXPbS6vtukD877HcafP42En6qVfZUwocLmEWN7sFYrshKuJjRvdJDDyHqV3g08JmfKfZ1afkXTLgO",
+      "clientId": "ATVeDvB8w2Xaf2OtP5O8un3oZQy1r_ahR3-rlzhJJPP6rJ5TPkyKki6KsdtRA44JeokoRNNMYHk6BXD_",
       currency: "USD",
       intent: "capture"
     }}>
@@ -235,39 +233,14 @@ const PaymentsPage: React.FC = () => {
             </div>
           )}
           
-          {paymentSuccess && (
-            <div className="mb-6 p-4 bg-green-900/50 border border-green-500/50 rounded-lg text-green-200 text-center">
-              Tournament payment processed successfully! A confirmation email will be sent to your address.
-            </div>
-          )}
-          
           {applicationSuccess && (
             <div className="mb-6 p-4 bg-green-900/50 border border-green-500/50 rounded-lg text-green-200 text-center">
               Rating application and payment processed successfully! Our team will review your application and contact you within 3-5 business days.
             </div>
           )}
 
-          {/* Tab Navigation */}
+          {/* Tab Navigation - Only Rating Application Tab */}
           <div className="flex border-b border-slate-700/50 mb-8">
-            <button
-              className={`py-4 px-6 text-lg font-medium transition-colors relative font-orbitron ${
-                activeTab === 'payment'
-                  ? 'text-gray-100'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              onClick={() => {
-                setActiveTab('payment');
-                setError(null);
-                setPaymentSuccess(false);
-                setApplicationSuccess(false);
-                setShowPayPal(false);
-              }}
-            >
-              {t('payments.paymentPortal')}
-              {activeTab === 'payment' && (
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-green-400 to-cyan-400"></span>
-              )}
-            </button>
             <button
               className={`py-4 px-6 text-lg font-medium transition-colors relative font-orbitron ${
                 activeTab === 'rating'
@@ -277,7 +250,6 @@ const PaymentsPage: React.FC = () => {
               onClick={() => {
                 setActiveTab('rating');
                 setError(null);
-                setPaymentSuccess(false);
                 setApplicationSuccess(false);
                 setShowPayPal(false);
               }}
@@ -289,399 +261,230 @@ const PaymentsPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Payment Portal Section */}
-          {activeTab === 'payment' && (
-            <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl border border-green-400/30 p-8 mb-12 shadow-xl">
-              <h2 className="text-2xl font-bold text-white mb-6 font-orbitron">
-                {t('payments.paymentPortal')}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-xl font-semibold text-green-400 mb-4 font-orbitron">
-                    {t('payments.tournamentPayments')}
-                  </h3>
-                  <p className="text-gray-300 mb-6">
-                    {t('payments.paymentDescription')}
-                  </p>
-                  <div className="bg-slate-800/50 rounded-xl p-6 mb-6 border border-slate-700/30">
-                    <h4 className="text-lg font-semibold text-white mb-3 font-orbitron">
-                      {t('payments.howItWorks')}
-                    </h4>
-                    <ul className="space-y-3 text-gray-300">
-                      <li className="flex items-start">
-                        <span className="text-green-400 mr-2">•</span>
-                        {t('payments.step1')}
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-green-400 mr-2">•</span>
-                        {t('payments.step2')}
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-green-400 mr-2">•</span>
-                        {t('payments.step3')}
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/30">
-                    <h4 className="text-lg font-semibold text-white mb-3 font-orbitron">
-                      Payment Information
-                    </h4>
-                    <ul className="space-y-2 text-gray-300 text-sm">
-                      <li className="flex items-start">
-                        <span className="text-green-400 mr-2">•</span>
-                        <span>All payments are processed in USD</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-green-400 mr-2">•</span>
-                        <span>Local currency will be converted to USD at current exchange rates</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-green-400 mr-2">•</span>
-                        <span>Secure payment processing with industry-standard encryption</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-green-400 mr-2">•</span>
-                        <span>Confirmation emails sent immediately after payment</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-green-400 mb-4 font-orbitron">
-                    {t('payments.makePayment')}
-                  </h3>
-                  {!showPayPal || payPalContext !== 'tournament' ? (
-                    <form onSubmit={processPayment} className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/30">
-                      <div className="mb-4">
-                        <label className="block text-gray-300 mb-2 font-orbitron">
-                          {t('payments.tournamentName')}
-                        </label>
-                        <input
-                          type="text"
-                          name="tournamentName"
-                          value={paymentData.tournamentName}
-                          onChange={handlePaymentChange}
-                          className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                          placeholder={t('payments.enterTournament')}
-                          required
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <label className="block text-gray-300 mb-2 font-orbitron">
-                          {t('payments.amount')} (USD)
-                        </label>
-                        <div className="relative">
-                          <span className="absolute left-3 top-3 text-gray-400">$</span>
-                          <input
-                            type="number"
-                            name="amount"
-                            value={paymentData.amount || ''}
-                            onChange={handlePaymentChange}
-                            min="0"
-                            step="0.01"
-                            className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 pl-8 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                            placeholder="0.00"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="mb-6">
-                        <label className="block text-gray-300 mb-2 font-orbitron">
-                          {t('payments.playerName')}
-                        </label>
-                        <input
-                          type="text"
-                          name="playerName"
-                          value={paymentData.playerName}
-                          onChange={handlePaymentChange}
-                          className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                          placeholder={t('payments.enterPlayerName')}
-                          required
-                        />
-                      </div>
-                      <button 
-                        type="submit"
-                        className="w-full bg-gradient-to-r from-green-500 to-cyan-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-green-600 hover:to-cyan-600 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-400/50 font-orbitron"
-                      >
-                        Proceed to PayPal
-                      </button>
-                    </form>
-                  ) : (
-                    <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/30">
-                      <h4 className="text-lg font-semibold text-white mb-4 font-orbitron">
-                        Complete Your Payment
-                      </h4>
-                      <p className="text-gray-300 mb-4">
-                        You will be charged ${paymentData.amount.toFixed(2)} USD for tournament registration.
-                      </p>
-                      <div className="mb-4">
-                        <PayPalButtons 
-                          style={{ layout: "vertical" }}
-                          createOrder={(data, actions: any) => {
-                            return actions.order.create({
-                              purchase_units: [
-                                {
-                                  amount: {
-                                    value: paymentData.amount.toFixed(2),
-                                    currency_code: "USD"
-                                  },
-                                  description: `Tournament Registration: ${paymentData.tournamentName} for ${paymentData.playerName}`
-                                }
-                              ]
-                            });
-                          }}
-                          onApprove={async (data, actions: any) => {
-                            try {
-                              const details = await actions.order.capture();
-                              onPayPalSuccess(details);
-                              return details;
-                            } catch (err) {
-                              onPayPalError(err);
-                              throw err;
-                            }
-                          }}
-                          onCancel={() => onPayPalCancel()}
-                          onError={(err: any) => onPayPalError(err)}
-                        />
-                      </div>
-                      <button
-                        onClick={() => setShowPayPal(false)}
-                        className="w-full bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-600 transition-all focus:outline-none focus:ring-2 focus:ring-slate-500/50 font-orbitron"
-                      >
-                        Back to Form
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Rating Application Section */}
-          {activeTab === 'rating' && (
-            <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl border border-green-400/30 p-8 shadow-xl">
-              <h2 className="text-2xl font-bold text-white mb-6 font-orbitron">
-                {t('payments.ratingApplication')}
-              </h2>
-              <p className="text-gray-300 mb-8">
-                {t('payments.ratingDescription')}
-              </p>
-              
-              {!showPayPal || payPalContext !== 'rating' ? (
-                <form onSubmit={processRatingApplication} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-gray-300 mb-2 font-orbitron">
-                        {t('payments.organizerName')}
-                      </label>
-                      <input
-                        type="text"
-                        name="organizerName"
-                        value={ratingData.organizerName}
-                        onChange={handleRatingChange}
-                        className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                        placeholder={t('payments.enterOrganizer')}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-300 mb-2 font-orbitron">
-                        {t('payments.email')}
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={ratingData.email}
-                        onChange={handleRatingChange}
-                        className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                        placeholder={t('payments.enterEmail')}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
+          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl border border-green-400/30 p-8 shadow-xl">
+            <h2 className="text-2xl font-bold text-white mb-6 font-orbitron">
+              {t('payments.ratingApplication')}
+            </h2>
+            <p className="text-gray-300 mb-8">
+              {t('payments.ratingDescription')}
+            </p>
+            
+            {!showPayPal || payPalContext !== 'rating' ? (
+              <form onSubmit={processRatingApplication} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-gray-300 mb-2 font-orbitron">
-                      {t('payments.eventName')}
+                      {t('payments.organizerName')}
                     </label>
                     <input
                       type="text"
-                      name="eventName"
-                      value={ratingData.eventName}
+                      name="organizerName"
+                      value={ratingData.organizerName}
                       onChange={handleRatingChange}
                       className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                      placeholder={t('payments.enterEvent')}
+                      placeholder={t('payments.enterOrganizer')}
                       required
                     />
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-gray-300 mb-2 font-orbitron">
-                        {t('payments.startDate')}
-                      </label>
-                      <input
-                        type="date"
-                        name="startDate"
-                        value={ratingData.startDate}
-                        onChange={handleRatingChange}
-                        className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-300 mb-2 font-orbitron">
-                        {t('payments.endDate')}
-                      </label>
-                      <input
-                        type="date"
-                        name="endDate"
-                        value={ratingData.endDate}
-                        onChange={handleRatingChange}
-                        className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                        required
-                      />
-                    </div>
-                  </div>
-                  
                   <div>
                     <label className="block text-gray-300 mb-2 font-orbitron">
-                      {t('payments.location')}
+                      {t('payments.email')}
                     </label>
                     <input
-                      type="text"
-                      name="location"
-                      value={ratingData.location}
+                      type="email"
+                      name="email"
+                      value={ratingData.email}
                       onChange={handleRatingChange}
                       className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                      placeholder={t('payments.enterLocation')}
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-gray-300 mb-2 font-orbitron">
-                      {t('payments.expectedParticipants')}
-                    </label>
-                    <input
-                      type="number"
-                      name="expectedParticipants"
-                      value={ratingData.expectedParticipants || ''}
-                      onChange={handleRatingChange}
-                      min="0"
-                      className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                      placeholder={t('payments.enterParticipants')}
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-gray-300 mb-2 font-orbitron">
-                      Application Fee (USD)
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-3 text-gray-400">$</span>
-                      <input
-                        type="number"
-                        name="amount"
-                        value={ratingData.amount || ''}
-                        onChange={handleRatingChange}
-                        min="0"
-                        step="0.01"
-                        className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 pl-8 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                        placeholder="50.00"
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-gray-300 mb-2 font-orbitron">
-                      {t('payments.additionalInfo')}
-                    </label>
-                    <textarea
-                      name="additionalInfo"
-                      value={ratingData.additionalInfo}
-                      onChange={handleRatingChange}
-                      rows={4}
-                      className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
-                      placeholder={t('payments.enterAdditionalInfo')}
-                    ></textarea>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      name="agreedToTerms"
-                      checked={ratingData.agreedToTerms}
-                      onChange={handleRatingChange}
-                      className="w-4 h-4 text-green-500 bg-slate-700/50 border-slate-600/50 rounded focus:ring-green-500/50 focus:ring-2 focus:ring-offset-0 focus:ring-offset-slate-900"
+                      placeholder={t('payments.enterEmail')}
                       required
                     />
-                    <label htmlFor="terms" className="ml-2 text-gray-300">
-                      {t('payments.agreeToTerms')}{' '}
-                      <a href="#" className="text-green-400 hover:underline">
-                        {t('payments.termsAndConditions')}
-                      </a>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-gray-300 mb-2 font-orbitron">
+                    {t('payments.eventName')}
+                  </label>
+                  <input
+                    type="text"
+                    name="eventName"
+                    value={ratingData.eventName}
+                    onChange={handleRatingChange}
+                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                    placeholder={t('payments.enterEvent')}
+                    required
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-gray-300 mb-2 font-orbitron">
+                      {t('payments.startDate')}
                     </label>
+                    <input
+                      type="date"
+                      name="startDate"
+                      value={ratingData.startDate}
+                      onChange={handleRatingChange}
+                      className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                      required
+                    />
                   </div>
-                  
-                  <div className="pt-4">
-                    <button
-                      type="submit"
-                      className="w-full md:w-auto bg-gradient-to-r from-green-500 to-cyan-500 text-white font-semibold py-3 px-8 rounded-lg hover:from-green-600 hover:to-cyan-600 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-400/50 font-orbitron"
-                    >
-                      Proceed to Payment
-                    </button>
+                  <div>
+                    <label className="block text-gray-300 mb-2 font-orbitron">
+                      {t('payments.endDate')}
+                    </label>
+                    <input
+                      type="date"
+                      name="endDate"
+                      value={ratingData.endDate}
+                      onChange={handleRatingChange}
+                      className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                      required
+                    />
                   </div>
-                </form>
-              ) : (
+                </div>
+                
+                <div>
+                  <label className="block text-gray-300 mb-2 font-orbitron">
+                    {t('payments.location')}
+                  </label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={ratingData.location}
+                    onChange={handleRatingChange}
+                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                    placeholder={t('payments.enterLocation')}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-gray-300 mb-2 font-orbitron">
+                    {t('payments.expectedParticipants')}
+                  </label>
+                  <input
+                    type="number"
+                    name="expectedParticipants"
+                    value={ratingData.expectedParticipants || ''}
+                    onChange={handleRatingChange}
+                    min="0"
+                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                    placeholder={t('payments.enterParticipants')}
+                  />
+                </div>
+                
+                {/* Fixed payment amount display */}
                 <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/30">
-                  <h4 className="text-lg font-semibold text-white mb-4 font-orbitron">
-                    Complete Your Rating Application Payment
+                  <h4 className="text-lg font-semibold text-white mb-3 font-orbitron">
+                    Rating Application Fee
                   </h4>
                   <p className="text-gray-300 mb-4">
-                    You will be charged ${ratingData.amount.toFixed(2)} USD for your rating application.
+                    A fixed fee of $20 USD is required to process your rating application.
                   </p>
-                  <div className="mb-4">
-                    <PayPalButtons 
-                      style={{ layout: "vertical" }}
-                      createOrder={(data, actions: any) => {
-                        return actions.order.create({
-                          purchase_units: [
-                            {
-                              amount: {
-                                value: ratingData.amount.toFixed(2),
-                                currency_code: "USD"
-                              },
-                              description: `Rating Application: ${ratingData.eventName} by ${ratingData.organizerName}`
-                            }
-                          ]
-                        });
-                      }}
-                      onApprove={async (data, actions: any) => {
-                        try {
-                          const details = await actions.order.capture();
-                          onPayPalSuccess(details);
-                          return details;
-                        } catch (err) {
-                          onPayPalError(err);
-                          throw err;
-                        }
-                      }}
-                      onCancel={() => onPayPalCancel()}
-                      onError={(err: any) => onPayPalError(err)}
-                    />
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-green-400 mb-2">$20.00 USD</div>
+                    <div className="text-gray-400">Fixed Application Fee</div>
                   </div>
+                </div>
+                
+                <div>
+                  <label className="block text-gray-300 mb-2 font-orbitron">
+                    {t('payments.additionalInfo')}
+                  </label>
+                  <textarea
+                    name="additionalInfo"
+                    value={ratingData.additionalInfo}
+                    onChange={handleRatingChange}
+                    rows={4}
+                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                    placeholder={t('payments.enterAdditionalInfo')}
+                  ></textarea>
+                </div>
+                
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    name="agreedToTerms"
+                    checked={ratingData.agreedToTerms}
+                    onChange={handleRatingChange}
+                    className="w-4 h-4 text-green-500 bg-slate-700/50 border-slate-600/50 rounded focus:ring-green-500/50 focus:ring-2 focus:ring-offset-0 focus:ring-offset-slate-900"
+                    required
+                  />
+                  <label htmlFor="terms" className="ml-2 text-gray-300">
+                    {t('payments.agreeToTerms')}{' '}
+                    <a href="#" className="text-green-400 hover:underline">
+                      {t('payments.termsAndConditions')}
+                    </a>
+                  </label>
+                </div>
+                
+                <div className="pt-4">
                   <button
-                    onClick={() => setShowPayPal(false)}
-                    className="w-full bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-600 transition-all focus:outline-none focus:ring-2 focus:ring-slate-500/50 font-orbitron"
+                    type="submit"
+                    className="w-full md:w-auto bg-gradient-to-r from-green-500 to-cyan-500 text-white font-semibold py-3 px-8 rounded-lg hover:from-green-600 hover:to-cyan-600 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-400/50 font-orbitron"
                   >
-                    Back to Form
+                    Proceed to Payment
                   </button>
                 </div>
-              )}
-            </div>
-          )}
+              </form>
+            ) : (
+              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/30">
+                <h4 className="text-lg font-semibold text-white mb-4 font-orbitron">
+                  Complete Your Rating Application Payment
+                </h4>
+                <p className="text-gray-300 mb-4">
+                  You will be charged $20.00 USD for your rating application.
+                </p>
+                <div className="mb-4">
+                  <PayPalButtons 
+                    style={{ layout: "vertical" }}
+                    createOrder={(data, actions: any) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value: "20.00",
+                              currency_code: "USD"
+                            },
+                            description: `Rating Application: ${ratingData.eventName} by ${ratingData.organizerName}`
+                          }
+                        ]
+                      });
+                    }}
+                    onApprove={async (data, actions: any) => {
+                      try {
+                        const details = await actions.order.capture();
+                        await onPayPalSuccess(details);
+                        return details;
+                      } catch (err) {
+                        onPayPalError(err);
+                        throw err;
+                      }
+                    }}
+                    onCancel={() => onPayPalCancel()}
+                    onError={(err: any) => onPayPalError(err)}
+                    disabled={isProcessing}
+                  />
+                </div>
+                {isProcessing && (
+                  <div className="text-center text-gray-300">
+                    Processing your payment and application...
+                  </div>
+                )}
+                <button
+                  onClick={() => setShowPayPal(false)}
+                  className="w-full bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-600 transition-all focus:outline-none focus:ring-2 focus:ring-slate-500/50 font-orbitron"
+                  disabled={isProcessing}
+                >
+                  Back to Form
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </PayPalScriptProvider>
