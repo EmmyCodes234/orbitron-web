@@ -166,7 +166,7 @@ const ChromaGrid: React.FC<ChromaGridProps> = ({
       ref={rootRef}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
-      className={`relative w-full h-full flex flex-wrap justify-center items-start gap-6 ${className}`}
+      className={`relative w-full h-full flex flex-wrap justify-center items-start gap-4 sm:gap-6 ${className}`}
       style={
         {
           '--r': `${radius}px`,
@@ -180,7 +180,7 @@ const ChromaGrid: React.FC<ChromaGridProps> = ({
           key={i}
           onMouseMove={handleCardMove}
           onClick={() => handleCardClick(c)}
-          className="group relative flex flex-col w-[280px] rounded-[20px] overflow-hidden border-2 border-transparent transition-all duration-300 cursor-pointer hover:scale-[1.02] shadow-lg"
+          className="group relative flex flex-col w-[260px] sm:w-[280px] rounded-[16px] sm:rounded-[20px] overflow-hidden border-2 border-transparent transition-all duration-300 cursor-pointer hover:scale-[1.02] shadow-lg"
           style={
             {
               '--card-border': c.borderColor || 'transparent',
@@ -196,39 +196,39 @@ const ChromaGrid: React.FC<ChromaGridProps> = ({
                 'radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--spotlight-color), transparent 70%)'
             }}
           />
-          <div className="relative z-10 flex-1 p-[10px] box-border">
+          <div className="relative z-10 flex-1 p-[8px] sm:p-[10px] box-border">
             <img 
               src={c.image} 
               alt={c.title} 
               loading="lazy" 
-              className="w-full h-64 object-cover rounded-[10px] border-2 border-white/20" 
+              className="w-full h-56 sm:h-64 object-cover rounded-[8px] sm:rounded-[10px] border-2 border-white/20" 
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80';
               }}
             />
           </div>
-          <footer className="relative z-10 p-4 text-white font-sans">
+          <footer className="relative z-10 p-3 sm:p-4 text-white font-sans">
             <div className="flex justify-between items-start mb-1">
-              <h3 className="m-0 text-[1.2rem] font-bold truncate">{c.title}</h3>
+              <h3 className="m-0 text-[1rem] sm:text-[1.2rem] font-bold truncate">{c.title}</h3>
               {c.countryCode && (
                 <img 
-                  src={`https://flagcdn.com/24x18/${c.countryCode}.png`} 
+                  src={`https://flagcdn.com/20x15/${c.countryCode}.png`} 
                   alt={c.location} 
-                  className="w-6 h-4 object-contain rounded-sm border border-white/30"
+                  className="w-5 h-3 sm:w-6 sm:h-4 object-contain rounded-sm border border-white/30"
                 />
               )}
             </div>
-            <p className="m-0 text-[0.95rem] font-medium opacity-90 mb-1">{c.subtitle}</p>
+            <p className="m-0 text-[0.85rem] sm:text-[0.95rem] font-medium opacity-90 mb-1">{c.subtitle}</p>
             {c.location && (
-              <p className="m-0 text-[0.9rem] opacity-80 flex items-center">
-                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+              <p className="m-0 text-[0.8rem] sm:text-[0.9rem] opacity-80 flex items-center">
+                <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
                 {c.location}
               </p>
             )}
-            {c.handle && <p className="m-0 text-[0.85rem] opacity-70 mt-1">{c.handle}</p>}
+            {c.handle && <p className="m-0 text-[0.75rem] sm:text-[0.85rem] opacity-70 mt-1">{c.handle}</p>}
           </footer>
         </article>
       ))}

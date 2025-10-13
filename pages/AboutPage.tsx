@@ -85,62 +85,62 @@ const AboutPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen py-12 sm:py-20">
+    <div className="min-h-screen py-8 sm:py-12 md:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h1 className="font-orbitron text-3xl sm:text-5xl font-extrabold text-center mb-10 sm:mb-16 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 tracking-tight">
+        <h1 className="font-orbitron text-2xl sm:text-3xl md:text-5xl font-extrabold text-center mb-8 sm:mb-10 md:mb-16 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 tracking-tight">
           {t('about.title')}
         </h1>
         
-        <div className="space-y-10 sm:space-y-16 text-gray-300 [&_p]:line-clamp-3">
+        <div className="space-y-8 sm:space-y-10 md:space-y-16 text-gray-300 text-center">
           {/* Introduction with Hero Image */}
           <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <div className="p-7 sm:p-10">
-              <h2 className="font-orbitron text-2xl sm:text-3xl font-bold text-green-400 mb-5 sm:mb-6">{t('about.whoWeAre')}</h2>
-              <p className="leading-relaxed text-base sm:text-lg font-medium">
+            <div className="p-5 sm:p-7 md:p-10">
+              <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-4 sm:mb-5 md:mb-6 text-center">{t('about.whoWeAre')}</h2>
+              <p className="leading-relaxed text-sm sm:text-base md:text-lg font-medium">
                 {t('about.introduction')}
               </p>
             </div>
           </section>
 
           {/* Meet the Team - now using ChromaGrid */}
-          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-7 sm:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <h2 className="font-orbitron text-2xl sm:text-3xl font-bold text-green-400 mb-6 sm:mb-8 text-center">{t('about.meetTheTeam')}</h2>
-            <p className="text-center text-lg sm:text-xl text-cyan-400 mb-8 sm:mb-10 font-medium">{t('about.leadershipDescription')}</p>
+          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-5 sm:p-7 md:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
+            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-5 sm:mb-6 md:mb-8 text-center">{t('about.meetTheTeam')}</h2>
+            <p className="text-center text-base sm:text-lg md:text-xl text-cyan-400 mb-5 sm:mb-6 md:mb-10 font-medium">{t('about.leadershipDescription')}</p>
             
-            <div className="mt-10">
+            <div className="mt-6 sm:mt-8 md:mt-10">
               <ChromaGrid 
                 items={executives} 
-                className="min-h-[500px]" 
+                className="min-h-[400px] sm:min-h-[500px]" 
                 onCardClick={openModal}
               />
             </div>
           </section>
 
           {/* History */}
-          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-7 sm:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <h2 className="font-orbitron text-2xl sm:text-3xl font-bold text-green-400 mb-6 sm:mb-8 text-center">{t('about.howItBegan')}</h2>
-            <div className="space-y-5 sm:space-y-7">
-              <p className="leading-relaxed text-base sm:text-lg">
+          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-5 sm:p-7 md:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
+            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-5 sm:mb-6 md:mb-8 text-center">{t('about.howItBegan')}</h2>
+            <div className="space-y-4 sm:space-y-5 md:space-y-7">
+              <p className="leading-relaxed text-sm sm:text-base md:text-lg">
                 <span className="font-bold text-cyan-400">{t('about.founded1994')}</span> {t('about.bornFromVision')}
               </p>
               
-              <p className="leading-relaxed text-base sm:text-lg">
+              <p className="leading-relaxed text-sm sm:text-base md:text-lg">
                 {t('about.mainObjective')} <span className="font-bold text-cyan-400">{t('about.africanChampionship')}</span> {t('about.heldInLusaka')}
               </p>
 
               {/* Historical Photo */}
-              <div className="mt-8 sm:mt-10">
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-5 sm:p-7 border border-slate-700/20">
-                  <h3 className="font-orbitron text-xl sm:text-2xl font-bold text-cyan-400 mb-4 sm:mb-5 text-center">{t('about.foundingMembers1994')}</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="mt-6 sm:mt-8 md:mt-10">
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 sm:p-5 md:p-7 border border-slate-700/20">
+                  <h3 className="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-cyan-400 mb-3 sm:mb-4 md:mb-5 text-center">{t('about.foundingMembers1994')}</h3>
+                  <div className="grid grid-cols-1 gap-2 sm:gap-3">
                     {foundingMembers.map((member, index) => (
-                      <div key={index} className="flex justify-between items-center py-3 border-b border-slate-700/30 last:border-b-0 hover:bg-slate-700/20 rounded-lg px-3 transition-colors duration-200">
-                        <span className="font-bold text-base sm:text-lg">{member.name}</span>
-                        <span className="text-green-400 text-sm sm:text-base font-medium">{member.country}</span>
+                      <div key={index} className="flex justify-between items-center py-2 sm:py-3 border-b border-slate-700/30 last:border-b-0 hover:bg-slate-700/20 rounded-lg px-2 sm:px-3 transition-colors duration-200">
+                        <span className="font-bold text-sm sm:text-base">{member.name}</span>
+                        <span className="text-green-400 text-xs sm:text-sm font-medium">{member.country}</span>
                       </div>
                     ))}
                   </div>
-                  <p className="text-sm sm:text-base text-gray-400 mt-4 sm:mt-5 font-medium">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-400 mt-3 sm:mt-4 md:mt-5 font-medium">
                     {t('about.threeCountries')}
                   </p>
                 </div>
@@ -149,38 +149,38 @@ const AboutPage: React.FC = () => {
           </section>
 
           {/* Key Metrics with Tournament Photos */}
-          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-7 sm:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <h2 className="font-orbitron text-2xl sm:text-3xl font-bold text-green-400 mb-6 sm:mb-8 text-center">{t('about.metricsSayItAll')}</h2>
-            <p className="text-lg sm:text-xl text-cyan-400 mb-8 sm:mb-10 text-center font-bold">{t('about.successSeries')}</p>
+          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-5 sm:p-7 md:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
+            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-5 sm:mb-6 md:mb-8 text-center">{t('about.metricsSayItAll')}</h2>
+            <p className="text-base sm:text-lg md:text-xl text-cyan-400 mb-5 sm:mb-6 md:mb-10 text-center font-bold">{t('about.successSeries')}</p>
             
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10">
               {keyMetrics.map((metric, index) => (
-                <div key={index} className="text-center bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-5 sm:p-6 border border-slate-700/20 hover:border-green-400/40 transition-all duration-300 group">
-                  <div className="font-orbitron text-3xl sm:text-4xl font-extrabold text-green-400 mb-2 sm:mb-3 group-hover:text-cyan-400 transition-colors duration-300">{metric.number}</div>
-                  <div className="font-bold text-cyan-400 mb-2 text-base sm:text-lg">{metric.label}</div>
-                  <div className="text-sm sm:text-base text-gray-400 font-medium">{metric.description}</div>
+                <div key={index} className="text-center bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-4 sm:p-5 md:p-6 border border-slate-700/20 hover:border-green-400/40 transition-all duration-300 group">
+                  <div className="font-orbitron text-2xl sm:text-3xl md:text-4xl font-extrabold text-green-400 mb-1 sm:mb-2 md:mb-3 group-hover:text-cyan-400 transition-colors duration-300">{metric.number}</div>
+                  <div className="font-bold text-cyan-400 mb-1 sm:mb-2 text-sm sm:text-base md:text-lg">{metric.label}</div>
+                  <div className="text-xs sm:text-sm md:text-base text-gray-400 font-medium">{metric.description}</div>
                 </div>
               ))}
             </div>
 
-            <p className="leading-relaxed text-base sm:text-lg mb-8 sm:mb-10 font-medium text-center">
+            <p className="leading-relaxed text-sm sm:text-base md:text-lg mb-6 sm:mb-8 md:mb-10 font-medium">
               {t('about.scrabbleMillions')}
             </p>
           </section>
 
           {/* Member Countries with Map */}
-          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-7 sm:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <h2 className="font-orbitron text-2xl sm:text-3xl font-bold text-green-400 mb-6 sm:mb-8 text-center">{t('about.memberCountries')}</h2>
+          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-5 sm:p-7 md:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
+            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-5 sm:mb-6 md:mb-8 text-center">{t('about.memberCountries')}</h2>
             
             <div>
-              <p className="leading-relaxed text-base sm:text-lg mb-6 sm:mb-8 font-medium text-center">
+              <p className="leading-relaxed text-sm sm:text-base md:text-lg mb-5 sm:mb-6 md:mb-8 font-medium">
                 {t('about.currentlyConsists')} <span className="font-bold text-cyan-400">{t('about.twelveMemberCountries')}</span> 
                 {t('about.acrossContinent')}
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
                 {memberCountries.map((country, index) => (
-                  <div key={index} className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-3 sm:p-4 text-center border border-slate-700/20 hover:border-green-400/40 transition-all duration-300 group">
-                    <span className="font-bold text-gray-200 text-base sm:text-lg group-hover:text-green-400 transition-colors duration-300">{country}</span>
+                  <div key={index} className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-2 sm:p-3 md:p-4 text-center border border-slate-700/20 hover:border-green-400/40 transition-all duration-300 group">
+                    <span className="font-bold text-gray-200 text-sm sm:text-base group-hover:text-green-400 transition-colors duration-300">{country}</span>
                   </div>
                 ))}
               </div>
@@ -188,63 +188,63 @@ const AboutPage: React.FC = () => {
           </section>
 
           {/* Championships & Tournaments */}
-          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-7 sm:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <h2 className="font-orbitron text-2xl sm:text-3xl font-bold text-green-400 mb-6 sm:mb-8 text-center">{t('about.ourChampionships')}</h2>
-            <div className="space-y-4 sm:space-y-5">
-              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-4 sm:p-5 border border-slate-700/20 hover:border-green-400/40 transition-all duration-300">
-                <h3 className="font-bold text-cyan-400 mb-2 sm:mb-3 text-lg sm:text-xl text-center">{t('about.biAnnualChampionship')}</h3>
-                <p className="text-sm sm:text-base text-gray-300 font-medium">{t('about.premierChampionship')}</p>
+          <section className="bg-slate-900/40 backdrop-blur-sm rounded-2xl p-5 sm:p-7 md:p-10 border border-slate-700/30 shadow-xl hover:shadow-2xl transition-all duration-300">
+            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-5 sm:mb-6 md:mb-8 text-center">{t('about.ourChampionships')}</h2>
+            <div className="space-y-3 sm:space-y-4 md:space-y-5">
+              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-5 border border-slate-700/20 hover:border-green-400/40 transition-all duration-300">
+                <h3 className="font-bold text-cyan-400 mb-2 text-base sm:text-lg md:text-xl text-center">{t('about.biAnnualChampionship')}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-300 font-medium text-center">{t('about.premierChampionship')}</p>
               </div>
-              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-4 sm:p-5 border border-slate-700/20 hover:border-cyan-400/40 transition-all duration-300">
-                <h3 className="font-bold text-cyan-400 mb-2 sm:mb-3 text-lg sm:text-xl text-center">{t('about.eastCentralChampionship')}</h3>
-                <p className="text-sm sm:text-base text-gray-300 font-medium">{t('about.regionalChampionshipEast')}</p>
+              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-5 border border-slate-700/20 hover:border-cyan-400/40 transition-all duration-300">
+                <h3 className="font-bold text-cyan-400 mb-2 text-base sm:text-lg md:text-xl text-center">{t('about.eastCentralChampionship')}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-300 font-medium text-center">{t('about.regionalChampionshipEast')}</p>
               </div>
-              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-4 sm:p-5 border border-slate-700/20 hover:border-purple-400/40 transition-all duration-300">
-                <h3 className="font-bold text-cyan-400 mb-2 sm:mb-3 text-lg sm:text-xl text-center">{t('about.westAfricaChampionship')}</h3>
-                <p className="text-sm sm:text-base text-gray-300 font-medium">{t('about.regionalChampionshipWest')}</p>
+              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-5 border border-slate-700/20 hover:border-purple-400/40 transition-all duration-300">
+                <h3 className="font-bold text-cyan-400 mb-2 text-base sm:text-lg md:text-xl text-center">{t('about.westAfricaChampionship')}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-300 font-medium text-center">{t('about.regionalChampionshipWest')}</p>
               </div>
-              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-4 sm:p-5 border border-slate-700/20 hover:border-yellow-400/40 transition-all duration-300">
-                <h3 className="font-bold text-cyan-400 mb-2 sm:mb-3 text-lg sm:text-xl text-center">{t('about.youthChampionship')}</h3>
-                <p className="text-sm sm:text-base text-gray-300 font-medium">{t('about.developingNextGeneration')}</p>
+              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-5 border border-slate-700/20 hover:border-yellow-400/40 transition-all duration-300">
+                <h3 className="font-bold text-cyan-400 mb-2 text-base sm:text-lg md:text-xl text-center">{t('about.youthChampionship')}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-300 font-medium text-center">{t('about.developingNextGeneration')}</p>
               </div>
-              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-4 sm:p-5 border border-slate-700/20 hover:border-pink-400/40 transition-all duration-300">
-                <h3 className="font-bold text-cyan-400 mb-2 sm:mb-3 text-lg sm:text-xl text-center">{t('about.presidentsCup')}</h3>
-                <p className="text-sm sm:text-base text-gray-300 font-medium">{t('about.eliteTournament')}</p>
+              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-5 border border-slate-700/20 hover:border-pink-400/40 transition-all duration-300">
+                <h3 className="font-bold text-cyan-400 mb-2 text-base sm:text-lg md:text-xl text-center">{t('about.presidentsCup')}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-300 font-medium text-center">{t('about.eliteTournament')}</p>
               </div>
             </div>
-            <p className="text-sm sm:text-base text-gray-400 mt-6 sm:mt-8 font-medium text-center">
+            <p className="text-xs sm:text-sm md:text-base text-gray-400 mt-4 sm:mt-6 md:mt-8 font-medium text-center">
               {t('about.additionalTournaments')}
             </p>
           </section>
 
           {/* World Achievement with Champion Photo */}
           <section className="bg-gradient-to-r from-green-500/20 via-cyan-500/20 to-purple-500/20 rounded-2xl overflow-hidden border border-green-500/40 shadow-2xl hover:shadow-2xl transition-all duration-300">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-              <div className="p-7 sm:p-10 flex items-center">
-                <div>
-                  <h2 className="font-orbitron text-2xl sm:text-3xl font-bold text-green-400 mb-4 sm:mb-6">{t('about.worldChampionAchievement')}</h2>
-                  <p className="text-base sm:text-lg leading-relaxed font-medium">
+            <div className="grid grid-cols-1 gap-0">
+              <div className="p-5 sm:p-7 md:p-10 flex flex-col items-center">
+                <div className="w-full">
+                  <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-3 sm:mb-4 md:mb-6 text-center">{t('about.worldChampionAchievement')}</h2>
+                  <p className="text-sm sm:text-base md:text-lg leading-relaxed font-medium text-center">
                     <span className="font-extrabold text-cyan-400">{t('about.africaProduced')}</span> 
                     {t('about.historicMilestone')}
                   </p>
-                  <div className="mt-4">
-                    <h3 className="font-bold text-lg sm:text-xl text-white">Wellington Jighere</h3>
-                    <p className="text-cyan-400 font-medium flex items-center">
+                  <div className="mt-4 flex flex-col items-center">
+                    <h3 className="font-bold text-base sm:text-lg md:text-xl text-white">Wellington Jighere</h3>
+                    <p className="text-cyan-400 font-medium flex items-center text-sm sm:text-base">
                       <img 
                         src="https://flagcdn.com/24x18/ng.png" 
                         alt="Nigeria" 
-                        className="w-6 h-4 mr-2 object-contain"
+                        className="w-5 h-3 sm:w-6 sm:h-4 mr-1 sm:mr-2 object-contain"
                       />
                       Nigeria • WESPAC 2015 Champion
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="relative bg-gradient-to-br from-slate-800/30 to-slate-900/30 flex items-center justify-center min-h-[220px] sm:min-h-[320px]">
+              <div className="relative bg-gradient-to-br from-slate-800/30 to-slate-900/30 flex items-center justify-center min-h-[150px] sm:min-h-[200px] md:min-h-[250px]">
                 <img 
                   src="/welly.png" 
                   alt="World Scrabble Champion" 
-                  className="w-full h-full object-contain p-4 sm:p-8"
+                  className="w-full h-full object-contain p-3 sm:p-5 md:p-8"
                 />
               </div>
             </div>
