@@ -24,7 +24,7 @@ const FlagLoop: React.FC = () => {
 
     return (
         <div className="flag-scroller overflow-hidden py-4" data-speed="slow">
-            <div className="flag-scroller__inner flex items-center w-max">
+            <div className="flag-scroller__inner">
                 {loopedNations.map((nation, index) => (
                     <div key={`${nation.name}-${index}`} className="flex-shrink-0 flex items-center mx-5 group" title={nation.name}>
                         <div className="relative">

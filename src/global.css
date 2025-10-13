@@ -1581,3 +1581,13 @@ textarea:focus-visible {
 .tech-alert-info::before {
   background: var(--color-info);
 }
+
+/* Animated gradient border for announcement pill */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}

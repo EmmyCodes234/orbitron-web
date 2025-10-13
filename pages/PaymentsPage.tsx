@@ -416,12 +416,17 @@ const PaymentsPage: React.FC = () => {
                   />
                   <label htmlFor="terms" className="ml-2 text-gray-300">
                     {t('payments.agreeToTerms')}{' '}
-                    <a href="#" className="text-green-400 hover:underline">
+                    <a 
+                      href="/terms-and-conditions" 
+                      className="text-green-400 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {t('payments.termsAndConditions')}
                     </a>
                   </label>
                 </div>
-                
+
                 <div className="pt-4">
                   <button
                     type="submit"

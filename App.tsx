@@ -15,6 +15,8 @@ import PaymentsPage from './pages/PaymentsPage';
 import CollectionPage from './pages/CollectionPage';
 import { LocalizationProvider } from './contexts/LocalizationContext';
 
+import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
+
 // Loading component for Suspense
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center min-h-screen w-full">
@@ -53,6 +55,7 @@ const AppContent: React.FC = () => {
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/payments" element={<PaymentsPage />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
         </Routes>
       </Layout>
     </>

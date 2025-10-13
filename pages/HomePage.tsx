@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import FlagLoop from '../components/FlagLoop';
 import AnnouncementPill from '../components/AnnouncementPill';
+import ParticleBackground from '../components/ParticleBackground';
 import { getNews, getEvents } from '../src/services/supabaseService';
 import { useLocalization } from '../contexts/LocalizationContext';
 import TechButton from '../components/TechButton';
@@ -70,48 +71,50 @@ const HomePage: React.FC = () => {
       <section className="relative text-center py-20 sm:py-28 md:py-32 lg:py-40 overflow-hidden mt-0 mx-0 px-4 sm:px-6 safe-area-top hero-bg">
         {/* Hero Background */}
         <div className="absolute inset-0">
-          {useVideoBackground && !videoError ? (
-            <video 
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              className="w-full h-full object-cover opacity-25"
-              onError={handleVideoError}
-            >
-              <source src="/hero-background.mp4" type="video/mp4" />
-              {/* Fallback to image if video fails to load */}
-              <img 
-                src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1920&h=1080&fit=crop&crop=center&q=80"
-                alt="High quality Scrabble board with wooden letter tiles"
+          {/* Particle background for mobile */}
+          <div className="absolute inset-0 md:hidden">
+            <ParticleBackground isMobile={true} />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/70 to-slate-950/95"></div>
+          </div>
+          
+          {/* Image/video background for desktop */}
+          <div className="hidden md:block absolute inset-0">
+            {useVideoBackground && !videoError ? (
+              <video 
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
                 className="w-full h-full object-cover opacity-25"
-                loading="eager"
-                decoding="async"
-              />
-            </video>
-          ) : (
-            <>
-              {/* Mobile background - using mobilehero.jpg */}
-              <img 
-                src="/mobilehero.jpg"
-                alt="PANASA Scrabble Tournament"
-                className="w-full h-full object-cover opacity-25 md:hidden"
-                loading="eager"
-                decoding="async"
-              />
-              {/* Desktop background - using the original image */}
-              <img 
-                src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1920&h=1080&fit=crop&crop=center&q=80"
-                alt="High quality Scrabble board with wooden letter tiles"
-                className="w-full h-full object-cover opacity-25 hidden md:block"
-                loading="eager"
-                decoding="async"
-              />
-            </>
-          )}
+                onError={handleVideoError}
+              >
+                <source src="/hero-background.mp4" type="video/mp4" />
+                {/* Fallback to image if video fails to load */}
+                <img 
+                  src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1920&h=1080&fit=crop&crop=center&q=80"
+                  alt="High quality Scrabble board with wooden letter tiles"
+                  className="w-full h-full object-cover opacity-25"
+                  loading="eager"
+                  decoding="async"
+                />
+              </video>
+            ) : (
+              <>
+                {/* Desktop background - using the original image */}
+                <img 
+                  src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1920&h=1080&fit=crop&crop=center&q=80"
+                  alt="High quality Scrabble board with wooden letter tiles"
+                  className="w-full h-full object-cover opacity-25"
+                  loading="eager"
+                  decoding="async"
+                />
+              </>
+            )}
+          </div>
+          
           {/* Smart gradient overlays for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/70 to-slate-950/95"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/70 to-slate-950/95 md:bg-gradient-to-b md:from-slate-950/90 md:via-slate-950/70 md:to-slate-950/95"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-transparent to-slate-950/60"></div>
           {/* Subtle animated overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-green-900/10 via-transparent to-cyan-900/10 animate-pulse"></div>
@@ -120,7 +123,7 @@ const HomePage: React.FC = () => {
         <div className="relative z-10 max-w-5xl mx-auto px-4 pt-4 sm:pt-0">
           {/* Announcement Pill */}
           <div className="flex justify-center -mt-4">
-            <AnnouncementPill href="/wespac-ghana-2025" text="WESPAC Ghana 2025" />
+            <AnnouncementPill text="WESPAC Ghana 2025" />
           </div>
           
           {/* Main title with enhanced styling */}
@@ -241,7 +244,7 @@ const HomePage: React.FC = () => {
                         src={
                           article.title === 'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship' 
                             ? '/kofiBingo.png' 
-                            : article.title === 'Future of African Scrabble Shines Bright as Nigeria Sweeps Youth Championship Titles'
+                            : article.title === 'Team Nigeria Dominates at the 2nd African Youth Scrabble Championship in Kenya'
                             ? '/ayscbanner.png'
                             : article.title === 'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi'
                             ? '/triumvirate.png'
@@ -249,7 +252,7 @@ const HomePage: React.FC = () => {
                         } 
                         alt={article.title} 
                         loading="lazy" 
-                        className="w-full h-64 object-cover rounded-[10px] border-2 border-white/20" // Changed to cover full width
+                        className="w-full h-64 object-cover rounded-[10px] border-2 border-white/20"
                       />
                     </div>
                     <footer className="relative z-10 p-4 text-white font-sans">
