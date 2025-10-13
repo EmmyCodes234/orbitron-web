@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { getPlayers, subscribeToPlayers } from '../src/services/supabaseService';
 import { playersData as fallbackData } from '../data/playersData';
 import { useLocalization } from '../contexts/LocalizationContext';
 
@@ -15,20 +14,73 @@ interface Player {
 
 // Country code mapping for flags
 const countryFlags: { [key: string]: string } = {
-  'Nigeria': 'ng',
-  'Ghana': 'gh',
-  'Kenya': 'ke',
-  'South Africa': 'za',
-  'Uganda': 'ug',
-  'Tanzania': 'tz',
-  'Zambia': 'zm',
-  'Botswana': 'bw',
-  'Cameroon': 'cm',
-  'Gambia': 'gm',
-  'Liberia': 'lr',
-  'Sierra Leone': 'sl',
-  'Mauritius': 'mu',
-  'Togo': 'tg'
+  'NG': 'ng',
+  'GH': 'gh',
+  'KE': 'ke',
+  'ZA': 'za',
+  'UG': 'ug',
+  'TZ': 'tz',
+  'ZM': 'zm',
+  'BW': 'bw',
+  'CM': 'cm',
+  'GM': 'gm',
+  'LR': 'lr',
+  'SL': 'sl',
+  'MU': 'mu',
+  'TG': 'tg',
+  'LB': 'lb',
+  'US': 'us',
+  'ZW': 'zw',
+  'RW': 'rw',
+  'MW': 'mw',
+  'MZ': 'mz',
+  'NA': 'na',
+  'SZ': 'sz',
+  'LS': 'ls'
+};
+
+// Function to parse RT2 file data
+const parseRT2File = (rt2Content: string): Player[] => {
+  const lines = rt2Content.split('\n');
+  const players: Player[] = [];
+  
+  // Skip the first line (header)
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+    
+    // Parse the line according to RT2 format
+    // Format: NICK COUNTRY NAME                   games rating lastPlayed
+    // Example: WJIG NGA Wellington Jighere    297 2176 20240622
+    
+    // Extract fixed parts
+    const nick = line.substring(0, 4).trim();
+    const country = line.substring(4, 8).trim();
+    
+    // Split the line by whitespace to get all parts
+    const parts = line.trim().split(/\s+/);
+    
+    // The last 3 parts are games, rating, and lastPlayed
+    const games = parseInt(parts[parts.length - 3], 10);
+    const rating = parseInt(parts[parts.length - 2], 10);
+    const lastPlayed = parts[parts.length - 1];
+    
+    // The name is everything between country and the last 3 parts
+    const nameParts = parts.slice(2, parts.length - 3);
+    const name = nameParts.join(' ');
+    
+    players.push({
+      nick,
+      country,
+      name,
+      games,
+      rating,
+      lastPlayed
+    });
+  }
+  
+  // Sort by rating descending
+  return players.sort((a, b) => b.rating - a.rating);
 };
 
 const RatingsPage: React.FC = () => {
@@ -44,23 +96,25 @@ const RatingsPage: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(25);
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  // Fetch players data from Supabase with fallback to local data
+  // Parse players data from RT2 file
   useEffect(() => {
-    const fetchPlayers = async () => {
+    const loadRT2Data = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        const players = await getPlayers();
-        
-        if (players && players.length > 0) {
-          setPlayersData(players);
+        // Try to fetch and parse the RT2 file
+        const response = await fetch('/panasa.RT2');
+        if (response.ok) {
+          const rt2Content = await response.text();
+          const parsedPlayers = parseRT2File(rt2Content);
+          setPlayersData(parsedPlayers);
         } else {
-          // Fallback to local data if Supabase fails or returns empty
+          // Fallback to local data if RT2 file cannot be loaded
           setPlayersData(fallbackData);
         }
       } catch (err) {
-        console.error('Error fetching players:', err);
+        console.error('Error loading RT2 data:', err);
         // Fallback to local data on error
         setPlayersData(fallbackData);
         setError('Failed to load player data. Showing offline data.');
@@ -69,26 +123,10 @@ const RatingsPage: React.FC = () => {
       }
     };
 
-    fetchPlayers();
+    loadRT2Data();
   }, []);
 
-  // Subscribe to real-time updates
-  useEffect(() => {
-    const unsubscribe = subscribeToPlayers(
-      (updatedPlayers) => {
-        setPlayersData(updatedPlayers);
-        setIsSubscribed(true);
-      },
-      (error) => {
-        console.error('Real-time subscription error:', error);
-        setIsSubscribed(false);
-      }
-    );
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  // Removed Supabase real-time subscription
 
   // Get unique countries for filter dropdown
   const countries = useMemo(() => {
@@ -144,6 +182,8 @@ const RatingsPage: React.FC = () => {
 
   const formatDate = (dateString: string) => {
     // Handle different date formats
+    if (!dateString) return 'N/A';
+    
     if (dateString.includes('-')) {
       // Format: YYYY-MM-DD
       const [year, month, day] = dateString.split('-');

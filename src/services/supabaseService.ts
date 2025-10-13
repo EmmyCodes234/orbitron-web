@@ -57,7 +57,7 @@ export const getPlayers = async (): Promise<Player[] | null> => {
       name: player.name,
       games: player.games,
       rating: player.rating,
-      lastPlayed: player.last_played ? new Date(player.last_played).toISOString().slice(0, 10).replace(/-/g, '') : ''
+      lastPlayed: player.last_played || ''
     }));
   } catch (error) {
     console.error('Error fetching players:', error);
