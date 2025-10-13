@@ -219,16 +219,16 @@ const ChromaGrid: React.FC<ChromaGridProps> = ({
                 />
               )}
             </div>
-            <p className="m-0 text-[0.85rem] sm:text-[0.95rem] font-medium opacity-90 mb-1">{c.subtitle}</p>
+            <p className="m-0 text-[0.85rem] sm:text-[0.95rem] font-medium opacity-90 mb-1 text-left">{c.subtitle}</p>
             {c.location && (
-              <p className="m-0 text-[0.8rem] sm:text-[0.9rem] opacity-80 flex items-center">
+              <p className="m-0 text-[0.8rem] sm:text-[0.9rem] opacity-80 flex items-center text-left">
                 <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
                 {c.location}
               </p>
             )}
-            {c.handle && <p className="m-0 text-[0.75rem] sm:text-[0.85rem] opacity-70 mt-1">{c.handle}</p>}
+            {c.handle && <p className="m-0 text-[0.75rem] sm:text-[0.85rem] opacity-70 mt-1 text-left">{c.handle}</p>}
           </footer>
         </article>
       ))}
