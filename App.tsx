@@ -14,6 +14,7 @@ import AdminPage from './pages/AdminPage';
 import PaymentsPage from './pages/PaymentsPage';
 import CollectionPage from './pages/CollectionPage';
 import ChatbotPage from './pages/ChatbotPage';
+import ElevenLabsTestPage from './pages/ElevenLabsTestPage';
 import { LocalizationProvider } from './contexts/LocalizationContext';
 
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
@@ -57,6 +58,7 @@ const AppContent: React.FC = () => {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/payments" element={<PaymentsPage />} />
           <Route path="/chatbot" element={<ChatbotPage />} />
+          <Route path="/tts-test" element={<ElevenLabsTestPage />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
         </Route>
       </Routes>

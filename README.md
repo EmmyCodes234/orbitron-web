@@ -30,7 +30,8 @@ The official website for the Pan African Scrabble Association, showcasing the pr
 - **Floating Chat Widget**: Accessible from any page on the site
 - **Real-time Streaming**: Instant responses as the AI generates them
 - **Custom Styling**: Matches the website's color scheme and design
-- **Multi-language Support**: Responds in the user's preferred language
+- **Multi-language Support**: Responds in user's preferred language
+- **Text-to-Speech**: ElevenLabs integration for spoken responses
 
 ## 🎨 UI/UX Improvements
 
@@ -134,6 +135,7 @@ The website integrates with Chatbase for an AI-powered assistant:
 - **Context Awareness**: Remembers conversation history
 - **Multi-language Support**: Answers in user's preferred language
 - **Custom Knowledge**: Trained on PANASA-specific information
+- **Text-to-Speech**: ElevenLabs integration for spoken responses
 
 ### Setup
 1. Obtain API credentials from [Chatbase Dashboard](https://www.chatbase.co/dashboard)
@@ -143,6 +145,7 @@ The website integrates with Chatbase for an AI-powered assistant:
 ### Documentation
 - [CHATBASE_INTEGRATION.md](CHATBASE_INTEGRATION.md) - Complete integration guide
 - [CHATBASE_ENV_SETUP.md](CHATBASE_ENV_SETUP.md) - Environment configuration
+- [ELEVENLABS_INTEGRATION.md](ELEVENLABS_INTEGRATION.md) - Text-to-speech setup
 
 ## 📱 Mobile Optimization
 
@@ -167,6 +170,7 @@ The website integrates with Chatbase for an AI-powered assistant:
 - **Routing**: React Router
 - **Backend**: Supabase
 - **AI Integration**: Chatbase API
+- **Text-to-Speech**: ElevenLabs API
 - **Fonts**: Orbitron, JetBrains Mono
 - **Deployment**: Netlify
 

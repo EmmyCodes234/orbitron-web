@@ -14,7 +14,7 @@ const fr = {
     payments: 'Paiements',
     activity: 'Activité',
     support: 'Support',
-    chatbot: 'Chatbot'
+    chatbot: 'PANASA Bot'
   },
 
   // Homepage

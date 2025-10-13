@@ -33,7 +33,6 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   useEffect(() => {
     if (query.trim() === '') {
       setFilteredSuggestions([]);
-      setDynamicSuggestions([]);
       return;
     }
 
@@ -52,7 +51,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     );
 
     setFilteredSuggestions(uniqueSuggestions.slice(0, 8)); // Limit to 8 suggestions
-  }, [query, suggestions, dynamicSuggestions]);
+  }, [query, dynamicSuggestions]); // Remove suggestions from dependencies since it's a static prop
 
   // Fetch dynamic suggestions with debounce
   useEffect(() => {
@@ -150,18 +149,29 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
           dynamicResults.push(...federationMatches);
         }
 
-        setDynamicSuggestions(dynamicResults);
+        // Check if component is still mounted before setting state
+        if (debounceTimer.current) {
+          setDynamicSuggestions(dynamicResults);
+        }
       } catch (error) {
         console.error('Error fetching dynamic suggestions:', error);
-        setDynamicSuggestions([]);
+        // Check if component is still mounted before setting state
+        if (debounceTimer.current) {
+          setDynamicSuggestions([]);
+        }
       } finally {
-        setIsLoading(false);
+        // Check if component is still mounted before setting state
+        if (debounceTimer.current) {
+          setIsLoading(false);
+        }
       }
     }, 300); // 300ms debounce
 
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
+        // Clear the ref to indicate component unmounted
+        debounceTimer.current = null;
       }
     };
   }, [query, language]);

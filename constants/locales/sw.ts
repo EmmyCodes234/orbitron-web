@@ -14,7 +14,7 @@ const sw = {
     payments: 'Malipo',
     activity: 'Shughuli',
     support: 'Usaidizi',
-    chatbot: 'Chatbot',
+    chatbot: 'PANASA Bot',
   },
 
   // Homepage
