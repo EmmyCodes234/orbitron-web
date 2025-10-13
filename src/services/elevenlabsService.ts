@@ -11,7 +11,7 @@ const DEFAULT_MODEL_ID = 'eleven_multilingual_v2';
 const DEFAULT_OUTPUT_FORMAT = 'mp3_44100_128';
 
 // Cache for storing recently played audio
-const audioCache = new Map<string, ArrayBuffer>();
+const audioCache = new Map<string, ReadableStream>();
 
 /**
  * Convert text to speech using ElevenLabs API
@@ -45,30 +45,9 @@ export const textToSpeech = async (text: string, voiceId?: string) => {
       if (firstKey) audioCache.delete(firstKey);
     }
     
-    // Convert ReadableStream to ArrayBuffer for caching
-    const reader = audio.getReader();
-    const chunks: Uint8Array[] = [];
-    let done = false;
-    
-    while (!done) {
-      const { value, done: readerDone } = await reader.read();
-      done = readerDone;
-      if (value) {
-        chunks.push(value);
-      }
-    }
-    
-    const audioArrayBuffer = new Uint8Array(
-      chunks.reduce<number[]>((acc, chunk) => [...acc, ...chunk], [])
-    ).buffer;
-    
-    audioCache.set(cacheKey, audioArrayBuffer);
-    return new ReadableStream({
-      start(controller) {
-        controller.enqueue(new Uint8Array(audioArrayBuffer));
-        controller.close();
-      }
-    });
+    // Store the audio stream in cache
+    audioCache.set(cacheKey, audio);
+    return audio;
   } catch (error) {
     console.error('Error generating speech:', error);
     return null;

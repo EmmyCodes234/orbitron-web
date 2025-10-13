@@ -27,11 +27,13 @@ The official website for the Pan African Scrabble Association, showcasing the pr
 - **Mobile First**: Touch-friendly interface with mobile-specific optimizations
 
 ### AI Chatbot Integration
-- **Floating Chat Widget**: Accessible from any page on the site
+- **Dedicated Chat Page**: Full-page chat interface for better user experience
 - **Real-time Streaming**: Instant responses as the AI generates them
 - **Custom Styling**: Matches the website's color scheme and design
 - **Multi-language Support**: Responds in user's preferred language
 - **Text-to-Speech**: ElevenLabs integration for spoken responses
+- **Copy Functionality**: Users can copy both questions and responses
+- **Mobile Optimized**: Responsive design for all device sizes
 
 ## 🎨 UI/UX Improvements
 
@@ -136,6 +138,8 @@ The website integrates with Chatbase for an AI-powered assistant:
 - **Multi-language Support**: Answers in user's preferred language
 - **Custom Knowledge**: Trained on PANASA-specific information
 - **Text-to-Speech**: ElevenLabs integration for spoken responses
+- **Copy Functionality**: Users can copy both questions and responses
+- **Mobile Optimized**: Responsive design for all device sizes
 
 ### Setup
 1. Obtain API credentials from [Chatbase Dashboard](https://www.chatbase.co/dashboard)
@@ -146,6 +150,7 @@ The website integrates with Chatbase for an AI-powered assistant:
 - [CHATBASE_INTEGRATION.md](CHATBASE_INTEGRATION.md) - Complete integration guide
 - [CHATBASE_ENV_SETUP.md](CHATBASE_ENV_SETUP.md) - Environment configuration
 - [ELEVENLABS_INTEGRATION.md](ELEVENLABS_INTEGRATION.md) - Text-to-speech setup
+- [ELEVENLABS_INTEGRATION_SUMMARY.md](ELEVENLABS_INTEGRATION_SUMMARY.md) - Implementation summary
 
 ## 📱 Mobile Optimization
 
