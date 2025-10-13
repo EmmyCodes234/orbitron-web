@@ -17,12 +17,20 @@ The official website for the Pan African Scrabble Association, showcasing the pr
 - **Federation Directory**: Member nations and contact information
 - **Search System**: Enhanced search with autocomplete and suggestions
 - **Multi-language Support**: English, French, and Swahili translations
+- **Contact Form**: Functional contact form with email notifications
+- **AI Chatbot**: Chatbase integration for answering user questions
 
 ### Technical Features
 - **Real-time Updates**: Live data synchronization with Supabase
 - **Internationalization**: Context-based translation system
 - **Performance Optimized**: Lazy loading, code splitting, and efficient rendering
 - **Mobile First**: Touch-friendly interface with mobile-specific optimizations
+
+### AI Chatbot Integration
+- **Floating Chat Widget**: Accessible from any page on the site
+- **Real-time Streaming**: Instant responses as the AI generates them
+- **Custom Styling**: Matches the website's color scheme and design
+- **Multi-language Support**: Responds in the user's preferred language
 
 ## 🎨 UI/UX Improvements
 
@@ -55,6 +63,7 @@ The official website for the Pan African Scrabble Association, showcasing the pr
 ### Prerequisites
 - Node.js (v16 or higher)
 - npm or yarn
+- Supabase CLI for function deployment
 
 ### Installation
 ```bash
@@ -72,6 +81,7 @@ npm run dev
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
+- `npm run supabase:deploy` - Deploy Supabase functions
 
 ## 📁 Project Structure
 ```
@@ -83,7 +93,8 @@ panasaweb/
 ├── src/                # Services and utilities
 ├── public/             # Static assets
 ├── data/               # Fallback data
-└── supabase/           # Database schemas
+├── supabase/           # Database schemas and functions
+└── docs/               # Documentation files
 ```
 
 ## 🌍 Internationalization
@@ -103,6 +114,35 @@ The website integrates with Supabase for:
 - Events management
 - News articles
 - Federation information
+- Contact form submissions
+
+### Contact Form Functionality
+
+The contact form system includes:
+1. **Frontend Form**: Collects and validates user input
+2. **Database Storage**: Stores submissions in a Supabase table
+3. **Admin Panel**: Allows admins to view all submissions
+
+See [CONTACT_FORM_SYSTEM.md](CONTACT_FORM_SYSTEM.md) for detailed documentation.
+
+## 🤖 AI Chatbot Integration
+
+The website integrates with Chatbase for an AI-powered assistant:
+
+### Features
+- **Real-time Responses**: Streaming API for instant replies
+- **Context Awareness**: Remembers conversation history
+- **Multi-language Support**: Answers in user's preferred language
+- **Custom Knowledge**: Trained on PANASA-specific information
+
+### Setup
+1. Obtain API credentials from [Chatbase Dashboard](https://www.chatbase.co/dashboard)
+2. Configure environment variables (see [CHATBASE_ENV_SETUP.md](CHATBASE_ENV_SETUP.md))
+3. Customize the chatbot in [components/ChatbaseChatbot.tsx](components/ChatbaseChatbot.tsx)
+
+### Documentation
+- [CHATBASE_INTEGRATION.md](CHATBASE_INTEGRATION.md) - Complete integration guide
+- [CHATBASE_ENV_SETUP.md](CHATBASE_ENV_SETUP.md) - Environment configuration
 
 ## 📱 Mobile Optimization
 
@@ -126,6 +166,7 @@ The website integrates with Supabase for:
 - **Styling**: Tailwind CSS, Custom CSS
 - **Routing**: React Router
 - **Backend**: Supabase
+- **AI Integration**: Chatbase API
 - **Fonts**: Orbitron, JetBrains Mono
 - **Deployment**: Netlify
 
@@ -139,4 +180,4 @@ For development inquiries, please contact the PANASA technical team.
 
 ## 📞 Support
 
-For support, contact info@panafricanscrabbleassociation.com
+For support, contact info@panafricanscrabble.com

@@ -45,7 +45,7 @@ export const MOCK_NEWS: any[] = [
     author: 'PANASA Communications',
     date: 'September 15, 2024',
     summary: 'The Pan African Scrabble Association is proud to announce that the 2025 World Scrabble Championship will be held in Accra, Ghana. This marks the first time in over a decade that the championship returns to the African continent.',
-    content: 'The Pan African Scrabble Association is proud to announce that the 2025 World Scrabble Championship will be held in Accra, Ghana. This marks the first time in over a decade that the championship returns to the African continent.\n\nThe tournament will take place from November 15-22, 2025, at the prestigious Labadi Beach Hotel. With players from over 40 nations expected to participate, anticipation is building for what promises to be a historic event.\n\n"This is a momentous occasion for African Scrabble," said PANASA President Adekoyejo Adegbesan. "Hosting the World Championship on our continent not only celebrates our rich Scrabble heritage but also showcases the world-class facilities and hospitality that Africa has to offer."\n\nRegistration details and tournament information will be released in the coming months. Stay tuned to our website and social media channels for updates.',
+    content: 'The Pan African Scrabble Association is proud to announce that the 2025 World Scrabble Championship will be held in Accra, Ghana. This marks the first time in over a decade that the championship returns to the African continent.\n\nThe tournament will take place from November 15-22, 2025, at the prestigious Labadi Beach Hotel. With players from over 40 nations expected to participate, anticipation is building for what promises to be a historic event.\n\n"This is a momentous occasion for African Scrabble," said PANASA President Adekoyejo Adegbesan. "Hosting the World Championship on our continent not only celebrates our rich Scrabble heritage but also showcases the world-class facilities and hospitalityatility that Africa has to offer."\n\nRegistration details and tournament information will be released in the coming months. Stay tuned to our website and social media channels for updates.',
     image: '/kofiBingo.png',
     published: true,
     created_at: new Date().toISOString(),
@@ -190,6 +190,21 @@ export const MOCK_PLAYERS: any[] = [
     updated_at: new Date().toISOString()
   },
 ];
+
+// Chatbase API Configuration
+export const CHATBASE_CONFIG = {
+  // Your Chatbase API key
+  API_KEY: 'a0422b95-e042-489e-afb2-dfc4c77387c9',
+  
+  // Your Chatbase chatbot ID
+  CHATBOT_ID: '6J5SNA3NVgeGUft4Yrsah',
+  
+  // Chatbase API endpoint
+  API_URL: 'https://www.chatbase.co/api/v1/chat',
+  
+  // Enable streaming for real-time responses
+  STREAMING_ENABLED: true,
+};
 
 // Updated mock resources to match Supabase schema (if needed in future)
 export const MOCK_RESOURCES: any[] = [

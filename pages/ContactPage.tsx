@@ -1,20 +1,62 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { submitContactForm } from '../src/services/supabaseService';
 import { useLocalization } from '../contexts/LocalizationContext';
 
 const ContactPage: React.FC = () => {
     const { t } = useLocalization();
     const [status, setStatus] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsSubmitting(true);
         setStatus(t('contact.sending'));
-        // Simulate form submission
-        setTimeout(() => {
+        
+        try {
+            // Get form data
+            const formData = new FormData(e.target as HTMLFormElement);
+            const name = formData.get('name') as string;
+            const email = formData.get('email') as string;
+            const message = formData.get('message') as string;
+            
+            // Validate required fields
+            if (!name || !email || !message) {
+                setStatus(t('contact.missingFields'));
+                setIsSubmitting(false);
+                setTimeout(() => setStatus(''), 5000);
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                setStatus(t('contact.invalidEmail'));
+                setIsSubmitting(false);
+                setTimeout(() => setStatus(''), 5000);
+                return;
+            }
+            
+            // Submit the contact form using the service function
+            const success = await submitContactForm({ name, email, message });
+            
+            if (!success) {
+                setStatus(t('contact.sendError'));
+                setIsSubmitting(false);
+                setTimeout(() => setStatus(''), 5000);
+                return;
+            }
+            
+            // Reset form and show success message
             setStatus(t('contact.messageSent'));
             (e.target as HTMLFormElement).reset();
+        } catch (error) {
+            console.error('Error submitting contact form:', error);
+            setStatus(t('contact.sendError'));
+        } finally {
+            setIsSubmitting(false);
             setTimeout(() => setStatus(''), 5000);
-        }, 1500);
+        }
     };
 
   return (
@@ -141,17 +183,18 @@ const ContactPage: React.FC = () => {
                   <div>
                     <button 
                       type="submit" 
-                      className="w-full relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm sm:text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-green-400 to-cyan-500 group-hover:from-green-400 group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/30 touch-target"
+                      disabled={isSubmitting}
+                      className={`w-full relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm sm:text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-green-400 to-cyan-500 group-hover:from-green-400 group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/30 touch-target ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                       <span className="w-full relative px-4 py-2.5 sm:px-5 sm:py-3 md:px-6 md:py-3.5 transition-all ease-in duration-300 bg-slate-900 rounded-lg group-hover:bg-opacity-0 text-center">
-                        {t('contact.sendMessage')}
+                        {isSubmitting ? t('contact.sending') : t('contact.sendMessage')}
                       </span>
                     </button>
                   </div>
                   
                   {status && (
-                    <div className="text-center py-2.5 sm:py-3 rounded-lg bg-green-900/30 border border-green-700/50">
-                      <p className="text-green-400 font-medium text-sm sm:text-base">{status}</p>
+                    <div className={`text-center py-2.5 sm:py-3 rounded-lg ${status.includes('successfully') || status.includes('sent') ? 'bg-green-900/30 border border-green-700/50' : 'bg-red-900/30 border border-red-700/50'}`}>
+                      <p className={`font-medium text-sm sm:text-base ${status.includes('successfully') || status.includes('sent') ? 'text-green-400' : 'text-red-400'}`}>{status}</p>
                     </div>
                   )}
                 </form>

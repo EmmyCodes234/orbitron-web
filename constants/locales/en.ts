@@ -13,7 +13,8 @@ const en = {
     admin: 'Admin',
     payments: 'Payments',
     activity: 'Activity',
-    support: 'Support'
+    support: 'Support',
+    chatbot: 'Chatbot'
   },
 
   // Homepage
@@ -149,7 +150,10 @@ const en = {
     message: 'Message',
     sendMessage: 'Send Message',
     sending: 'Sending...',
-    messageSent: 'Your message has been sent successfully!'
+    messageSent: 'Your message has been sent successfully!',
+    sendError: 'An error occurred while sending your message. Please try again.',
+    missingFields: 'Please fill in all required fields.',
+    invalidEmail: 'Please enter a valid email address.'
   },
 
   // Admin Page

@@ -13,7 +13,8 @@ const sw = {
     admin: 'Msimamizi',
     payments: 'Malipo',
     activity: 'Shughuli',
-    support: 'Usaidizi'
+    support: 'Usaidizi',
+    chatbot: 'Chatbot',
   },
 
   // Homepage
@@ -149,7 +150,10 @@ const sw = {
     message: 'Ujumbe',
     sendMessage: 'Tuma Ujumbe',
     sending: 'Inatuma...',
-    messageSent: 'Ujumbe wako umetumwa kwa mafanikio!'
+    messageSent: 'Ujumbe wako umetumwa kwa mafanikio!',
+    sendError: 'Hitilafu imetokea wakati wa kutuma ujumbe wako. Tafadhali jaribu tena.',
+    missingFields: 'Tafadhali jaza sehemu zote zinazohitajika.',
+    invalidEmail: 'Tafadhali ingiza anwani ya barua pepe inayofaa.'
   },
 
   // Admin Page

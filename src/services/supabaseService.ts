@@ -25,6 +25,15 @@ interface SupabasePlayer {
   updated_at: string;
 }
 
+// Define the contact submission interface
+export interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  created_at: string;
+}
+
 // Real-time subscription types
 export type SubscriptionCallback<T> = (data: T[]) => void;
 export type SubscriptionErrorCallback = (error: Error) => void;
@@ -51,7 +60,7 @@ export const getPlayers = async (): Promise<Player[] | null> => {
       return null;
     }
     
-    return data.map((player: SupabasePlayer) => ({
+    return data.map((player: any) => ({
       nick: player.nick,
       country: player.country,
       name: player.name,
@@ -61,6 +70,60 @@ export const getPlayers = async (): Promise<Player[] | null> => {
     }));
   } catch (error) {
     console.error('Error fetching players:', error);
+    return null;
+  }
+};
+
+// Contact submission operations
+export const submitContactForm = async (submission: Omit<ContactSubmission, 'id' | 'created_at'>): Promise<boolean> => {
+  try {
+    // Check if supabase client is available
+    if (!supabase) {
+      console.error('Supabase client not available - check your environment variables');
+      return false;
+    }
+    
+    const { error } = await (supabase.from('contact_submissions') as any)
+      .insert({
+        name: submission.name,
+        email: submission.email,
+        message: submission.message,
+        created_at: new Date().toISOString()
+      });
+    
+    if (error) {
+      console.error('Error submitting contact form:', error);
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error submitting contact form:', error);
+    return false;
+  }
+};
+
+// Get contact submissions (for admin panel)
+export const getContactSubmissions = async (): Promise<ContactSubmission[] | null> => {
+  try {
+    // Check if supabase client is available
+    if (!supabase) {
+      console.error('Supabase client not available - check your environment variables');
+      return null;
+    }
+    
+    const { data, error } = await (supabase.from('contact_submissions') as any)
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching contact submissions:', error);
+      return null;
+    }
+    
+    return data as ContactSubmission[];
+  } catch (error) {
+    console.error('Error fetching contact submissions:', error);
     return null;
   }
 };
@@ -286,7 +349,7 @@ export const getNews = async (language: string = 'en'): Promise<any[] | null> =>
   try {
     // Check if supabase client is available
     if (!supabase) {
-      // Filter mock data by language
+      // Return mock data when Supabase is not available
       const filteredNews = MOCK_NEWS.filter(article => article.language === language);
       // If no articles found for specific language, fall back to English
       return filteredNews.length > 0 ? filteredNews : MOCK_NEWS.filter(article => article.language === 'en');

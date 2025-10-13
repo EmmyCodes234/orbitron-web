@@ -13,6 +13,7 @@ import SearchResultsPage from './pages/SearchResultsPage';
 import AdminPage from './pages/AdminPage';
 import PaymentsPage from './pages/PaymentsPage';
 import CollectionPage from './pages/CollectionPage';
+import ChatbotPage from './pages/ChatbotPage';
 import { LocalizationProvider } from './contexts/LocalizationContext';
 
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
@@ -39,9 +40,9 @@ const AppContent: React.FC = () => {
   return (
     <>
       <ScrollToTop />
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/ratings" element={<RatingsPage />} />
           <Route path="/news" element={<NewsPage />} />
@@ -55,9 +56,10 @@ const AppContent: React.FC = () => {
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/payments" element={<PaymentsPage />} />
+          <Route path="/chatbot" element={<ChatbotPage />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
-        </Routes>
-      </Layout>
+        </Route>
+      </Routes>
     </>
   );
 };

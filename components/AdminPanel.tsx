@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../src/supabaseClient';
+import { getContactSubmissions } from '../src/services/supabaseService';
+import AdminContactSubmissions from './AdminContactSubmissions';
 
 interface AdminPanelProps {
   onClose: () => void;
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
-  const [activeTab, setActiveTab] = useState<'players' | 'events' | 'news' | 'federations'>('players');
+  const [activeTab, setActiveTab] = useState<'players' | 'events' | 'news' | 'federations' | 'contact'>('players');
   const [players, setPlayers] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [news, setNews] = useState<any[]>([]);
   const [federations, setFederations] = useState<any[]>([]);
+  const [contactSubmissions, setContactSubmissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -62,6 +65,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
         if (federationsError) throw federationsError;
         setFederations(federationsData || []);
+
+        // Fetch contact submissions using the service function
+        const contactData = await getContactSubmissions();
+        if (contactData) {
+          setContactSubmissions(contactData);
+        }
       } catch (err) {
         setError('Error fetching data: ' + (err as Error).message);
         console.error('Admin panel error:', err);
@@ -96,6 +105,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
         setNews(news.filter(item => item.id !== id));
       } else if (table === 'federations') {
         setFederations(federations.filter(item => item.id !== id));
+      } else if (table === 'contact_submissions') {
+        setContactSubmissions(contactSubmissions.filter(item => item.id !== id));
       }
     } catch (err) {
       setError('Error deleting item: ' + (err as Error).message);
@@ -172,6 +183,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 }`}
               >
                 Federations ({federations.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('contact')}
+                className={`py-3 px-4 rounded-lg font-bold text-sm sm:text-base transition-all duration-300 ${
+                  activeTab === 'contact'
+                    ? 'bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-400 border border-blue-400/30'
+                    : 'text-gray-400 hover:text-gray-300 hover:bg-slate-800/50'
+                }`}
+              >
+                Contact ({contactSubmissions.length})
               </button>
             </nav>
           </div>
@@ -316,6 +337,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     ))}
                   </tbody>
                 </table>
+              )}
+
+              {activeTab === 'contact' && (
+                <AdminContactSubmissions />
               )}
             </div>
           )}
