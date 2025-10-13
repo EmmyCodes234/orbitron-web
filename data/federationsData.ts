@@ -107,7 +107,7 @@ export const MOCK_FEDERATIONS = [
     id: '9',
     country: 'Cameroon',
     name: 'Cameroon Scrabble Federation',
-    president: 'Jean-Paul Mbarga',
+    president: 'Shofola Chris',
     secretary: null,
     email: 'info@cameroonscrabble.org',
     phone: '+237 677 123 456',

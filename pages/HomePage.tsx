@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import FlagLoop from '../components/FlagLoop';
+import AnnouncementPill from '../components/AnnouncementPill';
 import { getNews, getEvents } from '../src/services/supabaseService';
 import { useLocalization } from '../contexts/LocalizationContext';
 import TechButton from '../components/TechButton';
@@ -116,7 +117,12 @@ const HomePage: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-green-900/10 via-transparent to-cyan-900/10 animate-pulse"></div>
         </div>
         
-        <div className="relative z-10 max-w-5xl mx-auto px-4 pt-8 sm:pt-0">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 pt-4 sm:pt-0">
+          {/* Announcement Pill */}
+          <div className="flex justify-center -mt-4">
+            <AnnouncementPill href="/wespac-ghana-2025" text="WESPAC Ghana 2025" />
+          </div>
+          
           {/* Main title with enhanced styling */}
           <h1 className="hero-title font-orbitron text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 mb-5 sm:mb-6 md:mb-7 animate-fade-in-up leading-tight tracking-tight">
             {t('home.title')}
@@ -263,51 +269,7 @@ const HomePage: React.FC = () => {
         {/* Divider with tech feel */}
         <div className="tech-divider"></div>
 
-        {/* Upcoming Events Section */}
-        <section className="animate-slide-in-right opacity-0 content-group" style={{ animationDelay: '4s', animationFillMode: 'forwards' }}>
-          <div className="flex items-center justify-between mb-6 sm:mb-8 md:mb-10">
-            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-extrabold text-left text-gray-100 section-title">
-              {t('home.upcomingEvents')}
-            </h2>
-            <Link to="/events" className="text-green-400 hover:text-cyan-400 text-sm sm:text-base font-bold flex items-center group transition-colors duration-300 ml-auto touch-target">
-              {t('home.viewAll')}
-              <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 7l-8 8-4-4-6 6" />
-              </svg>
-            </Link>
-          </div>
-          {loading ? (
-            <div className="flex justify-center items-center h-32 sm:h-40">
-              <div className="animate-spin rounded-full h-8 w-8 sm:h-10 sm:w-10 border-b-2 border-green-400"></div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-7 lg:gap-9">
-              {upcomingEvents.map((event, index) => (
-                <div 
-                  key={event.id} 
-                  className={`hover-lift animate-fade-in-up opacity-0 stagger-${index + 1}`}
-                  style={{ animationDelay: `${4.5 + index * 0.2}s`, animationFillMode: 'forwards' }}
-                >
-                  <Card
-                    title={event.title}
-                    subtitle={`${event.date} | ${event.location}`}
-                    description={event.description.substring(0, 150) + '...'}
-                    linkTo={`/events/${event.id}`}
-                    imageUrl={
-                      event.title === 'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship' 
-                        ? '/kofiBingo.png' 
-                        : event.title === 'Future of African Scrabble Shines Bright as Nigeria Sweeps Youth Championship Titles'
-                        ? '/ayscbanner.png'
-                        : event.title === 'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi'
-                        ? '/triumvirate.png'
-                        : event.image
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+        {/* Upcoming Events Section - REMOVED as requested */}
       </div>
     </div>
   );
