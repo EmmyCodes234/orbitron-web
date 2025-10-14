@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getChatbaseConfig, ChatbaseConfig } from '../src/config/chatbase';
-import { speakText, stopAudio } from '../src/services/elevenlabsService';
 
 interface Message {
   content: string;
@@ -39,13 +38,10 @@ const ChatbaseChatbot: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<number | null>(null);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [speakingMessageId, setSpeakingMessageId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const isUserAtBottom = useRef(true);
   const shouldAutoScroll = useRef(true);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Get configuration from environment
   const config: ChatbaseConfig = getChatbaseConfig();
@@ -121,46 +117,6 @@ const ChatbaseChatbot: React.FC = () => {
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
-  };
-
-  // Function to speak message using ElevenLabs
-  const speakMessage = async (text: string, index: number) => {
-    try {
-      // Stop any currently playing audio
-      if (audioRef.current) {
-        stopAudio(audioRef.current);
-        audioRef.current = null;
-      }
-      
-      setIsSpeaking(true);
-      setSpeakingMessageId(index);
-      
-      const audio = await speakText(text);
-      if (audio) {
-        audioRef.current = audio;
-        console.log('Successfully spoke message');
-        
-        // Reset speaking state when audio ends
-        audio.addEventListener('ended', () => {
-          setIsSpeaking(false);
-          setSpeakingMessageId(null);
-        });
-      }
-    } catch (error) {
-      console.error('Error speaking message:', error);
-      setIsSpeaking(false);
-      setSpeakingMessageId(null);
-    }
-  };
-  
-  // Function to stop speaking
-  const stopSpeaking = () => {
-    if (audioRef.current) {
-      stopAudio(audioRef.current);
-      audioRef.current = null;
-    }
-    setIsSpeaking(false);
-    setSpeakingMessageId(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -276,7 +232,7 @@ const ChatbaseChatbot: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Messages container - Improved design with better scrolling and mobile responsiveness */}
+      {/* Messages container - Improved design with better scrolling */}
       <div 
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto p-2 sm:p-4 md:p-6 space-y-3 sm:space-y-4"
@@ -342,33 +298,6 @@ const ChatbaseChatbot: React.FC = () => {
                           <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                         </svg>
                         <span className="text-xs">Copy</span>
-                      </>
-                    )}
-                  </button>
-                  
-                  {/* Speak button */}
-                  <button
-                    onClick={() => speakMessage(message.content, index)}
-                    disabled={isSpeaking}
-                    className={`flex items-center text-xs text-gray-400 hover:text-gray-200 transition-colors ${
-                      isSpeaking ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    aria-label="Speak message"
-                  >
-                    {speakingMessageId === index && isSpeaking ? (
-                      <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M6 3a1 1 0 011 1v10a1 1 0 11-2 0V4a1 1 0 011-1zm12 6a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm-6 3a1 1 0 100 2h.01a1 1 0 100-2H12zm-4-2a1 1 0 011 1v6a1 1 0 11-2 0V8a1 1 0 011-1zm8 0a1 1 0 011 1v6a1 1 0 11-2 0V8a1 1 0 011-1z" clipRule="evenodd" />
-                          <path d="M5 4a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V5a1 1 0 00-1-1H5z" />
-                        </svg>
-                        <span className="text-xs">Stop</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM12.293 7.293a1 1 0 011.414 0L15 8.586l1.293-1.293a1 1 0 111.414 1.414L16.414 10l1.293 1.293a1 1 0 01-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 01-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-xs">Speak</span>
                       </>
                     )}
                   </button>

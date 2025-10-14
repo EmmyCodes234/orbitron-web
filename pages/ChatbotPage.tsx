@@ -7,10 +7,13 @@ const ChatbotPage: React.FC = () => {
     <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col">
       {/* Main Content - Improved ChatGPT-like Interface */}
       <main className="flex-grow flex flex-col">
-        {/* Chat Header - Enhanced Design without logo */}
+        {/* Chat Header - Enhanced Design with logo restored */}
         <div className="border-b border-gray-700/50 bg-gray-800 py-3 px-4 sm:py-4 sm:px-6">
           <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div className="flex items-center space-x-3 sm:space-x-4">
+              <div className="flex-shrink-0">
+                <img src="/panasa-logo.png" alt="PANASA Logo" className="h-8 sm:h-10 w-auto" />
+              </div>
               <div>
                 <h1 className="text-base sm:text-lg font-semibold">PANASA Bot</h1>
                 <p className="text-xs text-gray-400">WESPA Scrabble rules expert</p>

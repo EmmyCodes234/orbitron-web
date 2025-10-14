@@ -6,11 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:netlify": "node scripts/netlify-build.js",
-    "postinstall": "node scripts/postinstall.js",
     "preview": "vite preview",
-    "supabase:deploy": "supabase functions deploy contact",
-    "test:build": "node scripts/test-build.js"
+    "supabase:deploy": "supabase functions deploy contact"
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^8.9.2",
@@ -24,23 +21,15 @@
     "react-tsparticles": "^2.12.0",
     "tsparticles": "^2.12.0",
     "tsparticles-slim": "^2.12.0",
-    "@elevenlabs/elevenlabs-js": "^2.18.0",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
-    "@esbuild/linux-x64": "^0.24.0",
-    "@rollup/rollup-linux-x64-gnu": "^4.24.0",
     "@tailwindcss/postcss": "^4.1.14",
     "@types/node": "^22.14.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.0",
-    "esbuild": "^0.24.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
-  },
-  "optionalDependencies": {
-    "@esbuild/linux-x64": "^0.24.0",
-    "@rollup/rollup-linux-x64-gnu": "^4.24.0"
   }
 }

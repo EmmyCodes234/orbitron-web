@@ -21,12 +21,10 @@ export default defineConfig(({ mode }) => {
         outDir: 'dist',
         assetsDir: 'assets',
         rollupOptions: {
-          external: ['node:child_process', 'node:stream', 'crypto'], // Externalize Node.js modules for browser compatibility
           output: {
             manualChunks: {
               vendor: ['react', 'react-dom', 'react-router-dom'],
-              ui: ['@supabase/supabase-js', 'gsap'],
-              audio: ['@elevenlabs/elevenlabs-js']
+              ui: ['@supabase/supabase-js', 'gsap']
             }
           }
         }
@@ -35,8 +33,7 @@ export default defineConfig(({ mode }) => {
       base: '/',
       // Optimize for production
       optimizeDeps: {
-        include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js', '@elevenlabs/elevenlabs-js'],
-        exclude: ['@rollup/rollup-linux-x64-gnu', '@esbuild/linux-x64']
+        include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js']
       }
     };
 });
