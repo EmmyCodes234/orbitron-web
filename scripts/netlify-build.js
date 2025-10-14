@@ -7,7 +7,7 @@ console.log('Running Netlify build script...');
 try {
   // Install optional dependencies explicitly
   console.log('Installing optional dependencies...');
-  execSync('npm install @rollup/rollup-linux-x64-gnu --no-save', { stdio: 'inherit' });
+  execSync('npm install @rollup/rollup-linux-x64-gnu @esbuild/linux-x64 --no-save', { stdio: 'inherit' });
 } catch (installError) {
   console.warn('Warning: Failed to install optional dependencies:', installError.message);
   console.log('Continuing with build process...');
