@@ -31,7 +31,6 @@ The official website for the Pan African Scrabble Association, showcasing the pr
 - **Real-time Streaming**: Instant responses as the AI generates them
 - **Custom Styling**: Matches the website's color scheme and design
 - **Multi-language Support**: Responds in user's preferred language
-- **Text-to-Speech**: ElevenLabs integration for spoken responses
 - **Copy Functionality**: Users can copy both questions and responses
 - **Mobile Optimized**: Responsive design for all device sizes
 
@@ -83,6 +82,7 @@ npm run dev
 ### Available Scripts
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
+- `npm run build:netlify` - Build for Netlify deployment
 - `npm run preview` - Preview production build
 - `npm run supabase:deploy` - Deploy Supabase functions
 
@@ -137,7 +137,6 @@ The website integrates with Chatbase for an AI-powered assistant:
 - **Context Awareness**: Remembers conversation history
 - **Multi-language Support**: Answers in user's preferred language
 - **Custom Knowledge**: Trained on PANASA-specific information
-- **Text-to-Speech**: ElevenLabs integration for spoken responses
 - **Copy Functionality**: Users can copy both questions and responses
 - **Mobile Optimized**: Responsive design for all device sizes
 
@@ -149,8 +148,6 @@ The website integrates with Chatbase for an AI-powered assistant:
 ### Documentation
 - [CHATBASE_INTEGRATION.md](CHATBASE_INTEGRATION.md) - Complete integration guide
 - [CHATBASE_ENV_SETUP.md](CHATBASE_ENV_SETUP.md) - Environment configuration
-- [ELEVENLABS_INTEGRATION.md](ELEVENLABS_INTEGRATION.md) - Text-to-speech setup
-- [ELEVENLABS_INTEGRATION_SUMMARY.md](ELEVENLABS_INTEGRATION_SUMMARY.md) - Implementation summary
 
 ## 📱 Mobile Optimization
 
@@ -182,7 +179,6 @@ The website is configured for deployment on Netlify with the following settings:
 Configure the following environment variables in Netlify:
 - `VITE_CHATBASE_API_KEY` - Chatbase API key
 - `VITE_CHATBASE_CHATBOT_ID` - Chatbase chatbot ID
-- `VITE_ELEVENLABS_API_KEY` - ElevenLabs API key (optional)
 
 #### Build Settings
 - **Build command**: `npm run build`
@@ -190,9 +186,9 @@ Configure the following environment variables in Netlify:
 
 ### Troubleshooting
 Common deployment issues and solutions:
-- **Rollup dependency errors**: See [DEPLOYMENT_FIXES_SUMMARY.md](DEPLOYMENT_FIXES_SUMMARY.md)
-- **Optional dependency conflicts**: Use `legacy-peer-deps=true` in `.npmrc`
-- **Build failures**: See [NETLIFY_DEPLOYMENT_TROUBLESHOOTING.md](NETLIFY_DEPLOYMENT_TROUBLESHOOTING.md)
+- **Missing script errors**: Ensure `build:netlify` script exists in package.json
+- **Build failures**: Check Netlify logs for specific error messages
+- **Runtime errors**: Verify environment variables are correctly set
 
 ## 🛠️ Technologies Used
 
@@ -201,7 +197,6 @@ Common deployment issues and solutions:
 - **Routing**: React Router
 - **Backend**: Supabase
 - **AI Integration**: Chatbase API
-- **Text-to-Speech**: ElevenLabs API
 - **Fonts**: Orbitron, JetBrains Mono
 - **Deployment**: Netlify
 
