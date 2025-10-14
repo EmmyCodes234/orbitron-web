@@ -35,7 +35,8 @@ export default defineConfig(({ mode }) => {
       base: '/',
       // Optimize for production
       optimizeDeps: {
-        include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js', '@elevenlabs/elevenlabs-js']
+        include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js', '@elevenlabs/elevenlabs-js'],
+        exclude: ['@rollup/rollup-linux-x64-gnu']
       }
     };
 });

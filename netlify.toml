@@ -1,13 +1,15 @@
 [build]
-  command = "npm run build"
+  command = "npm run build:netlify"
   publish = "dist"
   functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "22"
   NODE_OPTIONS = "--max_old_space_size=4096"
-  NPM_FLAGS = "--prefer-offline --no-audit --no-fund"
+  NPM_FLAGS = "--prefer-offline --no-audit --no-fund --legacy-peer-deps"
   CI = "true"
+  npm_config_arch = "x64"
+  npm_config_platform = "linux"
 
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
