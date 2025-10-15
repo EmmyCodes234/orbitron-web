@@ -41,13 +41,20 @@ const AppContent: React.FC = () => {
     <>
       <ScrollToTop />
       <Routes>
+        {/* --- FIX IMPLEMENTATION ---
+          The /chatbot route is moved outside of the Layout route.
+          It now renders <ChatbotPage /> directly, preventing the 
+          <Layout /> component (and thus the main site header) from being rendered.
+        */}
+        <Route path="/chatbot" element={<ChatbotPage />} />
+        
+        {/* All other pages remain nested within the Layout route */}
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/ratings" element={<RatingsPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:id" element={<NewsPage />} />
-          {/* Removed Events routes as requested */}
           <Route path="/federations" element={<FederationsPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
           <Route path="/gallery/:collectionId" element={<CollectionPage />} />
@@ -56,7 +63,6 @@ const AppContent: React.FC = () => {
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/payments" element={<PaymentsPage />} />
-          <Route path="/chatbot" element={<ChatbotPage />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
         </Route>
       </Routes>
