@@ -49,14 +49,6 @@ const parseRT2File = (rt2Content: string): Player[] => {
     const line = lines[i];
     if (!line.trim()) continue;
     
-    // Parse the line according to RT2 format
-    // Format: NICK COUNTRY NAME                   games rating lastPlayed
-    // Example: WJIG NGA Wellington Jighere    297 2176 20240622
-    
-    // Extract fixed parts
-    const nick = line.substring(0, 4).trim();
-    const country = line.substring(4, 8).trim();
-    
     // Split the line by whitespace to get all parts
     const parts = line.trim().split(/\s+/);
     
@@ -70,8 +62,8 @@ const parseRT2File = (rt2Content: string): Player[] => {
     const name = nameParts.join(' ');
     
     players.push({
-      nick,
-      country,
+      nick: parts[0],
+      country: parts[1],
       name,
       games,
       rating,
@@ -167,7 +159,7 @@ const RatingsPage: React.FC = () => {
   const paginatedPlayers = filteredAndSortedPlayers.slice(startIndex, startIndex + itemsPerPage);
 
   // Reset to first page when filters change
-  useMemo(() => {
+  useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, filterCountry]);
 
@@ -1361,3 +1353,9 @@ const RatingsPage: React.FC = () => {
 };
 
 export default RatingsPage;
+
+
+
+
+
+
