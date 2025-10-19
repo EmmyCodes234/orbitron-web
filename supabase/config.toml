@@ -1,0 +1,9 @@
+# Supabase configuration file
+
+[project]
+# Project ID - this will be set when you link your project
+id = ""
+
+[functions.contact]
+# Configuration for the contact function
+verify_jwt = false
