@@ -14,7 +14,7 @@ const en = {
     payments: 'Payments',
     activity: 'Activity',
     support: 'Support',
-    chatbot: 'PANASA Bot'
+    tools: 'Tools'
   },
 
   // Homepage
@@ -33,6 +33,54 @@ const en = {
     viewAll: 'View All'
   },
 
+  // Tools Page
+  tools: {
+    title: 'Scrabble Tools',
+    panasaBot: {
+      description: 'Interact with our AI-powered Scrabble assistant for rules, strategies, and word validation.',
+      launch: 'Launch PANASA Bot'
+    },
+    wordChecker: {
+      title: 'Word Checker',
+      heading: 'Validate Scrabble Words',
+      description: 'Check if a word is valid in the CSW24 dictionary',
+      cardDescription: 'Verify if a word is valid in the official Scrabble dictionary',
+      placeholder: 'Enter a word...',
+      check: 'Check',
+      checking: 'Checking...',
+      valid: 'VALID',
+      invalid: 'INVALID',
+      isValidWord: 'is a valid word',
+      isNotValidWord: 'is not a valid word',
+      poweredBy: 'Powered by CSW24 (Collins Scrabble Words 2024) dictionary',
+      processing: 'Processing...',
+      launch: 'Launch Word Checker'
+    },
+    anagramSolver: {
+      title: 'Anagram Solver',
+      heading: 'Solve Scrabble Anagrams',
+      description: 'Find all valid words that can be made from the given letters',
+      cardDescription: 'Discover all possible words from a set of letters',
+      placeholder: 'Enter letters...',
+      blankTileHint: 'Use "?" for blank tiles',
+      solve: 'Solve',
+      solving: 'Solving...',
+      results: 'Results',
+      letterCount: '{count} letter words',
+      wordCount: '({count} words)',
+      oneWord: '({count} word)',
+      noWordsFound: 'No valid words found',
+      poweredBy: 'Powered by CSW24 (Collins Scrabble Words 2024) dictionary',
+      processing: 'Processing...',
+      launch: 'Launch Anagram Solver'
+    },
+    dictionary: {
+      title: 'Dictionary',
+      description: 'All tools are powered by the official Collins Scrabble Words 2024 (CSW24) dictionary containing over 270,000 words.',
+      poweredBy: 'Powered by CSW24 (Collins Scrabble Words 2024) dictionary'
+    }
+  },
+
   // Ratings Page
   ratings: {
     title: 'Player Ratings',
@@ -49,7 +97,24 @@ const en = {
     country: 'Country',
     games: 'Games',
     lastPlayed: 'Last Played',
-    noPlayers: 'No players found matching your criteria.'
+    noPlayers: 'No players found matching your criteria.',
+    noResultsFound: 'No players found for "{term}"',
+    noResultsSuggestions: 'Try searching for:',
+    suggestionDifferentSpelling: 'A different spelling',
+    suggestionPlayerNickname: 'A player\'s nickname',
+    suggestionClearFilters: 'Clearing filters',
+    showingAll: 'Showing all {count} results',
+    firstPage: 'First page',
+    previousPage: 'Previous page',
+    nextPage: 'Next page',
+    lastPage: 'Last page',
+    page: 'Page',
+    noSuggestions: 'No suggestions available',
+    searching: 'Searching...',
+    sortBy: 'Sort by',
+    sortOrder: 'Sort order',
+    ascending: 'Ascending',
+    descending: 'Descending'
   },
 
   // Events Page

@@ -22,7 +22,7 @@ const LanguageSelector: React.FC = () => {
       <select
         value={language}
         onChange={handleLanguageChange}
-        className="appearance-none bg-slate-800/60 border border-slate-700/30 text-white rounded-lg py-1.5 pl-2.5 pr-6 text-xs font-medium backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:bg-slate-700/60 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent cursor-pointer min-h-[36px] min-w-[36px]"
+        className="appearance-none bg-slate-800/60 border border-slate-700/30 text-white rounded-lg py-1.5 pl-2 pr-5 text-xs font-medium backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:bg-slate-700/60 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent cursor-pointer min-h-[36px] min-w-[36px]"
       >
         <option value="en">EN</option>
         <option value="fr">FR</option>

@@ -14,7 +14,7 @@ const fr = {
     payments: 'Paiements',
     activity: 'Activité',
     support: 'Support',
-    chatbot: 'PANASA Bot'
+    tools: 'Outils'
   },
 
   // Homepage
@@ -33,6 +33,54 @@ const fr = {
     viewAll: 'Voir Tout'
   },
 
+  // Tools Page
+  tools: {
+    title: 'Outils de Scrabble',
+    panasaBot: {
+      description: 'Interagissez avec notre assistant de Scrabble alimenté par l\'IA pour les règles, les stratégies et la validation des mots.',
+      launch: 'Lancer PANASA Bot'
+    },
+    wordChecker: {
+      title: 'Vérificateur de Mots',
+      heading: 'Valider les Mots de Scrabble',
+      description: 'Vérifiez si un mot est valide dans le dictionnaire CSW24',
+      cardDescription: 'Vérifiez si un mot est valide dans le dictionnaire officiel de Scrabble',
+      placeholder: 'Entrez un mot...',
+      check: 'Vérifier',
+      checking: 'Vérification...',
+      valid: 'VALIDE',
+      invalid: 'INVALIDE',
+      isValidWord: 'est un mot valide',
+      isNotValidWord: 'n\'est pas un mot valide',
+      poweredBy: 'Alimenté par le dictionnaire CSW24 (Collins Scrabble Words 2024)',
+      processing: 'Traitement...',
+      launch: 'Lancer le Vérificateur de Mots'
+    },
+    anagramSolver: {
+      title: 'Solveur d\'Anagrammes',
+      heading: 'Résoudre les Anagrammes de Scrabble',
+      description: 'Trouvez tous les mots valides qui peuvent être formés avec les lettres données',
+      cardDescription: 'Découvrez tous les mots possibles à partir d\'un ensemble de lettres',
+      placeholder: 'Entrez des lettres...',
+      blankTileHint: 'Utilisez "?" pour les tuiles blanches',
+      solve: 'Résoudre',
+      solving: 'Résolution...',
+      results: 'Résultats',
+      letterCount: '{count} mots de lettres',
+      wordCount: '({count} mots)',
+      oneWord: '({count} mot)',
+      noWordsFound: 'Aucun mot valide trouvé',
+      poweredBy: 'Alimenté par le dictionnaire CSW24 (Collins Scrabble Words 2024)',
+      processing: 'Traitement...',
+      launch: 'Lancer le Solveur d\'Anagrammes'
+    },
+    dictionary: {
+      title: 'Dictionnaire',
+      description: 'Tous les outils sont alimentés par le dictionnaire officiel Collins Scrabble Words 2024 (CSW24) contenant plus de 270 000 mots.',
+      poweredBy: 'Alimenté par le dictionnaire CSW24 (Collins Scrabble Words 2024)'
+    }
+  },
+
   // Ratings Page
   ratings: {
     title: 'Classements des Joueurs',
@@ -49,7 +97,19 @@ const fr = {
     country: 'Pays',
     games: 'Parties',
     lastPlayed: 'Dernière Partie',
-    noPlayers: 'Aucun joueur trouvé correspondant à vos critères.'
+    noPlayers: 'Aucun joueur trouvé correspondant à vos critères.',
+    noResultsFound: 'Aucun joueur trouvé pour "{term}"',
+    noResultsSuggestions: 'Essayez de rechercher :',
+    suggestionDifferentSpelling: 'Une orthographe différente',
+    suggestionPlayerNickname: 'Le surnom d\'un joueur',
+    suggestionClearFilters: 'Effacer les filtres',
+    showingAll: 'Affichage de tous les {count} résultats',
+    firstPage: 'Première page',
+    previousPage: 'Page précédente',
+    nextPage: 'Page suivante',
+    lastPage: 'Dernière page',
+    page: 'Page',
+    noSuggestions: 'Aucune suggestion disponible'
   },
 
   // Events Page

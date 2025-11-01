@@ -10,41 +10,70 @@ function parseRT2File(filePath) {
   // Skip the header line
   const dataLines = lines.slice(1).filter(line => line.trim() !== '');
   
+  // Parse all players first
+  const players = dataLines.map(line => {
+    // Parse the line using regex to handle variable spacing
+    // Format: NICK COUNTRY NAME                   games rating lastPlayed
+    const regex = /^(\w{4})\s+(\w{3})\s+(.+?)\s+(\d+)\s+(\d+)\s+(\d+)$/;
+    const match = line.match(regex);
+    
+    if (match) {
+      const [, nick, country, name, games, rating, lastPlayed] = match;
+      return {
+        nick,
+        country,
+        name,
+        games: parseInt(games, 10),
+        rating: parseInt(rating, 10),
+        lastPlayed
+      };
+    }
+    
+    // If line doesn't match the expected format, skip it
+    return null;
+  }).filter(Boolean); // Remove null values
+  
+  // Handle duplicate nicknames by making them unique
+  const nickCounts = {};
+  const uniquePlayers = players.map(player => {
+    const count = nickCounts[player.nick] || 0;
+    nickCounts[player.nick] = count + 1;
+    
+    // If this is the first occurrence, keep the original nick
+    // If this is a duplicate, append a number to make it unique
+    if (count > 0) {
+      return {
+        ...player,
+        nick: `${player.nick}${count}`
+      };
+    }
+    
+    return player;
+  });
+  
   // Generate INSERT statements
   let insertStatements = '';
   const batchSize = 100; // Process in batches to avoid overwhelming the database
   let batchCount = 0;
   
   // Process data in batches
-  for (let i = 0; i < dataLines.length; i += batchSize) {
-    const batch = dataLines.slice(i, i + batchSize);
+  for (let i = 0; i < uniquePlayers.length; i += batchSize) {
+    const batch = uniquePlayers.slice(i, i + batchSize);
     
     // Start the INSERT statement for this batch
     insertStatements += `-- Batch ${batchCount + 1}\n`;
     insertStatements += 'INSERT INTO public.players (nick, country, name, games, rating, last_played) VALUES\n';
     
-    // Process each line in the batch
-    const values = batch.map(line => {
-      // Parse the line using regex to handle variable spacing
-      // Format: NICK COUNTRY NAME                   games rating lastPlayed
-      const regex = /^(\w{4})\s+(\w{3})\s+(.+?)\s+(\d+)\s+(\d+)\s+(\d+)$/;
-      const match = line.match(regex);
+    // Process each player in the batch
+    const values = batch.map(player => {
+      // Format the date from YYYYMMDD to YYYY-MM-DD
+      const formattedDate = `${player.lastPlayed.substring(0, 4)}-${player.lastPlayed.substring(4, 6)}-${player.lastPlayed.substring(6, 8)}`;
       
-      if (match) {
-        const [, nick, country, name, games, rating, lastPlayed] = match;
-        
-        // Format the date from YYYYMMDD to YYYY-MM-DD
-        const formattedDate = `${lastPlayed.substring(0, 4)}-${lastPlayed.substring(4, 6)}-${lastPlayed.substring(6, 8)}`;
-        
-        // Escape single quotes in the name
-        const escapedName = name.replace(/'/g, "''");
-        
-        return `('${nick}', '${country}', '${escapedName}', ${games}, ${rating}, '${formattedDate}')`;
-      }
+      // Escape single quotes in the name
+      const escapedName = player.name.replace(/'/g, "''");
       
-      // If line doesn't match the expected format, skip it
-      return null;
-    }).filter(Boolean); // Remove null values
+      return `('${player.nick}', '${player.country}', '${escapedName}', ${player.games}, ${player.rating}, '${formattedDate}')`;
+    });
     
     // Join the values and add to the INSERT statement
     insertStatements += values.join(',\n') + ';\n\n';

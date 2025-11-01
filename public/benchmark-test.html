@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Performance Benchmark Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        h1 {
+            color: #fbbf24;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+        }
+        .target {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #22c55e;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .test-card {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            transition: all 0.3s ease;
+        }
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .test-card h3 {
+            color: #06b6d4;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .test-card button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .test-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4);
+        }
+        .result-display {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            min-height: 100px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        .timing {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .fast {
+            color: #22c55e;
+        }
+        .medium {
+            color: #fbbf24;
+        }
+        .slow {
+            color: #ef4444;
+        }
+        .benchmark-btn {
+            display: block;
+            width: 300px;
+            margin: 30px auto;
+            padding: 15px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0f172a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        .benchmark-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+        }
+        .status {
+            text-align: center;
+            color: #94a3b8;
+            font-style: italic;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+        .progress-bar {
+            height: 10px;
+            background: rgba(100, 116, 139, 0.3);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #06b6d4);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .stat-box {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            flex: 1;
+            margin: 0 10px;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #06b6d4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏱️ Performance Benchmark Test</h1>
+        <div class="target">Target: &lt; 136ms per search</div>
+        
+        <div class="test-grid">
+            <div class="test-card">
+                <h3>No Blank Tiles</h3>
+                <p>Input: "RETINA"</p>
+                <p>Expected: &lt; 10ms</p>
+                <button onclick="runTest('RETINA', 'no-blank')">Run Test</button>
+            </div>
+            <div class="test-card">
+                <h3>One Blank Tile</h3>
+                <p>Input: "RETINA?"</p>
+                <p>Expected: &lt; 50ms</p>
+                <button onclick="runTest('RETINA?', 'one-blank')">Run Test</button>
+            </div>
+            <div class="test-card">
+                <h3>Two Blank Tiles</h3>
+                <p>Input: "RETI??"</p>
+                <p>Expected: &lt; 100ms</p>
+                <button onclick="runTest('RETI??', 'two-blank')">Run Test</button>
+            </div>
+            <div class="test-card">
+                <h3>Three Blank Tiles</h3>
+                <p>Input: "RET???"</p>
+                <p>Expected: &lt; 136ms</p>
+                <button onclick="runTest('RET???', 'three-blank')">Run Test</button>
+            </div>
+        </div>
+        
+        <button class="benchmark-btn" onclick="runAllTests()">Run All Benchmark Tests</button>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progressBar"></div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div>Average Time</div>
+                <div class="stat-value" id="avgTime">0ms</div>
+            </div>
+            <div class="stat-box">
+                <div>Fastest Time</div>
+                <div class="stat-value" id="fastestTime">0ms</div>
+            </div>
+            <div class="stat-box">
+                <div>Slowest Time</div>
+                <div class="stat-value" id="slowestTime">0ms</div>
+            </div>
+        </div>
+        
+        <div class="result-display" id="resultDisplay">
+            <p>Run tests to see results here...</p>
+        </div>
+        
+        <div class="status" id="status">Initializing ultra-fast tools...</div>
+    </div>
+
+    <script>
+        let serviceWorkerReady = false;
+        let testResults = [];
+        
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('Ultra-fast Service Worker registered');
+                    
+                    // Listen for messages from service worker
+                    navigator.serviceWorker.addEventListener('message', function(event) {
+                        if (event.data && event.data.type) {
+                            switch (event.data.type) {
+                                case 'INIT_COMPLETE':
+                                    serviceWorkerReady = true;
+                                    document.getElementById('status').innerHTML = '<span style="color: #22c55e;">✅ Ultra-fast tools ready!</span>';
+                                    break;
+                                    
+                                case 'SOLVE_ANAGRAM_RESULT':
+                                    const endTime = performance.now();
+                                    const duration = endTime - window.startTime;
+                                    showResult(event.data.letters, event.data.results, duration, window.currentTest);
+                                    break;
+                            }
+                        }
+                    });
+                    
+                    // Initialize the service worker
+                    registration.active?.postMessage({ type: 'INIT' });
+                })
+                .catch(function(error) {
+                    console.error('Service Worker registration failed:', error);
+                    document.getElementById('status').textContent = 'Failed to initialize tools.';
+                });
+        }
+
+        function showResult(letters, results, duration, testType) {
+            const resultDisplay = document.getElementById('resultDisplay');
+            
+            // Determine performance rating
+            let performanceClass = '';
+            if (duration < 50) {
+                performanceClass = 'fast';
+            } else if (duration < 100) {
+                performanceClass = 'medium';
+            } else {
+                performanceClass = 'slow';
+            }
+            
+            // Check if we met the target
+            const targetMet = duration <= 136;
+            const targetStatus = targetMet ? 
+                '<span style="color: #22c55e;">✅ TARGET MET</span>' : 
+                '<span style="color: #ef4444;">❌ TARGET MISSED</span>';
+            
+            let wordCount = 0;
+            if (results) {
+                Object.values(results).forEach(words => {
+                    wordCount += words.length;
+                });
+            }
+            
+            resultDisplay.innerHTML = `
+                <h3>Results for "${letters}"</h3>
+                <div class="timing ${performanceClass}">${duration.toFixed(2)}ms ${targetStatus}</div>
+                <p>Found ${wordCount} words</p>
+                ${wordCount > 0 ? `<p>Sample: ${(results[Object.keys(results)[0]] || []).slice(0, 5).join(', ')}</p>` : ''}
+            `;
+            
+            // Store result for statistics
+            testResults.push({
+                testType: testType,
+                duration: duration,
+                wordCount: wordCount
+            });
+            
+            updateStats();
+        }
+        
+        function updateStats() {
+            if (testResults.length === 0) return;
+            
+            const durations = testResults.map(r => r.duration);
+            const avg = durations.reduce((a, b) => a + b, 0) / durations.length;
+            const min = Math.min(...durations);
+            const max = Math.max(...durations);
+            
+            document.getElementById('avgTime').textContent = avg.toFixed(2) + 'ms';
+            document.getElementById('fastestTime').textContent = min.toFixed(2) + 'ms';
+            document.getElementById('slowestTime').textContent = max.toFixed(2) + 'ms';
+        }
+
+        function runTest(letters, testType) {
+            if (!serviceWorkerReady) {
+                document.getElementById('resultDisplay').innerHTML = '<p style="color: #ef4444;">Service Worker not ready. Please wait...</p>';
+                return;
+            }
+            
+            // Check for too many blank tiles
+            const blankCount = (letters.match(/\?/g) || []).length;
+            if (blankCount > 3) {
+                document.getElementById('resultDisplay').innerHTML = '<p style="color: #ef4444;">Too many blank tiles. Maximum 3 blank tiles allowed.</p>';
+                return;
+            }
+            
+            document.getElementById('status').innerHTML = `<span style="color: #fbbf24;">⏱️ Running test for "${letters}"...</span>`;
+            window.startTime = performance.now();
+            window.currentTest = testType;
+            
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'SOLVE_ANAGRAM',
+                    letters: letters.trim()
+                });
+            }
+        }
+        
+        async function runAllTests() {
+            if (!serviceWorkerReady) {
+                document.getElementById('resultDisplay').innerHTML = '<p style="color: #ef4444;">Service Worker not ready. Please wait...</p>';
+                return;
+            }
+            
+            const tests = [
+                { input: 'RETINA', type: 'no-blank' },
+                { input: 'RETINA?', type: 'one-blank' },
+                { input: 'RETI??', type: 'two-blank' },
+                { input: 'RET???', type: 'three-blank' }
+            ];
+            
+            testResults = []; // Reset results
+            document.getElementById('progressBar').style.width = '0%';
+            
+            for (let i = 0; i < tests.length; i++) {
+                const test = tests[i];
+                
+                // Update progress
+                const progress = ((i + 1) / tests.length) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+                
+                // Run test
+                runTest(test.input, test.type);
+                
+                // Wait for result (simulate async)
+                await new Promise(resolve => {
+                    const checkResult = () => {
+                        if (testResults.length > i) {
+                            resolve();
+                        } else {
+                            setTimeout(checkResult, 100);
+                        }
+                    };
+                    checkResult();
+                });
+                
+                // Small delay between tests
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+            
+            document.getElementById('status').innerHTML = '<span style="color: #22c55e;">✅ All benchmark tests completed!</span>';
+        }
+    </script>
+</body>
+</html>

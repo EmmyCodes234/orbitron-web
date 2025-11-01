@@ -193,8 +193,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {t('navigation.payments')}
                 <span className="absolute bottom-1.5 left-1/2 w-0 h-0.5 bg-gradient-to-r from-green-400 to-cyan-400 transition-all duration-200 group-hover:w-1/2 group-hover:left-1/4"></span>
               </Link>
-              <Link to="/chatbot" className="text-gray-300 hover:text-white transition-all px-3 py-2.5 rounded-md text-sm font-medium hover:bg-slate-800/50 relative group touch-target">
-                PANASA Bot
+              <Link to="/tools" className="text-gray-300 hover:text-white transition-all px-3 py-2.5 rounded-md text-sm font-medium hover:bg-slate-800/50 relative group touch-target">
+                {t('navigation.tools')}
                 <span className="absolute bottom-1.5 left-1/2 w-0 h-0.5 bg-gradient-to-r from-green-400 to-cyan-400 transition-all duration-200 group-hover:w-1/2 group-hover:left-1/4"></span>
               </Link>
             </nav>
@@ -282,7 +282,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               
               <Link to="/contact" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.contact')}</Link>
               <Link to="/payments" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.payments')}</Link>
-              <Link to="/chatbot" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>PANASA Bot</Link>
+              <Link to="/tools" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.tools')}</Link>
               
               {/* Mobile Search */}
               <div className="px-4 pt-2">
@@ -372,6 +372,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="mt-12 border-t border-slate-800/30 pt-8">
             <p className="text-base text-white text-center"> {/* Bright white text as per user preference */}
               &copy; 2025 {t('footer.copyright')}
+            </p>
+            <p className="text-base text-gray-400 text-center mt-2">
+              Designed & Developed by <a href="https://litocodes.netlify.app" className="text-cyan-400 hover:text-cyan-300 transition-colors">LitoCodes</a>
             </p>
           </div>
         </div>

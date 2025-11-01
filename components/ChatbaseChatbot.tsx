@@ -313,28 +313,30 @@ const ChatbaseChatbot: React.FC = () => {
   return (
     <div className="flex flex-col h-full">
       {/* Chat Controls */}
-      <div className="flex justify-between items-center mb-3 sm:mb-4 px-1">
-        <h2 className="text-sm font-medium text-gray-400">Chat with PANASA Bot</h2>
-        <div className="flex space-x-2">
+      <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-2 mb-2 sm:mb-3 px-1">
+        <h2 className="text-xs sm:text-sm font-medium text-gray-400">Chat with PANASA Bot</h2>
+        <div className="flex space-x-1.5 sm:space-x-2 w-full xs:w-auto">
           <button
             onClick={exportChat}
-            className="text-xs sm:text-sm px-2.5 py-1 rounded-lg bg-gray-700/50 hover:bg-gray-700 text-gray-300 hover:text-gray-100 transition-colors flex items-center"
+            className="text-[10px] xs:text-xs sm:text-sm px-2 py-1.5 sm:px-2.5 sm:py-1.5 rounded-lg bg-gray-700/50 hover:bg-gray-700 text-gray-300 hover:text-gray-100 transition-colors flex items-center whitespace-nowrap"
             aria-label="Export chat"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
             </svg>
-            Export
+            <span className="hidden xs:inline">Export</span>
+            <span className="xs:hidden">Exp</span>
           </button>
           <button
             onClick={clearChat}
-            className="text-xs sm:text-sm px-2.5 py-1 rounded-lg bg-gray-700/50 hover:bg-gray-700 text-gray-300 hover:text-gray-100 transition-colors flex items-center"
+            className="text-[10px] xs:text-xs sm:text-sm px-2 py-1.5 sm:px-2.5 sm:py-1.5 rounded-lg bg-gray-700/50 hover:bg-gray-700 text-gray-300 hover:text-gray-100 transition-colors flex items-center whitespace-nowrap"
             aria-label="Clear chat"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
-            Clear
+            <span className="hidden xs:inline">Clear</span>
+            <span className="xs:hidden">Clr</span>
           </button>
         </div>
       </div>
@@ -342,12 +344,12 @@ const ChatbaseChatbot: React.FC = () => {
       {/* Messages container - Improved design with better scrolling */}
       <div 
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto p-2 sm:p-4 md:p-5 space-y-4 sm:space-y-5 rounded-xl bg-gray-800/20 border border-gray-700/30 mb-4"
+        className="flex-1 overflow-y-auto p-2 sm:p-3 md:p-4 space-y-3 sm:space-y-4 rounded-xl bg-gray-800/20 border border-gray-700/30 mb-3 sm:mb-4 custom-scrollbar"
       >
         {isChatCleared && (
-          <div className="text-center py-2 mb-4">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/30">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="text-center py-2 mb-3 sm:mb-4">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/30">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               Chat history cleared
@@ -361,35 +363,35 @@ const ChatbaseChatbot: React.FC = () => {
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {/* Avatar */}
-            <div className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mr-2 sm:mr-3 ${message.role === 'user' ? 'bg-gradient-to-br from-cyan-600 to-blue-700' : 'bg-gray-700'}`}>
+            <div className={`flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center mr-1.5 sm:mr-2 md:mr-3 ${message.role === 'user' ? 'bg-gradient-to-br from-cyan-600 to-blue-700' : 'bg-gray-700'}`}>
               {message.role === 'user' ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <img src="/panasa-logo.png" alt="PANASA Logo" className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <img src="/panasa-logo.png" alt="PANASA Logo" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
               )}
             </div>
             
             {/* Message bubble */}
-            <div className="flex-1 max-w-[80%] sm:max-w-[85%]">
-              <div className="flex items-center mb-1">
-                <span className="text-xs font-medium text-gray-400">
+            <div className="flex-1 max-w-[75%] sm:max-w-[80%] md:max-w-[85%]">
+              <div className="flex items-center mb-0.5 sm:mb-1">
+                <span className="text-[10px] sm:text-xs font-medium text-gray-400">
                   {message.role === 'user' ? 'You' : 'PANASA Bot'}
                 </span>
-                <span className="mx-2 text-gray-600">•</span>
-                <span className="text-xs text-gray-500">
+                <span className="mx-1 text-gray-600 hidden xs:inline">•</span>
+                <span className="text-[9px] sm:text-xs text-gray-500 hidden xs:inline">
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
               
               <div 
-                className={`rounded-2xl px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm ${
+                className={`rounded-2xl px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 text-[11px] sm:text-xs md:text-sm ${
                   message.role === 'user' 
                     ? 'bg-gradient-to-br from-cyan-600/30 to-blue-700/30 text-gray-100 rounded-br-none border border-cyan-500/30' 
                     : 'bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-bl-none border border-gray-700'
                 }`}
-                style={{ lineHeight: '1.5' }}
+                style={{ lineHeight: '1.4' }}
               >
                 {message.role === 'assistant' ? (
                   <div 
@@ -405,27 +407,27 @@ const ChatbaseChatbot: React.FC = () => {
               
               {/* Action buttons for assistant messages */}
               {message.role === 'assistant' && (
-                <div className="mt-2 flex justify-start space-x-2">
+                <div className="mt-1.5 sm:mt-2 flex justify-start space-x-1.5">
                   {/* Copy button */}
                   <button
                     onClick={() => copyToClipboard(message.content, message.id)}
-                    className="flex items-center text-xs text-gray-400 hover:text-gray-200 transition-colors px-2 py-1 rounded-lg hover:bg-gray-700/50"
+                    className="flex items-center text-[10px] sm:text-xs text-gray-400 hover:text-gray-200 transition-colors px-1.5 py-1 rounded-lg hover:bg-gray-700/50"
                     aria-label="Copy message"
                   >
                     {copiedMessageId === message.id ? (
                       <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
-                        <span className="text-xs">Copied!</span>
+                        <span className="text-[10px] sm:text-xs">Copied!</span>
                       </>
                     ) : (
                       <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5" viewBox="0 0 20 20" fill="currentColor">
                           <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
                           <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                         </svg>
-                        <span className="text-xs">Copy</span>
+                        <span className="text-[10px] sm:text-xs">Copy</span>
                       </>
                     )}
                   </button>
@@ -436,25 +438,26 @@ const ChatbaseChatbot: React.FC = () => {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mr-2 sm:mr-3 bg-gray-700">
-              <img src="/panasa-logo.png" alt="PANASA Logo" className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <div className="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center mr-1.5 sm:mr-2 md:mr-3 bg-gray-700">
+              <img src="/panasa-logo.png" alt="PANASA Logo" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
             </div>
-            <div className="flex-1 max-w-[80%] sm:max-w-[85%]">
-              <div className="flex items-center mb-1">
-                <span className="text-xs font-medium text-gray-400">PANASA Bot</span>
+            <div className="flex-1 max-w-[75%] sm:max-w-[80%] md:max-w-[85%]">
+              <div className="flex items-center mb-0.5 sm:mb-1">
+                <span className="text-[10px] sm:text-xs font-medium text-gray-400">PANASA Bot</span>
               </div>
-              <div className="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-2xl rounded-bl-none px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm border border-gray-700">
+              <div className="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-2xl rounded-bl-none px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 text-[11px] sm:text-xs md:text-sm border border-gray-700">
                 <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-bounce"></div>
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
                 </div>
               </div>
-              <div className="mt-1 text-xs text-gray-500 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mt-1 text-[9px] sm:text-xs text-gray-500 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-                PANASA Bot is typing...
+                <span className="hidden xs:inline">PANASA Bot is typing...</span>
+                <span className="xs:hidden">Typing...</span>
               </div>
             </div>
           </div>
@@ -463,7 +466,7 @@ const ChatbaseChatbot: React.FC = () => {
       </div>
 
       {/* Input area - Improved design with better mobile responsiveness */}
-      <form onSubmit={handleSubmit} className="border-t border-gray-700/50 pt-3 sm:pt-4">
+      <form onSubmit={handleSubmit} className="border-t border-gray-700/50 pt-2 sm:pt-3">
         <div className="relative">
           <input
             ref={inputRef}
@@ -472,31 +475,31 @@ const ChatbaseChatbot: React.FC = () => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Message PANASA Bot..."
-            className="w-full bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-2xl pl-4 pr-12 py-3 sm:pl-5 sm:pr-14 sm:py-4 text-sm sm:text-base text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder-gray-500"
+            className="w-full bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-2xl pl-3 pr-10 py-2.5 sm:pl-4 sm:pr-12 sm:py-3 text-xs sm:text-sm md:text-base text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder-gray-500"
             disabled={isLoading}
             aria-label="Type your message"
           />
           <button
             type="submit"
             disabled={isLoading || !inputValue.trim()}
-            className={`absolute right-3 top-1/2 transform -translate-y-1/2 rounded-full p-1.5 sm:p-2 ${
+            className={`absolute right-2.5 top-1/2 transform -translate-y-1/2 rounded-full p-1 sm:p-1.5 ${
               isLoading || !inputValue.trim() ? 'text-gray-600' : 'text-green-400 hover:bg-gray-700'
             }`}
             aria-label="Send message"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
             </svg>
           </button>
         </div>
-        <div className="flex justify-between items-center mt-2 sm:mt-3">
-          <p className="text-xs text-gray-500 text-center w-full">
+        <div className="flex flex-col xs:flex-row justify-between items-center gap-1 mt-2 sm:mt-3">
+          <p className="text-[9px] sm:text-xs text-gray-500 text-center xs:text-left w-full xs:w-auto">
             PANASA Bot references WESPA Rules V5.1. Please verify important information.
           </p>
-          <div className="hidden sm:flex items-center text-xs text-gray-500">
-            <kbd className="px-1.5 py-0.5 rounded bg-gray-700 text-gray-300">Enter</kbd>
+          <div className="hidden sm:flex items-center text-xs text-gray-500 mt-1 xs:mt-0">
+            <kbd className="px-1.5 py-0.5 rounded bg-gray-700 text-gray-300 text-[10px] sm:text-xs">Enter</kbd>
             <span className="mx-1">to send</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-gray-700 text-gray-300 ml-2">Ctrl+Shift+K</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-gray-700 text-gray-300 ml-2 text-[10px] sm:text-xs">Ctrl+Shift+K</kbd>
             <span className="mx-1">to clear</span>
           </div>
         </div>

@@ -19,12 +19,14 @@ The official website for the Pan African Scrabble Association, showcasing the pr
 - **Multi-language Support**: English, French, and Swahili translations
 - **Contact Form**: Functional contact form with email notifications
 - **AI Chatbot**: Chatbase integration for answering user questions
+- **Scrabble Tools**: Word checker and anagram solver with CSW24 dictionary
 
 ### Technical Features
 - **Real-time Updates**: Live data synchronization with Supabase
 - **Internationalization**: Context-based translation system
 - **Performance Optimized**: Lazy loading, code splitting, and efficient rendering
 - **Mobile First**: Touch-friendly interface with mobile-specific optimizations
+- **Offline Support**: Service Worker caching for dictionary tools
 
 ### AI Chatbot Integration
 - **Dedicated Chat Page**: Full-page chat interface for better user experience
@@ -33,6 +35,13 @@ The official website for the Pan African Scrabble Association, showcasing the pr
 - **Multi-language Support**: Responds in user's preferred language
 - **Copy Functionality**: Users can copy both questions and responses
 - **Mobile Optimized**: Responsive design for all device sizes
+
+### Scrabble Tools
+- **Word Checker**: Validate words against the official CSW24 dictionary
+- **Anagram Solver**: Find all possible words from a set of letters
+- **Blank Tile Support**: Use "?" to represent blank tiles in both tools
+- **Lightning Fast**: Service Worker caching for instant lookups
+- **Offline Capability**: Tools work even without internet connection
 
 ## 🎨 UI/UX Improvements
 

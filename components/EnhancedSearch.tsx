@@ -255,10 +255,10 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   };
 
   return (
-    <div ref={searchRef} className="relative w-full max-w-md">
+    <div ref={searchRef} className="relative w-full">
       <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
-          <svg className="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+          <svg className="h-3 w-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
@@ -273,7 +273,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
           }}
           onFocus={() => setIsOpen(query.length > 0)}
           placeholder={placeholder}
-          className="block w-full pl-7 pr-7 py-1.5 border border-slate-700 rounded-lg bg-slate-800/60 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md text-xs min-h-[36px]"
+          className="block w-full pl-7 pr-7 py-1.5 sm:py-2 border border-slate-700 rounded-lg bg-slate-800/60 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md text-xs sm:text-sm min-h-[36px] sm:min-h-[40px]"
         />
         {query && (
           <button
@@ -281,9 +281,9 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
               setQuery('');
               setIsOpen(false);
             }}
-            className="absolute inset-y-0 right-0 pr-2.5 flex items-center"
+            className="absolute inset-y-0 right-0 pr-2 flex items-center"
           >
-            <svg className="h-3.5 w-3.5 text-gray-400 hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-3 w-3 text-gray-400 hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -291,54 +291,54 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
       </div>
 
       {isOpen && (filteredSuggestions.length > 0 || query) && (
-        <div className="absolute z-20 mt-2 w-full bg-slate-800/90 border border-slate-700 rounded-xl shadow-2xl overflow-hidden backdrop-blur-xl">
+        <div className="absolute z-20 mt-1 w-full bg-slate-800/90 border border-slate-700 rounded-xl shadow-2xl overflow-hidden backdrop-blur-xl">
           {isLoading ? (
-            <div className="px-4 py-4 text-sm text-gray-400 text-center">
+            <div className="px-3 py-3 sm:px-4 sm:py-4 text-xs sm:text-sm text-gray-400 text-center">
               <div className="flex items-center justify-center gap-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-400"></div>
+                <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-b-2 border-green-400"></div>
                 <span>Searching...</span>
               </div>
             </div>
           ) : filteredSuggestions.length > 0 ? (
-            <ul className="py-2 max-h-72 overflow-auto">
+            <ul className="py-1.5 sm:py-2 max-h-60 sm:max-h-72 overflow-auto">
               {filteredSuggestions.map((suggestion) => (
                 <li
                   key={suggestion.id}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className="px-4 py-3 hover:bg-slate-700/80 cursor-pointer flex items-start gap-3 transition-colors duration-200 group"
+                  className="px-3 py-2.5 sm:px-4 sm:py-3 hover:bg-slate-700/80 cursor-pointer flex items-start gap-2 sm:gap-3 transition-colors duration-200 group"
                 >
                   <div className="flex-shrink-0 mt-0.5">
                     {getTypeIcon(suggestion.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-white truncate group-hover:text-green-400 transition-colors duration-200">
+                    <div className="text-xs sm:text-sm font-medium text-white truncate group-hover:text-green-400 transition-colors duration-200">
                       {suggestion.title}
                     </div>
                     {suggestion.description && (
-                      <div className="text-xs text-gray-400 mt-1 truncate">
+                      <div className="text-[10px] sm:text-xs text-gray-400 mt-1 truncate">
                         {suggestion.description}
                       </div>
                     )}
                   </div>
-                  <div className="text-xs text-gray-500 bg-slate-700 px-2 py-1 rounded-lg">
+                  <div className="text-[9px] sm:text-xs text-gray-500 bg-slate-700 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-lg">
                     {getTypeLabel(suggestion.type)}
                   </div>
                 </li>
               ))}
             </ul>
           ) : (
-            <div className="px-4 py-4 text-sm text-gray-400 text-center">
+            <div className="px-3 py-3 sm:px-4 sm:py-4 text-xs sm:text-sm text-gray-400 text-center">
               No suggestions found. Press Enter to search.
             </div>
           )}
           
           {query && !isLoading && (
-            <div className="border-t border-slate-700 px-4 py-3 bg-slate-900/80">
+            <div className="border-t border-slate-700 px-3 py-2.5 sm:px-4 sm:py-3 bg-slate-900/80">
               <button
                 onClick={() => handleSearch()}
-                className="w-full text-left text-sm text-green-400 hover:text-cyan-400 font-medium flex items-center gap-2 transition-colors duration-200"
+                className="w-full text-left text-xs sm:text-sm text-green-400 hover:text-cyan-400 font-medium flex items-center gap-1.5 sm:gap-2 transition-colors duration-200"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 Search for "{query}"

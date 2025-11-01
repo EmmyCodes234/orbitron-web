@@ -39,23 +39,28 @@ const ChatbotPage: React.FC = () => {
       <main className="flex-grow flex flex-col">
         
         {/* CHATBOT HEADER */}
-        <div className="border-b border-gray-700/50 bg-gray-800/80 backdrop-blur-sm py-3 px-4 sm:px-6 flex-shrink-0 sticky top-0 z-30">
-          <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 sm:gap-4">
-            
+        <div className="border-b border-gray-700/50 bg-gray-800/80 backdrop-blur-sm py-2 sm:py-3 px-3 sm:px-4 md:px-6 flex-shrink-0 sticky top-0 z-30">
+          <div className="max-w-6xl mx-auto flex flex-col xs:flex-row items-center justify-between gap-2 sm:gap-3 md:gap-4 w-full">
             {/* Branding/Bot Info */}
-            <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 w-full xs:w-auto">
               <div className="flex-shrink-0">
                 {/* Removed green background from logo */}
-                <img src="/panasa-logo.png" alt="PANASA Logo" className="h-8 w-auto" />
+                <img src="/panasa-logo.png" alt="PANASA Logo" className="h-7 w-auto sm:h-8" />
               </div>
               
-              <div>
+              <div className="flex-grow xs:flex-grow-0">
                 <div className="flex items-center space-x-2">
-                    <h1 className="text-lg sm:text-xl font-bold text-gray-100">PANASA Bot</h1>
+                    <h1 className="text-base sm:text-lg md:text-xl font-bold text-gray-100 whitespace-nowrap">PANASA Bot</h1>
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" title="Online"></div>
                 </div>
-                <p className="text-xs text-gray-400 hidden xs:block">WESPA Scrabble rules expert</p>
+                <p className="text-[10px] sm:text-xs text-gray-400 hidden xs:block">WESPA Scrabble rules expert</p>
               </div>
+            </div>
+            
+            <div className="flex items-center space-x-1 sm:space-x-2 w-full xs:w-auto justify-end">
+              <Link to="/tools" className="hidden md:inline tool-button tool-button-enabled tool-button-cyan text-sm sm:text-base">
+                Back to Tools
+              </Link>
             </div>
             
             {/* NAVIGATION CONTROLS - Desktop */}
@@ -73,7 +78,7 @@ const ChatbotPage: React.FC = () => {
             </div>
             
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-2">
+            <div className="md:hidden flex items-center space-x-1 sm:space-x-2">
               <button 
                 onClick={() => setIsInfoVisible(!isInfoVisible)}
                 className="p-1.5 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
@@ -84,6 +89,9 @@ const ChatbotPage: React.FC = () => {
                 </svg>
               </button>
               <LanguageSelector />
+              <Link to="/tools" className="md:hidden tool-button tool-button-enabled tool-button-cyan text-xs sm:text-sm py-1.5 px-2.5 sm:px-3">
+                Back
+              </Link>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-gray-400 hover:text-white focus:outline-none focus:text-white p-1.5 rounded-md hover:bg-slate-800/50 transition-all duration-300 touch-target"
@@ -105,12 +113,12 @@ const ChatbotPage: React.FC = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-slate-800/30 bg-slate-900/90 backdrop-blur-xl z-50">
-            <div className="px-3 pt-3 pb-4 space-y-1 sm:px-4">
+            <div className="px-3 pt-3 pb-4 space-y-2 sm:px-4">
               <Link to="/" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.home')}</Link>
               <Link to="/about" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.about')}</Link>
               
               {/* Mobile Activity Dropdown */}
-              <div className="space-y-1">
+              <div className="space-y-2">
                 <button 
                   className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all flex justify-between items-center mobile-nav-item focus:outline-none focus:ring-2 focus:ring-green-400/50"
                   onClick={() => setIsActivityDropdownOpen(!isActivityDropdownOpen)}
@@ -131,7 +139,7 @@ const ChatbotPage: React.FC = () => {
               </div>
               
               {/* Mobile Support Dropdown */}
-              <div className="space-y-1">
+              <div className="space-y-2">
                 <button 
                   className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all flex justify-between items-center mobile-nav-item focus:outline-none focus:ring-2 focus:ring-green-400/50"
                   onClick={() => setIsSupportDropdownOpen(!isSupportDropdownOpen)}
@@ -155,7 +163,7 @@ const ChatbotPage: React.FC = () => {
               <Link to="/chatbot" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>PANASA Bot</Link>
               
               {/* Mobile Search */}
-              <div className="px-4 pt-2">
+              <div className="px-2 pt-2">
                 <EnhancedSearch 
                   onSearch={handleSearch}
                   placeholder={t('search.mobilePlaceholder')}
@@ -168,16 +176,16 @@ const ChatbotPage: React.FC = () => {
 
         {/* Information Panel */}
         {isInfoVisible && (
-          <div className="border-b border-gray-700/50 bg-gray-800/50 px-4 sm:px-6 py-3 flex-shrink-0">
+          <div className="border-b border-gray-700/50 bg-gray-800/50 px-3 sm:px-4 md:px-6 py-2 sm:py-3 flex-shrink-0">
             <div className="max-w-6xl mx-auto">
-              <div className="bg-gradient-to-r from-gray-800/50 to-gray-800/30 rounded-lg p-3 sm:p-4 border border-gray-700/50">
-                <div className="flex items-start">
+              <div className="bg-gradient-to-r from-gray-800/50 to-gray-800/30 rounded-lg p-2.5 sm:p-3 md:p-4 border border-gray-700/50">
+                <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-3">
                   <div className="flex-shrink-0 mt-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <div className="ml-2 sm:ml-3">
+                  <div className="flex-grow">
                     <h3 className="text-sm font-medium text-gray-200">About PANASA Bot</h3>
                     <div className="mt-1 text-xs sm:text-sm text-gray-400">
                       <p>PANASA Bot is your expert assistant for WESPA Scrabble rules. Ask questions about gameplay, challenges, penalties, and more.</p>
@@ -192,9 +200,9 @@ const ChatbotPage: React.FC = () => {
 
         {/* Chat Content - SCROLLABLE Content Area */}
         <div className="flex-grow overflow-hidden">
-          <div className="h-full max-w-6xl w-full mx-auto py-3 sm:py-4 px-3 sm:px-6">
+          <div className="h-full w-full mx-auto py-2 sm:py-3 md:py-4 px-2 sm:px-4 md:px-6">
             
-            <div className="h-full bg-gradient-to-br from-gray-800/40 to-gray-900/60 backdrop-blur-sm p-3 sm:p-5 md:p-6 rounded-2xl border border-gray-700/50 shadow-2xl">
+            <div className="h-full bg-gradient-to-br from-gray-800/40 to-gray-900/60 backdrop-blur-sm p-2 sm:p-4 md:p-5 lg:p-6 rounded-2xl border border-gray-700/50 shadow-2xl mx-0 sm:mx-2 md:mx-4 lg:mx-8">
                 <ChatbaseChatbot />
             </div>
 

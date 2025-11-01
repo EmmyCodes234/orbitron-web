@@ -13,8 +13,8 @@ const sw = {
     admin: 'Msimamizi',
     payments: 'Malipo',
     activity: 'Shughuli',
-    support: 'Usaidizi',
-    chatbot: 'PANASA Bot',
+    support: 'Msaada',
+    tools: 'Zana'
   },
 
   // Homepage
@@ -33,6 +33,53 @@ const sw = {
     viewAll: 'Tazama Zote'
   },
 
+  // Tools Page
+  tools: {
+    title: 'Zana za Scrabble',
+    panasaBot: {
+      description: 'Shirikiana na msaidizi wetu wa Scrabble unaotumia AI kwa sheria, mikakati na uthibitishaji wa maneno.',
+      launch: 'Anzisha PANASA Bot'
+    },
+    wordChecker: {
+      title: 'Chombo cha Kuthibitisha Maneno',
+      heading: 'Thibitisha Maneno ya Scrabble',
+      description: 'Angalia kama neno ni halali katika kamusi ya CSW24',
+      cardDescription: 'Thibitisha kama neno ni halali katika kamusi rasmi ya Scrabble',
+      placeholder: 'Ingiza neno...',
+      check: 'Angalia',
+      checking: 'Inaangalia...',
+      valid: 'HALALI',
+      invalid: 'SI HALALI',
+      isValidWord: 'ni neno halali',
+      isNotValidWord: 'si neno halali',
+      poweredBy: 'Inaendeshwa na kamusi ya CSW24 (Collins Scrabble Words 2024)',
+      processing: 'Inachakata...',
+      launch: 'Anzisha Kikangalizi cha Maneno'
+    },
+    anagramSolver: {
+      title: 'Kisuluhishi cha Mpangilio wa Herufi',
+      heading: 'Suluhisha Anagramu za Scrabble',
+      description: 'Pata maneno yote halali yanayoweza kutengenezwa kwa herufi zilizotolewa',
+      cardDescription: 'Gundua maneno yote yanayowezekana kutoka kwa seti ya herufi',
+      placeholder: 'Ingiza herufi...',
+      blankTileHint: 'Tumia "?" kwa vigae vya kubwa',
+      solve: 'Suluhisha',
+      solving: 'Inasuluhisha...',
+      results: 'Matokeo',
+      letter: 'herufi{count, plural, one {} other {s}}',
+      words: 'maneno',
+      noWordsFound: 'Hakuna maneno halali yaliyopatikana',
+      poweredBy: 'Inaendeshwa na kamusi ya CSW24 (Collins Scrabble Words 2024)',
+      processing: 'Inachakata...',
+      launch: 'Anzisha Kisuluhishi cha Anagramu'
+    },
+    dictionary: {
+      title: 'Kamusi',
+      description: 'Zana zote zinaendeshwa na kamusi rasmi ya Collins Scrabble Words 2024 (CSW24) yenye zaidi ya maneno 270,000.',
+      poweredBy: 'Inaendeshwa na kamusi ya CSW24 (Collins Scrabble Words 2024)'
+    }
+  },
+
   // Ratings Page
   ratings: {
     title: 'Daraja za Wachezaji',
@@ -49,7 +96,19 @@ const sw = {
     country: 'Nchi',
     games: 'Michezo',
     lastPlayed: 'Mchezo wa Mwisho',
-    noPlayers: 'Hakuna wachezaji waliopatikana kulingana na vigezo vyako.'
+    noPlayers: 'Hakuna wachezaji waliopatikana kulingana na vigezo vyako.',
+    noResultsFound: 'Hakuna wachezaji waliopatikana kwa "{term}"',
+    noResultsSuggestions: 'Jaribu kutafuta:',
+    suggestionDifferentSpelling: 'Tahajia tofauti',
+    suggestionPlayerNickname: 'Jina la utani la mchezaji',
+    suggestionClearFilters: 'Futa vichujio',
+    showingAll: 'Inaonyesha matokeo yote {count}',
+    firstPage: 'Ukurasa wa kwanza',
+    previousPage: 'Ukurasa uliopita',
+    nextPage: 'Ukurasa unaofuata',
+    lastPage: 'Ukurasa wa mwisho',
+    page: 'Ukurasa',
+    noSuggestions: 'Hakuna mapendekezo yanayopatikana'
   },
 
   // Events Page

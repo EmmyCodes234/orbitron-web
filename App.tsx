@@ -14,6 +14,9 @@ import AdminPage from './pages/AdminPage';
 import PaymentsPage from './pages/PaymentsPage';
 import CollectionPage from './pages/CollectionPage';
 import ChatbotPage from './pages/ChatbotPage';
+import ToolsPage from './pages/ToolsPage';
+import WordCheckerPage from './pages/WordCheckerPage';
+import AnagramSolverPage from './pages/AnagramSolverPage';
 import { LocalizationProvider } from './contexts/LocalizationContext';
 
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
@@ -63,6 +66,9 @@ const AppContent: React.FC = () => {
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/payments" element={<PaymentsPage />} />
+          <Route path="/tools" element={<ToolsPage />} />
+          <Route path="/tools/word-checker" element={<WordCheckerPage />} />
+          <Route path="/tools/anagram-solver" element={<AnagramSolverPage />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
         </Route>
       </Routes>

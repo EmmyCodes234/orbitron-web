@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrabble Tools</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            border-radius: 10px;
+        }
+        h1 {
+            color: #68d391;
+            margin: 0;
+        }
+        .tools-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        @media (max-width: 768px) {
+            .tools-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .tool-section {
+            background: #2d3748;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #63b3ed;
+            margin-top: 0;
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #4a5568;
+            border-radius: 5px 0 0 5px;
+            background: #1a202c;
+            color: white;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            background: #38a169;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #2f855a;
+        }
+        .result {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .valid {
+            background: rgba(56, 161, 105, 0.2);
+            border: 1px solid #38a169;
+            color: #68d391;
+        }
+        .invalid {
+            background: rgba(229, 62, 62, 0.2);
+            border: 1px solid #e53e3e;
+            color: #fc8181;
+        }
+        .anagram-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .word-length-group {
+            margin-bottom: 15px;
+        }
+        .word-length-title {
+            font-weight: bold;
+            color: #63b3ed;
+            margin-bottom: 5px;
+        }
+        .words-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .word-chip {
+            background: #4a5568;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Scrabble Tools</h1>
+        <p>Word Checker and Anagram Solver powered by CSW24 dictionary</p>
+    </header>
+
+    <div class="tools-container">
+        <!-- Word Checker Section -->
+        <div class="tool-section">
+            <h2>Word Checker</h2>
+            <p>Check if a word is valid in the CSW24 dictionary</p>
+            
+            <div class="input-group">
+                <input type="text" id="wordCheckerInput" placeholder="Enter a word...">
+                <button id="checkWordBtn">Check</button>
+            </div>
+            
+            <div id="wordCheckerResult"></div>
+        </div>
+
+        <!-- Anagram Solver Section -->
+        <div class="tool-section">
+            <h2>Anagram Solver</h2>
+            <p>Find all valid words that can be made from the given letters</p>
+            
+            <div class="input-group">
+                <input type="text" id="anagramSolverInput" placeholder="Enter letters...">
+                <button id="solveAnagramBtn">Solve</button>
+            </div>
+            
+            <div id="anagramSolverResult" class="anagram-results"></div>
+        </div>
+    </div>
+
+    <script src="tools.js"></script>
+</body>
+</html>
