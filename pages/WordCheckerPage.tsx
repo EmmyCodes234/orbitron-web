@@ -89,11 +89,43 @@ const WordCheckerPage: React.FC = () => {
     }
   };
 
+  // Handle key down event for more responsive uppercase conversion on iOS
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Handle space key to ensure next word starts uppercase
+    if (e.key === ' ') {
+      // Force a re-render with uppercase to ensure consistency
+      setTimeout(() => {
+        const input = e.target as HTMLInputElement;
+        if (input.value !== input.value.toUpperCase()) {
+          setWordInput(input.value.toUpperCase());
+        }
+      }, 0);
+    }
+    
+    // Handle Enter key for submission
+    if (e.key === 'Enter') {
+      handleCheckWord();
+    }
+  };
+
   // Handle paste event to ensure uppercase
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pastedText = e.clipboardData.getData('text').toUpperCase();
     setWordInput(pastedText);
+  };
+
+  // Handle composition events for better iOS support
+  const handleCompositionStart = () => {
+    // Prevent uppercase conversion during composition (e.g., when typing accented characters)
+  };
+
+  const handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+    // Ensure text is uppercase after composition ends
+    const upperCaseValue = e.currentTarget.value.toUpperCase();
+    if (upperCaseValue !== wordInput) {
+      setWordInput(upperCaseValue);
+    }
   };
 
   return (
@@ -132,9 +164,14 @@ const WordCheckerPage: React.FC = () => {
                   value={wordInput}
                   onChange={handleWordInputChange}
                   onPaste={handlePaste}
+                  onKeyDown={handleKeyDown}
+                  onCompositionStart={handleCompositionStart}
+                  onCompositionEnd={handleCompositionEnd}
                   placeholder={t('tools.wordChecker.placeholder')}
                   className="tool-input tool-input-green w-full"
-                  onKeyDown={(e) => e.key === 'Enter' && handleCheckWord()}
+                  // iOS-specific attributes to improve uppercase handling
+                  autoCapitalize="characters"
+                  spellCheck="false"
                 />
                 {wordInput && (
                   <button
