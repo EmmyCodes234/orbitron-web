@@ -178,10 +178,7 @@ const WordCheckerPage: React.FC = () => {
                   : 'bg-red-900/30 border-red-700/50 text-red-400 animate-fadeIn'
               }`}>
                 <p className="font-bold text-lg xs:text-xl sm:text-2xl">
-                  {wordResult.isValid ? t('tools.wordChecker.valid') : t('tools.wordChecker.invalid')}
-                </p>
-                <p className="mt-1 text-sm xs:text-base sm:text-lg">
-                  "{wordResult.word}" {wordResult.isValid ? t('tools.wordChecker.isValidWord') : t('tools.wordChecker.isNotValidWord')}
+                  {wordResult.isValid ? 'Yes, the move is Valid in the CSW24 Lexicon' : 'No, the move is invalid in the CSW24 dictionary'}
                 </p>
               </div>
             )}

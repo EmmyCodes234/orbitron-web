@@ -48,10 +48,6 @@ const fr = {
       placeholder: 'Entrez un mot...',
       check: 'Vérifier',
       checking: 'Vérification...',
-      valid: 'VALIDE',
-      invalid: 'INVALIDE',
-      isValidWord: 'est un mot valide',
-      isNotValidWord: 'n\'est pas un mot valide',
       poweredBy: 'Alimenté par le dictionnaire CSW24 (Collins Scrabble Words 2024)',
       processing: 'Traitement...',
       launch: 'Lancer le Vérificateur de Mots'

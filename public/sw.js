@@ -79,11 +79,11 @@ self.addEventListener('message', async (event) => {
           await loadDictionary();
         }
         
-        const isValid = checkWord(event.data.word);
+        const checkResult = checkWord(event.data.word);
         client.postMessage({
           type: 'CHECK_WORD_RESULT',
           word: event.data.word,
-          isValid: isValid
+          isValid: checkResult.isValid
         });
         break;
         
@@ -245,6 +245,36 @@ function precomputeBlankPatterns() {
 function checkWord(inputWord) {
   const word = inputWord.toUpperCase();
   
+  // Check if input contains multiple words (separated by spaces)
+  if (word.includes(' ')) {
+    const words = word.split(' ').filter(w => w.length > 0);
+    const invalidWords = [];
+    let allValid = true;
+    
+    // Check each word
+    for (const singleWord of words) {
+      if (!checkSingleWord(singleWord)) {
+        allValid = false;
+        invalidWords.push(singleWord);
+      }
+    }
+    
+    return {
+      isValid: allValid,
+      invalidWords: invalidWords
+    };
+  }
+  
+  // Single word check
+  const result = checkSingleWord(word);
+  return {
+    isValid: result,
+    invalidWords: result ? [] : [word]
+  };
+}
+
+// Check a single word with blank tile support
+function checkSingleWord(word) {
   // If no blank tiles, simple O(1) check
   if (!word.includes('?')) {
     return wordSet.has(word);

@@ -48,10 +48,6 @@ const en = {
       placeholder: 'Enter a word...',
       check: 'Check',
       checking: 'Checking...',
-      valid: 'VALID',
-      invalid: 'INVALID',
-      isValidWord: 'is a valid word',
-      isNotValidWord: 'is not a valid word',
       poweredBy: 'Powered by CSW24 (Collins Scrabble Words 2024) dictionary',
       processing: 'Processing...',
       launch: 'Launch Word Checker'

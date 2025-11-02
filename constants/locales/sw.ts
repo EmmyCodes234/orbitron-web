@@ -48,10 +48,6 @@ const sw = {
       placeholder: 'Ingiza neno...',
       check: 'Angalia',
       checking: 'Inaangalia...',
-      valid: 'HALALI',
-      invalid: 'SI HALALI',
-      isValidWord: 'ni neno halali',
-      isNotValidWord: 'si neno halali',
       poweredBy: 'Inaendeshwa na kamusi ya CSW24 (Collins Scrabble Words 2024)',
       processing: 'Inachakata...',
       launch: 'Anzisha Kikangalizi cha Maneno'
