@@ -217,50 +217,44 @@ const HomePage: React.FC = () => {
               {latestNews.map((article, index) => (
                 <div 
                   key={article.id} 
-                  className={`hover-lift animate-fade-in-up opacity-0 stagger-${index + 1}`}
+                  className={`hover-lift animate-fade-in-up opacity-0 stagger-${index + 1} grid-card`}
                   style={{ animationDelay: `${4 + index * 0.2}s`, animationFillMode: 'forwards' }}
                 >
-                  {/* Using the same card design as "meet the team" section */}
+                  {/* Using the same card design as "meet the team" section but with uniform dimensions */}
                   <article
-                    className="group relative flex flex-col w-full rounded-[20px] overflow-hidden border-2 border-transparent transition-all duration-300 cursor-pointer hover:scale-[1.02] shadow-lg"
+                    className="group relative flex flex-col w-full h-full rounded-[20px] overflow-hidden border-2 border-transparent transition-all duration-300 cursor-pointer hover:scale-[1.02] shadow-lg tech-card"
                     style={
                       {
                         '--card-border': '#10B981',
                         background: 'linear-gradient(145deg, #10B981, #065F46)',
-                        '--spotlight-color': 'rgba(255,255,255,0.3)'
                       } as React.CSSProperties
                     }
                     onClick={() => window.location.href = `/news/${article.id}`}
                   >
-                    <div
-                      className="absolute inset-0 pointer-events-none transition-opacity duration-500 z-20 opacity-0 group-hover:opacity-100"
-                      style={{
-                        background:
-                          'radial-gradient(circle at center, var(--spotlight-color), transparent 70%)'
-                      }}
-                    />
-                    <div className="relative z-10 flex-1 p-[10px] box-border">
-                      <img 
-                        src={
-                          article.title === 'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship' 
-                            ? '/kofiBingo.png' 
-                            : article.title === 'Team Nigeria Dominates at the 2nd African Youth Scrabble Championship in Kenya'
-                            ? '/ayscbanner.png'
-                            : article.title === 'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi'
-                            ? '/triumvirate.png'
-                            : article.image
-                        } 
-                        alt={article.title} 
-                        loading="lazy" 
-                        className="w-full h-64 object-cover rounded-[10px] border-2 border-white/20"
-                      />
-                    </div>
-                    <footer className="relative z-10 p-4 text-white font-sans">
-                      <div className="flex justify-between items-start mb-1">
-                        <h3 className="m-0 text-[1.2rem] font-bold truncate">{article.title}</h3>
+                    <div className="relative z-10 flex-1 p-[10px] box-border flex flex-col">
+                      <div className="flex-1 flex items-center justify-center">
+                        <img 
+                          src={
+                            article.title === 'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship' 
+                              ? '/kofiBingo.png' 
+                              : article.title === 'Team Nigeria Dominates at the 2nd African Youth Scrabble Championship in Kenya'
+                              ? '/ayscbanner.png'
+                              : article.title === 'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi'
+                              ? '/triumvirate.png'
+                              : article.image
+                          } 
+                          alt={article.title} 
+                          loading="lazy" 
+                          className="w-full h-48 object-cover rounded-[10px] border-2 border-white/20"
+                        />
                       </div>
-                      <p className="m-0 text-[0.95rem] font-medium opacity-90 mb-1">{`By ${article.author} on ${new Date(article.created_at).toLocaleDateString()}`}</p>
-                      <p className="m-0 text-[0.9rem] opacity-80">{article.summary}</p>
+                    </div>
+                    <footer className="relative z-10 p-4 text-white font-sans flex flex-col flex-grow">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="m-0 text-[1.1rem] font-bold line-clamp-2">{article.title}</h3>
+                      </div>
+                      <p className="m-0 text-[0.85rem] font-medium opacity-90 mb-2">{`By ${article.author} on ${new Date(article.created_at).toLocaleDateString()}`}</p>
+                      <p className="m-0 text-[0.8rem] opacity-80 line-clamp-3 flex-grow">{article.summary}</p>
                     </footer>
                   </article>
                 </div>

@@ -839,6 +839,13 @@ a:hover {
   grid-template-columns: repeat(4, 1fr);
 }
 
+/* Grid card utilities */
+.grid-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 /* Flex utilities */
 .flex {
   display: flex;
@@ -1148,11 +1155,25 @@ textarea:focus-visible {
 }
 
 /* Line clamp for consistent text height */
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+.line-clamp-1 {
   overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 /* Card height consistency */
@@ -2220,4 +2241,9 @@ textarea:focus-visible {
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(148, 163, 184, 0.8);
   }
+}
+
+/* Flex grow utilities */
+.flex-grow {
+  flex-grow: 1;
 }
