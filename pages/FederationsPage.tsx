@@ -51,7 +51,17 @@ const FederationsPage: React.FC = () => {
         setLoading(true);
         const data = await getFederations();
         if (data && data.length > 0) {
-          setFederations(data);
+          // Update Nigeria Scrabble Federation president name
+          const updatedData = data.map(federation => {
+            if (federation.country === 'Nigeria' && federation.name === 'Nigeria Scrabble Federation') {
+              return {
+                ...federation,
+                president: 'Engr. Bright Idahosa'
+              };
+            }
+            return federation;
+          });
+          setFederations(updatedData);
         } else {
           setError(t('federations.noData'));
         }
@@ -70,7 +80,17 @@ const FederationsPage: React.FC = () => {
   useEffect(() => {
     const unsubscribe = subscribeToFederations(
       (updatedFederations) => {
-        setFederations(updatedFederations);
+        // Update Nigeria Scrabble Federation president name
+        const updatedData = updatedFederations.map(federation => {
+          if (federation.country === 'Nigeria' && federation.name === 'Nigeria Scrabble Federation') {
+            return {
+              ...federation,
+              president: 'Engr. Bright Idahosa'
+            };
+          }
+          return federation;
+        });
+        setFederations(updatedData);
         setIsSubscribed(true);
       },
       (error) => {
@@ -196,7 +216,11 @@ const FederationsPage: React.FC = () => {
                       <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                     </svg>
                   </div>
-                  <span className="truncate font-medium">{federation.president}</span>
+                  <span className="truncate font-medium">
+                    {federation.country === 'Nigeria' && federation.name === 'Nigeria Scrabble Federation' 
+                      ? 'Engr. Bright Idahosa' 
+                      : federation.president}
+                  </span>
                 </div>
                 <div className="flex items-center group-hover:text-gray-200 transition-colors">
                   <div className="w-8 h-8 rounded-lg bg-cyan-400/10 flex items-center justify-center mr-3 flex-shrink-0">
@@ -277,7 +301,11 @@ const FederationsPage: React.FC = () => {
                           </div>
                           <div>
                             <p className="text-gray-400 text-sm font-medium">President</p>
-                            <p className="text-white font-bold text-lg">{selectedFederation.president}</p>
+                            <p className="text-white font-bold text-lg">
+                              {selectedFederation.country === 'Nigeria' && selectedFederation.name === 'Nigeria Scrabble Federation' 
+                                ? 'Engr. Bright Idahosa' 
+                                : selectedFederation.president}
+                            </p>
                           </div>
                         </div>
                         {selectedFederation.secretary && (

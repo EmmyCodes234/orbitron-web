@@ -448,6 +448,11 @@ const RatingsPage: React.FC = () => {
         <p>{t('ratings.subtitle')}</p>
       </div>
 
+      {/* Tournament Ratings Text */}
+      <div className="tournament-info-text">
+        <p>Ratings after the Ghana National Scrabble Championship 2025</p>
+      </div>
+
       <div className="ratings-content">
         {/* Enhanced Search Section - Moved to top as requested */}
         <div className="search-section mb-6">
@@ -953,6 +958,25 @@ const RatingsPage: React.FC = () => {
           margin: 0 auto;
           line-height: 1.6;
         }
+        
+        /* Tournament Info Text */
+        .tournament-info-text {
+          background: rgba(30, 41, 59, 0.7);
+          backdrop-filter: blur(10px);
+          border-bottom: 1px solid rgba(34, 197, 94, 0.3);
+          padding: 1.5rem 2rem;
+          text-align: center;
+          margin-bottom: 2rem;
+        }
+        .tournament-info-text p {
+          font-family: 'Orbitron', monospace;
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #22c55e;
+          margin: 0;
+          text-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+        }
+
         .ratings-content {
           max-width: 1400px;
           margin: 0 auto;
@@ -1534,6 +1558,13 @@ const RatingsPage: React.FC = () => {
           .hero-section p {
             font-size: 1.125rem;
           }
+          .tournament-info-text {
+            padding: 1.25rem 1rem;
+            margin-bottom: 1.5rem;
+          }
+          .tournament-info-text p {
+            font-size: 1.25rem;
+          }
           .ratings-content {
             padding: 1rem;
           }
@@ -1570,6 +1601,13 @@ const RatingsPage: React.FC = () => {
           }
           .hero-section p {
             font-size: 1rem;
+          }
+          .tournament-info-text {
+            padding: 1rem 0.75rem;
+            margin-bottom: 1.25rem;
+          }
+          .tournament-info-text p {
+            font-size: 1.1rem;
           }
           .ratings-content {
             padding: 0.5rem;
