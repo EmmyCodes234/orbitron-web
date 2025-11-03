@@ -702,11 +702,6 @@ const RatingsPage: React.FC = () => {
                         </td>
                         <td className="player-cell">
                           <div className="player-info">
-                            <div className="player-avatar">
-                              <div className="bg-gray-600 border-2 border-dashed rounded-xl w-10 h-10 flex items-center justify-center text-white font-bold">
-                                {player.name.charAt(0)}
-                              </div>
-                            </div>
                             <div className="player-details">
                               <div className="player-name">{highlightText(player.name, debouncedSearchTerm)}</div>
                               <div className="player-nick">{highlightText(player.nick, debouncedSearchTerm)}</div>
@@ -766,11 +761,6 @@ const RatingsPage: React.FC = () => {
                   </div>
                   <div className="card-body">
                     <div className="player-main">
-                      <div className="player-avatar-mobile">
-                        <div className="bg-gray-600 border-2 border-dashed rounded-xl w-8 h-8 flex items-center justify-center text-white font-bold text-sm">
-                          {player.name.charAt(0)}
-                        </div>
-                      </div>
                       <div className="player-details-mobile">
                         <h3 className="player-name-mobile">{highlightText(player.name, debouncedSearchTerm)}</h3>
                         <div className="player-nick-mobile">{highlightText(player.nick, debouncedSearchTerm)}</div>
