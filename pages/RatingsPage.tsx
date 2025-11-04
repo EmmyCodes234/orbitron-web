@@ -1183,12 +1183,7 @@ const RatingsPage: React.FC = () => {
         .table-section {
           margin-bottom: 2.5rem;
         }
-        .ratings-table,
-        .ratings-table th,
-        .ratings-table td {
-          border: none;
-          outline: none;
-        }
+        /* Removed CSS reset for table elements */
         .desktop-table {
           display: none; /* Hidden by default, shown on desktop */
         }
@@ -1299,11 +1294,7 @@ const RatingsPage: React.FC = () => {
           box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .player-card,
-        .player-card * {
-          border: none;
-          outline: none;
-        }
+        /* Removed CSS reset for mobile cards */
         .player-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
