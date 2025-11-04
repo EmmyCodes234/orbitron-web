@@ -1272,7 +1272,7 @@ const RatingsPage: React.FC = () => {
           border: 1px solid #374151;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .country-placeholder {
+        .ratings-page .country-placeholder {
           width: 28px;
           height: 20px;
           border-radius: 4px;
@@ -1295,11 +1295,11 @@ const RatingsPage: React.FC = () => {
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         /* Removed CSS reset for mobile cards */
-        .player-card:hover {
+        .ratings-page .player-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
-        .card-header {
+        .ratings-page .card-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -1327,10 +1327,10 @@ const RatingsPage: React.FC = () => {
           font-size: 0.9375rem;
           border: 1px solid rgba(34, 197, 94, 0.3);
         }
-        .card-body {
+        .ratings-page .card-body {
           padding: 1rem;
         }
-        .player-main {
+        .ratings-page .player-main {
           display: flex;
           align-items: center;
           gap: 0.75rem;
@@ -1341,29 +1341,29 @@ const RatingsPage: React.FC = () => {
         .player-avatar-mobile {
           flex-shrink: 0;
         }
-        .player-details-mobile {
+        .ratings-page .player-details-mobile {
           flex: 1;
         }
-        .player-name-mobile {
+        .ratings-page .player-name-mobile {
           font-size: 1.125rem;
           font-weight: 700;
           color: #f9fafb;
           margin-bottom: 0.25rem;
         }
-        .player-nick-mobile {
+        .ratings-page .player-nick-mobile {
           font-size: 0.875rem;
           color: #94a3b8;
         }
-        .player-stats {
+        .ratings-page .player-stats {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 1rem;
         }
-        .stat-item {
+        .ratings-page .stat-item {
           display: flex;
           flex-direction: column;
         }
-        .stat-label {
+        .ratings-page .stat-label {
           font-size: 0.75rem;
           color: #94a3b8;
           text-transform: uppercase;
@@ -1371,31 +1371,31 @@ const RatingsPage: React.FC = () => {
           letter-spacing: 0.025em;
           font-weight: 600;
         }
-        .stat-value {
+        .ratings-page .stat-value {
           font-size: 0.875rem;
           color: #f9fafb;
           font-weight: 600;
         }
-        .country-info-mobile {
+        .ratings-page .country-info-mobile {
           display: flex;
           align-items: center;
           gap: 0.5rem;
         }
-        .country-flag-mobile {
+        .ratings-page .country-flag-mobile {
           width: 20px;
           height: 14px;
           object-fit: cover;
           border-radius: 3px;
           border: 1px solid #374151;
         }
-        .country-placeholder-mobile {
+        .ratings-page .country-placeholder-mobile {
           width: 20px;
           height: 14px;
           border-radius: 3px;
           background: #374151;
           display: inline-block; /* Show by default if no src */
         }
-        .country-mobile {
+        .ratings-page .country-mobile {
           font-weight: 600;
         }
 
