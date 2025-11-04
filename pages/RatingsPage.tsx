@@ -290,7 +290,8 @@ const RatingsPage: React.FC = () => {
   useEffect(() => {
     if (searchStartTime.current > 0) {
       const duration = Date.now() - searchStartTime.current;
-      console.log('Search/Filter render took', duration, 'ms for', filteredAndSortedPlayers.length, 'results');
+      // Performance logging - can be re-enabled for debugging
+      // console.log('Search/Filter render took', duration, 'ms for', filteredAndSortedPlayers.length, 'results');
       searchStartTime.current = 0; // Reset timer
     }
   }, [filteredAndSortedPlayers]); // Log when the filtered list updates
@@ -450,7 +451,7 @@ const RatingsPage: React.FC = () => {
 
       {/* Tournament Ratings Text */}
       <div className="tournament-info-text">
-        <p>Ratings after the Scrabble Beach Tournament 2025</p>
+        <p>Ratings after Scrabble On The Beach Tournament 2025</p>
       </div>
 
       <div className="ratings-content">
@@ -562,7 +563,7 @@ const RatingsPage: React.FC = () => {
                 onChange={(e) => setFilterCountry(e.target.value)}
                 className="country-select w-full pl-4 pr-10 py-3 rounded-lg border border-slate-600 bg-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
               >
-                <option value="">{t('ratings.allCountries')} ({playersData.length})</option>
+                <option value="">{t('ratings.allCountries')} ({countries.length})</option>
                 {countries.map(country => (
                   <option key={country} value={country}>
                     {country} ({countryCounts[country] || 0})
@@ -915,6 +916,11 @@ const RatingsPage: React.FC = () => {
       </div>
 
       <style>{`
+        /* --- CSS Reset --- */
+        .ratings-page * {
+          box-sizing: border-box;
+        }
+        
         /* --- General & Hero --- */
         .ratings-page {
           min-height: 100vh;
@@ -1177,6 +1183,7 @@ const RatingsPage: React.FC = () => {
         .table-section {
           margin-bottom: 2.5rem;
         }
+        /* Removed CSS reset for table elements */
         .desktop-table {
           display: none; /* Hidden by default, shown on desktop */
         }
@@ -1189,12 +1196,12 @@ const RatingsPage: React.FC = () => {
           border: 1px solid #374151;
           box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
         }
-        .ratings-table {
+        .ratings-page .ratings-table {
           width: 100%;
           border-collapse: collapse;
           background: #1f2937;
         }
-        .ratings-table th {
+        .ratings-page .ratings-table th {
           background: #111827;
           padding: 1.25rem;
           text-align: left;
@@ -1206,13 +1213,13 @@ const RatingsPage: React.FC = () => {
           letter-spacing: 0.025em;
           white-space: nowrap;
         }
-        .ratings-table th.sortable {
+        .ratings-page .ratings-table th.sortable {
           cursor: pointer;
           user-select: none;
           transition: background-color 0.2s ease;
           position: relative;
         }
-        .ratings-table th.sortable:hover {
+        .ratings-page .ratings-table th.sortable:hover {
           background: #1f2937;
         }
         .header-content {
@@ -1220,14 +1227,14 @@ const RatingsPage: React.FC = () => {
           align-items: center;
           gap: 0.625rem;
         }
-        .ratings-table td {
+        .ratings-page .ratings-table td {
           padding: 1.25rem;
           border-bottom: 1px solid #374151;
         }
-        .ratings-table tbody tr:last-child td {
+        .ratings-page .ratings-table tbody tr:last-child td {
           border-bottom: none;
         }
-        .ratings-table tbody tr:hover {
+        .ratings-page .ratings-table tbody tr:hover {
           background: rgba(31, 41, 55, 0.7);
         }
         .rank-header { width: 5%; }
@@ -1237,27 +1244,27 @@ const RatingsPage: React.FC = () => {
         .games-header { width: 10%; }
         .date-header { width: 15%; }
         .rank-cell { text-align: center; }
-        .rank-number {
+        .ratings-page .rank-number {
           font-weight: 800;
           color: #22c55e;
           font-size: 1.25rem;
         }
-        .player-cell .player-name {
+        .ratings-page .player-cell .player-name {
           font-weight: 700;
           color: #f9fafb;
           margin-bottom: 0.375rem;
           font-size: 1.0625rem;
         }
-        .player-nick {
+        .ratings-page .player-nick {
           font-size: 0.9375rem;
           color: #94a3b8;
         }
-        .country-cell .country-info {
+        .ratings-page .country-cell .country-info {
           display: flex;
           align-items: center;
           gap: 0.875rem;
         }
-        .country-flag {
+        .ratings-page .country-flag {
           width: 28px;
           height: 20px;
           object-fit: cover;
@@ -1272,13 +1279,13 @@ const RatingsPage: React.FC = () => {
           background: #374151;
           display: inline-block; /* Show by default if no src */
         }
-        .country-code {
+        .ratings-page .country-code {
           font-weight: 600;
           color: #f9fafb;
         }
         
         /* --- Mobile Cards --- */
-        .player-card {
+        .ratings-page .player-card {
           background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
           border-radius: 16px;
           border: 1px solid #374151;
@@ -1287,6 +1294,7 @@ const RatingsPage: React.FC = () => {
           box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+        /* Removed CSS reset for mobile cards */
         .player-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
@@ -1299,7 +1307,7 @@ const RatingsPage: React.FC = () => {
           background: rgba(17, 24, 39, 0.8);
           border-bottom: 1px solid #374151;
         }
-        .rank-badge {
+        .ratings-page .rank-badge {
           display: inline-block;
           padding: 0.375rem 1rem;
           background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
@@ -1309,7 +1317,7 @@ const RatingsPage: React.FC = () => {
           font-size: 0.9375rem;
           border: 1px solid rgba(34, 197, 94, 0.3);
         }
-        .rating-badge-mobile {
+        .ratings-page .rating-badge-mobile {
           display: inline-block;
           padding: 0.375rem 1rem;
           background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
@@ -1701,7 +1709,7 @@ const RatingsPage: React.FC = () => {
         }
 
         /* --- Highlighting --- */
-        .search-highlight {
+        .ratings-page .search-highlight {
           background-color: #facc15;
           color: #000000;
           font-weight: 700;
