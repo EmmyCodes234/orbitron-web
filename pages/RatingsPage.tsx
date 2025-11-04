@@ -290,8 +290,7 @@ const RatingsPage: React.FC = () => {
   useEffect(() => {
     if (searchStartTime.current > 0) {
       const duration = Date.now() - searchStartTime.current;
-      // Performance logging - can be re-enabled for debugging
-      // console.log('Search/Filter render took', duration, 'ms for', filteredAndSortedPlayers.length, 'results');
+      console.log('Search/Filter render took', duration, 'ms for', filteredAndSortedPlayers.length, 'results');
       searchStartTime.current = 0; // Reset timer
     }
   }, [filteredAndSortedPlayers]); // Log when the filtered list updates
@@ -451,7 +450,7 @@ const RatingsPage: React.FC = () => {
 
       {/* Tournament Ratings Text */}
       <div className="tournament-info-text">
-        <p>Ratings after Scrabble On The Beach Tournament 2025</p>
+        <p>Ratings after the Scrabble Beach Tournament 2025</p>
       </div>
 
       <div className="ratings-content">
@@ -916,11 +915,6 @@ const RatingsPage: React.FC = () => {
       </div>
 
       <style>{`
-        /* --- CSS Reset --- */
-        .ratings-page * {
-          box-sizing: border-box;
-        }
-        
         /* --- General & Hero --- */
         .ratings-page {
           min-height: 100vh;
@@ -1183,7 +1177,6 @@ const RatingsPage: React.FC = () => {
         .table-section {
           margin-bottom: 2.5rem;
         }
-        /* Removed CSS reset for table elements */
         .desktop-table {
           display: none; /* Hidden by default, shown on desktop */
         }
@@ -1294,7 +1287,6 @@ const RatingsPage: React.FC = () => {
           box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        /* Removed CSS reset for mobile cards */
         .player-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);

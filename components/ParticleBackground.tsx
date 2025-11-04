@@ -10,11 +10,12 @@ interface ParticleBackgroundProps {
 
 const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ isMobile = false }) => {
   const particlesInit = async (engine: Engine) => {
+    console.log("Particles engine initialized");
     await loadSlim(engine);
   };
 
   const particlesLoaded = async (container: any) => {
-    // Particles container loaded - no need to log in production
+    console.log("Particles container loaded", container);
   };
 
   // Star-themed particles for mobile
