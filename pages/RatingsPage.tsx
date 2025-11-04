@@ -290,7 +290,8 @@ const RatingsPage: React.FC = () => {
   useEffect(() => {
     if (searchStartTime.current > 0) {
       const duration = Date.now() - searchStartTime.current;
-      console.log('Search/Filter render took', duration, 'ms for', filteredAndSortedPlayers.length, 'results');
+      // Performance logging - can be re-enabled for debugging
+      // console.log('Search/Filter render took', duration, 'ms for', filteredAndSortedPlayers.length, 'results');
       searchStartTime.current = 0; // Reset timer
     }
   }, [filteredAndSortedPlayers]); // Log when the filtered list updates
@@ -915,6 +916,11 @@ const RatingsPage: React.FC = () => {
       </div>
 
       <style>{`
+        /* --- CSS Reset --- */
+        .ratings-page * {
+          box-sizing: border-box;
+        }
+        
         /* --- General & Hero --- */
         .ratings-page {
           min-height: 100vh;
@@ -1177,6 +1183,12 @@ const RatingsPage: React.FC = () => {
         .table-section {
           margin-bottom: 2.5rem;
         }
+        .ratings-table,
+        .ratings-table th,
+        .ratings-table td {
+          border: none;
+          outline: none;
+        }
         .desktop-table {
           display: none; /* Hidden by default, shown on desktop */
         }
@@ -1286,6 +1298,11 @@ const RatingsPage: React.FC = () => {
           margin-bottom: 1.25rem;
           box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .player-card,
+        .player-card * {
+          border: none;
+          outline: none;
         }
         .player-card:hover {
           transform: translateY(-5px);
