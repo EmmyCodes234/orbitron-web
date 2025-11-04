@@ -137,7 +137,7 @@ const RatingsPage: React.FC = () => {
         setLoading(true);
         setError(null);
         
-        const response = await fetch('/panasa.RT2');
+        const response = await fetch('/ScrbTBeach.RT2');
         if (response.ok) {
           const rt2Content = await response.text();
           const parsedPlayers = parseRT2File(rt2Content);
@@ -450,7 +450,7 @@ const RatingsPage: React.FC = () => {
 
       {/* Tournament Ratings Text */}
       <div className="tournament-info-text">
-        <p>Ratings after the Ghana National Scrabble Championship 2025</p>
+        <p>Ratings after Scrabble On The Beach Tournament 2025</p>
       </div>
 
       <div className="ratings-content">
@@ -528,7 +528,7 @@ const RatingsPage: React.FC = () => {
                         <li className="suggestion-item px-4 py-3 text-gray-400" role="option">
                           <div className="flex items-center">
                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             {t('ratings.noSuggestions')}
                           </div>
@@ -943,6 +943,7 @@ const RatingsPage: React.FC = () => {
         .hero-section h1 {
           font-family: 'Orbitron', monospace;
           font-size: 3.5rem;
+
           margin-bottom: 1.5rem;
           font-weight: 800;
           background: linear-gradient(to right, #22c55e, #06b6d4, #8b5cf6);

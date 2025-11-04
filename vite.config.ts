@@ -16,12 +16,15 @@ export default defineConfig(({ mode }) => {
           '@': path.resolve(__dirname, '.'),
         }
       },
-      // Netlify deployment optimization
+      // Build configuration for SPA deployment
       build: {
         outDir: 'dist',
         assetsDir: 'assets',
         rollupOptions: {
           output: {
+            entryFileNames: 'assets/[name].[hash].js',
+            chunkFileNames: 'assets/[name].[hash].js',
+            assetFileNames: 'assets/[name].[hash].[ext]',
             manualChunks: {
               vendor: ['react', 'react-dom', 'react-router-dom'],
               ui: ['@supabase/supabase-js', 'gsap']
@@ -29,7 +32,7 @@ export default defineConfig(({ mode }) => {
           }
         }
       },
-      // Ensure proper base path for Netlify
+      // Ensure proper base path for SPA deployment
       base: '/',
       // Optimize for production
       optimizeDeps: {

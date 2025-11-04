@@ -94,7 +94,7 @@ function parseRT2File(filePath) {
 
 // Function to generate the full SQL update script
 function generateUpdateScript() {
-  const filePath = join(process.cwd(), 'panasa.RT2');
+  const filePath = join(process.cwd(), 'ScrbTBeach.RT2');
   
   // Check if file exists
   if (!existsSync(filePath)) {
@@ -106,7 +106,7 @@ function generateUpdateScript() {
   
   // Create the full SQL script
   const sqlScript = `-- PANASA Players Rating Update
--- Generated from panasa.RT2 file
+-- Generated from ScrbTBeach.RT2 file
 -- This script will update all player ratings in the database
 
 -- First, clear existing player data
