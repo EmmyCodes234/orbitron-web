@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { playersData as fallbackData } from '../data/playersData';
 import { useLocalization } from '../contexts/LocalizationContext';
+import rt2Content from '@/src/data/rt2Data';
 
 // Define the player interface that matches our data structure
 interface Player {
@@ -132,31 +133,24 @@ const RatingsPage: React.FC = () => {
 
   // Parse players data from RT2 file
   useEffect(() => {
-    const loadRT2Data = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const response = await fetch('/ScrbTBeach.RT2');
-        if (response.ok) {
-          const rt2Content = await response.text();
-          const parsedPlayers = parseRT2File(rt2Content);
-          setPlayersData(parsedPlayers);
-        } else {
-          console.warn('Failed to fetch RT2 file, using fallback data.');
-          setPlayersData(fallbackData.sort((a, b) => b.rating - a.rating)); // Ensure fallback is sorted
-        }
-      } catch (err) {
-        console.error('Error loading RT2 data:', err);
-        setPlayersData(fallbackData.sort((a, b) => b.rating - a.rating)); // Ensure fallback is sorted
-        setError('Failed to load player data. Showing offline data.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadRT2Data();
-  }, []);
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // 1. Parse the imported RT2 content directly
+      //    No fetch is needed!
+      const parsedPlayers = parseRT2File(rt2Content);
+      setPlayersData(parsedPlayers);
+      
+    } catch (err) {
+      // 2. Fallback logic remains the same
+      console.error('Error parsing local RT2 data:', err);
+      setPlayersData(fallbackData.sort((a, b) => b.rating - a.rating));
+      setError('Failed to load player data. Showing offline data.');
+    } finally {
+      setLoading(false);
+    }
+  }, []); // This effect now only runs once on mount
 
   // Get unique countries for filter dropdown
   const countries = useMemo(() => {
