@@ -445,7 +445,7 @@ const RatingsPage: React.FC = () => {
 
       {/* Tournament Ratings Text */}
       <div className="tournament-info-text">
-        <p>Ratings after Scrabble On The Beach Tournament 2025</p>
+        <p>Ratings after Lagos Unified Scrabble Meet 2025</p>
       </div>
 
       <div className="ratings-content">

@@ -1,230 +1,267 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocalization } from '../contexts/LocalizationContext';
+import { loadDictionary, isWordValid } from '../utils/wordDictionary';
 
 const WordCheckerPage: React.FC = () => {
   const { t } = useLocalization();
+  const [step, setStep] = useState<'wordCount' | 'wordInput' | 'result'>('wordCount');
+  const [wordCount, setWordCount] = useState<number | ''>('');
   const [wordInput, setWordInput] = useState('');
-  const [wordResult, setWordResult] = useState<{ isValid: boolean | null; word: string; time?: number }>({ isValid: null, word: '' });
-  const [serviceWorkerReady, setServiceWorkerReady] = useState(false);
+  const [moveResult, setMoveResult] = useState<{ isValid: boolean | null }>({ isValid: null });
+  const [validatedWords, setValidatedWords] = useState<string[]>([]);
+  const [dictionaryReady, setDictionaryReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [wordCountMessage, setWordCountMessage] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Register service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered with scope:', registration.scope);
-          
-          // Listen for messages from service worker
-          const handleMessage = (event: MessageEvent) => {
-            if (event.data && event.data.type) {
-              switch (event.data.type) {
-                case 'INIT_COMPLETE':
-                  setServiceWorkerReady(true);
-                  break;
-                case 'CHECK_WORD_RESULT':
-                  setWordResult({
-                    isValid: event.data.isValid,
-                    word: event.data.word
-                  });
-                  setIsProcessing(false);
-                  break;
-              }
-            }
-          };
-          
-          navigator.serviceWorker.addEventListener('message', handleMessage);
-          
-          // Initialize the service worker
-          registration.active?.postMessage({ type: 'INIT' });
-          
-          // Cleanup
-          return () => {
-            navigator.serviceWorker.removeEventListener('message', handleMessage);
-          };
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
-          setError('Failed to register Service Worker. Word tools may not work properly.');
-        });
-    } else {
-      setError('Service Workers are not supported in your browser. Word tools may not work properly.');
-    }
+    // Load dictionary directly
+    loadDictionary()
+      .then(() => {
+        setDictionaryReady(true);
+      })
+      .catch((err) => {
+        console.error('Failed to load dictionary:', err);
+        setError('Failed to load word dictionary. Word tools may not work properly.');
+      });
   }, []);
 
-  const handleCheckWord = () => {
+  useEffect(() => {
+    if (inputRef.current && step === 'wordInput') {
+      inputRef.current.focus();
+    }
+  }, [step]);
+
+  const handleWordCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow only numeric input
+    if (value === '' || /^\d+$/.test(value)) {
+      const num = value === '' ? '' : parseInt(value, 10);
+      setWordCount(num);
+      // Automatically advance to next step when a valid number is entered
+      if (num !== '' && num >= 1 && num <= 15) {
+        setTimeout(() => {
+          setStep('wordInput');
+        }, 300); // Small delay for better UX
+      }
+    }
+  };
+
+  const handleWordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toUpperCase();
+    setWordInput(value);
+    
+    // Clear result when input changes
+    if (moveResult.isValid !== null) {
+      setMoveResult({ isValid: null });
+    }
+    
+    // Clear word count message when input changes
+    if (wordCountMessage) {
+      setWordCountMessage(null);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      handleCheckMove();
+    }
+    // Also allow Enter key for mobile users
+    if (e.key === 'Enter') {
+      handleCheckMove();
+    }
+  };
+
+  const handleCheckMove = () => {
     if (!wordInput.trim()) return;
     
-    if (!serviceWorkerReady) {
-      setError('Service Worker is not ready yet. Please wait a moment and try again.');
+    if (!dictionaryReady) {
+      setError('Dictionary is not ready yet. Please wait a moment and try again.');
+      return;
+    }
+    
+    // Split input by spaces or commas and filter out empty strings
+    const words = wordInput.trim()
+      .split(/[\s,]+/)
+      .map(word => word.trim())
+      .filter(word => word.length > 0);
+    
+    // Check if we have the correct number of words
+    if (wordCount && words.length !== wordCount) {
+      setWordCountMessage(`Please enter exactly ${wordCount} word${wordCount > 1 ? 's' : ''}. You entered ${words.length}.`);
       return;
     }
     
     // Clear previous result immediately
-    setWordResult({ isValid: null, word: '' });
+    setMoveResult({ isValid: null });
+    setWordCountMessage(null);
+    setValidatedWords(words);
     setIsProcessing(true);
     
-    // Send message to service worker
-    navigator.serviceWorker.controller?.postMessage({
-      type: 'CHECK_WORD',
-      word: wordInput.trim()
-    });
-  };
-
-  const handleWordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Ensure input is always uppercase
-    const upperCaseValue = e.target.value.toUpperCase();
-    setWordInput(upperCaseValue);
-    
-    // Clear result when input changes
-    if (wordResult.isValid !== null) {
-      setWordResult({ isValid: null, word: '' });
-    }
-    
-    // Clear processing state when input changes
-    if (isProcessing) {
+    try {
+      // Check if all words are valid
+      const allWordsValid = words.length > 0 && words.every(word => isWordValid(word));
+      
+      setMoveResult({
+        isValid: allWordsValid
+      });
+      
+      setIsProcessing(false);
+      setStep('result');
+    } catch (err) {
+      console.error('Error checking move:', err);
+      setError('An error occurred while checking the move. Please try again.');
       setIsProcessing(false);
     }
   };
 
-  // Handle key down event for more responsive uppercase conversion on iOS
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Handle space key to ensure next word starts uppercase
-    if (e.key === ' ') {
-      // Force a re-render with uppercase to ensure consistency
-      setTimeout(() => {
-        const input = e.target as HTMLInputElement;
-        if (input.value !== input.value.toUpperCase()) {
-          setWordInput(input.value.toUpperCase());
-        }
-      }, 0);
-    }
-    
-    // Handle Enter key for submission
-    if (e.key === 'Enter') {
-      handleCheckWord();
-    }
-  };
-
-  // Handle paste event to ensure uppercase
-  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const pastedText = e.clipboardData.getData('text').toUpperCase();
-    setWordInput(pastedText);
-  };
-
-  // Handle composition events for better iOS support
-  const handleCompositionStart = () => {
-    // Prevent uppercase conversion during composition (e.g., when typing accented characters)
-  };
-
-  const handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
-    // Ensure text is uppercase after composition ends
-    const upperCaseValue = e.currentTarget.value.toUpperCase();
-    if (upperCaseValue !== wordInput) {
-      setWordInput(upperCaseValue);
-    }
+  const handleReset = () => {
+    setWordInput('');
+    setMoveResult({ isValid: null });
+    setValidatedWords([]);
+    setStep('wordCount');
+    setWordCount('');
+    setWordCountMessage(null);
   };
 
   return (
     <div className="tool-container">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h1 className="tool-header">
+          <h1 className="tool-header text-2xl sm:text-3xl">
             {t('tools.wordChecker.title')}
           </h1>
-          <Link to="/tools" className="tool-button tool-button-enabled tool-button-green w-full sm:w-auto text-center">
+          <Link to="/tools" className="tool-button tool-button-enabled tool-button-green w-full sm:w-auto text-center text-base sm:text-lg">
             Back to Tools
           </Link>
         </div>
         
         {error && (
-          <div className="bg-red-900/50 border border-red-700/50 rounded-xl p-4 mb-6 text-center animate-fadeIn">
-            <p className="text-red-300 font-medium">{error}</p>
+          <div className="bg-red-900/50 border border-red-700/50 rounded-xl p-3 sm:p-4 mb-6 text-center animate-fadeIn">
+            <p className="text-red-300 font-medium text-sm sm:text-base">{error}</p>
           </div>
         )}
         
         <div className="tool-card">
-          <h2 className="tool-title">
-            {t('tools.wordChecker.heading')}
-          </h2>
-          
-          <div className="space-y-4 sm:space-y-5 md:space-y-6">
-            <p className="tool-description">
-              {t('tools.wordChecker.description')}
-            </p>
-            
-            <div className="tool-input-container flex flex-col sm:flex-row gap-3">
-              <div className="tool-input-wrapper flex-grow">
+          {step === 'wordCount' && (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] py-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-3 text-white">
+                Word Checker
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg text-center mb-5 text-gray-300">
+                How many words do you want to challenge?
+              </p>
+              <div className="relative mb-5">
                 <input
                   type="text"
-                  id="wordCheckerInput"
-                  value={wordInput}
-                  onChange={handleWordInputChange}
-                  onPaste={handlePaste}
-                  onKeyDown={handleKeyDown}
-                  onCompositionStart={handleCompositionStart}
-                  onCompositionEnd={handleCompositionEnd}
-                  placeholder={t('tools.wordChecker.placeholder')}
-                  className="tool-input tool-input-green w-full"
-                  // iOS-specific attributes to improve uppercase handling
-                  autoCapitalize="characters"
-                  spellCheck="false"
+                  value={wordCount}
+                  onChange={handleWordCountChange}
+                  placeholder="1-15"
+                  className="text-4xl sm:text-5xl md:text-6xl w-20 sm:w-24 md:w-32 text-center bg-transparent border-b-4 border-green-500 text-white placeholder-gray-600 focus:outline-none focus:border-green-400 pb-2 appearance-none [-moz-appearance:none] [-webkit-appearance:none]"
+                  autoFocus
                 />
-                {wordInput && (
-                  <button
-                    onClick={() => setWordInput('')}
-                    className="tool-clear-button"
-                    aria-label="Clear input"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  </button>
+              </div>
+              <p className="text-xs sm:text-sm text-gray-400 mt-3 text-center px-4">
+                Enter a number between 1-15 to continue
+              </p>
+            </div>
+          )}
+          
+          {step === 'wordInput' && (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] py-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-2 text-white">
+                Word Checker
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg text-center mb-1 text-gray-300">
+                Enter {wordCount} word{wordCount && wordCount > 1 ? 's' : ''}
+              </p>
+              <p className="text-xs sm:text-sm text-center mb-3 text-gray-400">
+                (Press TAB or ENTER to validate)
+              </p>
+              
+              <div 
+                className="w-full h-24 sm:h-32 flex items-center justify-center mb-3 cursor-text"
+                onClick={() => inputRef.current?.focus()}
+              >
+                {wordInput ? (
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-white break-all px-3">
+                    {wordInput}
+                  </h2>
+                ) : (
+                  <p className="text-base sm:text-lg md:text-xl text-gray-600 text-center">
+                    Type your word{wordCount && wordCount > 1 ? 's' : ''} here...
+                  </p>
                 )}
               </div>
-              <button
-                onClick={handleCheckWord}
-                disabled={!serviceWorkerReady || !wordInput.trim() || isProcessing}
-                className={`tool-button w-full sm:w-auto ${
-                  !serviceWorkerReady || !wordInput.trim() || isProcessing
-                    ? ''
-                    : 'tool-button-enabled tool-button-green'
-                }`}
-              >
-                {isProcessing ? (
-                  <>
-                    <svg className="tool-processing-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    {t('tools.wordChecker.checking')}
-                  </>
-                ) : (
-                  t('tools.wordChecker.check')
-                )}
-              </button>
+              
+              {wordCountMessage && (
+                <div className="mb-3 p-2 sm:p-3 bg-yellow-900/50 border border-yellow-700/50 rounded-lg">
+                  <p className="text-yellow-400 text-center text-xs sm:text-sm">{wordCountMessage}</p>
+                </div>
+              )}
+              
+              <input
+                ref={inputRef}
+                type="text"
+                value={wordInput}
+                onChange={handleWordInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder={`Enter ${wordCount && wordCount > 1 ? wordCount + ' words' : 'a word'}...`}
+                className="absolute opacity-0 w-0 h-0"
+              />
+              
+              <div className="flex flex-col gap-2 mt-3 w-full max-w-xs">
+                <button
+                  onClick={handleReset}
+                  className="px-3 py-2 text-sm rounded-lg font-bold bg-gray-700 hover:bg-gray-600 text-white transition-all"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={handleCheckMove}
+                  disabled={!dictionaryReady || !wordInput.trim() || isProcessing}
+                  className={`px-3 py-2 text-sm rounded-lg font-bold transition-all ${
+                    !dictionaryReady || !wordInput.trim() || isProcessing
+                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                      : 'bg-green-600 hover:bg-green-500 text-white transform hover:scale-105'
+                  }`}
+                >
+                  {isProcessing ? 'Checking...' : 'Validate Move'}
+                </button>
+              </div>
             </div>
-            
-            {wordResult.isValid !== null && (
-              <div className={`p-4 sm:p-5 rounded-xl border text-center transition-all duration-300 ${
-                wordResult.isValid 
-                  ? 'bg-green-900/30 border-green-700/50 text-green-400 animate-fadeIn' 
-                  : 'bg-red-900/30 border-red-700/50 text-red-400 animate-fadeIn'
+          )}
+          
+          {step === 'result' && (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] py-4">
+              <div className={`p-4 sm:p-5 rounded-xl border-4 text-center w-full max-w-xs sm:max-w-md ${
+                moveResult.isValid 
+                  ? 'bg-green-900/30 border-green-500 text-green-400' 
+                  : 'bg-red-900/30 border-red-500 text-red-400'
               }`}>
-                <p className="font-bold text-lg xs:text-xl sm:text-2xl">
-                  {wordResult.isValid ? 'Yes, the move is Valid in the CSW24 Lexicon' : 'No, the move is invalid in the CSW24 dictionary'}
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
+                  {validatedWords.join(', ')}
+                </h2>
+                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl">
+                  {moveResult.isValid 
+                    ? 'Yes, the move is valid in CSW24' 
+                    : 'No, the move is invalid in CSW24'}
                 </p>
               </div>
-            )}
-            
-            <div className="tool-footer">
-              <p>{t('tools.wordChecker.poweredBy')}</p>
-              <p className="tool-footer-italic">Instant lookups powered by Service Worker caching</p>
+              
+              <div className="flex flex-col gap-2 mt-4 w-full max-w-xs">
+                <button
+                  onClick={handleReset}
+                  className="px-3 py-2 text-sm rounded-lg font-bold bg-gray-700 hover:bg-gray-600 text-white transition-all"
+                >
+                  New Challenge
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         
         {/* Processing indicator - only shown during processing */}

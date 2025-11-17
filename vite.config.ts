@@ -1,11 +1,25 @@
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import { copyFileSync } from 'fs';
+
+// Function to copy .htaccess file after build
+const copyHtaccess = () => ({
+  name: 'copy-htaccess',
+  closeBundle: () => {
+    try {
+      copyFileSync('.htaccess', 'dist/.htaccess');
+      console.log('.htaccess file copied to dist folder');
+    } catch (err) {
+      console.warn('Could not copy .htaccess file:', err.message);
+    }
+  }
+});
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
-      plugins: [react()],
+      plugins: [react(), copyHtaccess()],
       define: {
         'import.meta.env.VITE_CHATBASE_API_KEY': JSON.stringify(env.VITE_CHATBASE_API_KEY),
         'import.meta.env.VITE_CHATBASE_CHATBOT_ID': JSON.stringify(env.VITE_CHATBASE_CHATBOT_ID),

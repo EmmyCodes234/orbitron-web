@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocalization } from '../contexts/LocalizationContext';
 import jsPDF from 'jspdf';
+import { loadDictionary, solveAnagram, solveWordBuilder, solveStartsWith, solveEndsWith, solveContaining, solveQWithoutU, solveTwoLetterWords, solveThreeLetterWords, solveFourLetterWords, solveFiveLetterWords } from '../utils/wordDictionary';
 
 // Define the type for our enhanced anagram results
 interface AnagramResult {
@@ -30,7 +31,7 @@ const AnagramSolverPage: React.FC = () => {
   const [searchType, setSearchType] = useState<SearchType>('anagram');
   // Update the type to handle consistent object arrays
   const [anagramResults, setAnagramResults] = useState<Record<number, AnagramResult[]> | null>(null);
-  const [serviceWorkerReady, setServiceWorkerReady] = useState(false);
+  const [dictionaryReady, setDictionaryReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [exportFormat, setExportFormat] = useState<'txt' | 'pdf'>('txt');
@@ -38,55 +39,15 @@ const AnagramSolverPage: React.FC = () => {
   const [exportContent, setExportContent] = useState('');
 
   useEffect(() => {
-    // Register service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered with scope:', registration.scope);
-          
-          // Listen for messages from service worker
-          const handleMessage = (event: MessageEvent) => {
-            if (event.data && event.data.type) {
-              switch (event.data.type) {
-                case 'INIT_COMPLETE':
-                  setServiceWorkerReady(true);
-                  break;
-                case 'SOLVE_ANAGRAM_RESULT':
-                  // Transform the grouped results into the format expected by the UI
-                  const transformedResults: Record<number, AnagramResult[]> = {};
-                  Object.keys(event.data.results).forEach(length => {
-                    transformedResults[length] = event.data.results[length].map((item: AnagramResult) => {
-                      // Ensure all items have the blankSubstitutions property
-                      return {
-                        word: item.word,
-                        blankSubstitutions: item.blankSubstitutions || []
-                      };
-                    });
-                  });
-                  setAnagramResults(transformedResults);
-                  setIsProcessing(false);
-                  break;
-              }
-            }
-          };
-          
-          navigator.serviceWorker.addEventListener('message', handleMessage);
-          
-          // Initialize the service worker
-          registration.active?.postMessage({ type: 'INIT' });
-          
-          // Cleanup
-          return () => {
-            navigator.serviceWorker.removeEventListener('message', handleMessage);
-          };
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
-          setError('Failed to register Service Worker. Word tools may not work properly.');
-        });
-    } else {
-      setError('Service Workers are not supported in your browser. Word tools may not work properly.');
-    }
+    // Load dictionary directly
+    loadDictionary()
+      .then(() => {
+        setDictionaryReady(true);
+      })
+      .catch((err) => {
+        console.error('Failed to load dictionary:', err);
+        setError('Failed to load word dictionary. Word tools may not work properly.');
+      });
   }, []);
 
   const handleSolveAnagram = () => {
@@ -101,8 +62,8 @@ const AnagramSolverPage: React.FC = () => {
     
     if (!noInputRequired.includes(searchType) && !anagramInput.trim()) return;
     
-    if (!serviceWorkerReady) {
-      setError('Service Worker is not ready yet. Please wait a moment and try again.');
+    if (!dictionaryReady) {
+      setError('Dictionary is not ready yet. Please wait a moment and try again.');
       return;
     }
     
@@ -120,13 +81,104 @@ const AnagramSolverPage: React.FC = () => {
     // Don't set isProcessing to true to eliminate loading spinner
     // setIsProcessing(true);
     
-    // Send message to service worker
-    navigator.serviceWorker.controller?.postMessage({
-      type: 'SOLVE_ANAGRAM',
-      letters: anagramInput.trim(),
-      originalLetters: anagramInput.trim(),
-      searchType: searchType
-    });
+    try {
+      let results: Record<number, string[]> = {};
+      
+      switch (searchType) {
+        case 'wordBuilder':
+          results = solveWordBuilder(anagramInput.trim());
+          break;
+        case 'startsWith':
+          results = solveStartsWith(anagramInput.trim());
+          break;
+        case 'endsWith':
+          results = solveEndsWith(anagramInput.trim());
+          break;
+        case 'containing':
+          results = solveContaining(anagramInput.trim());
+          break;
+        case 'qWithoutU':
+          results = solveQWithoutU();
+          break;
+        case 'twoLetterWords':
+          results = solveTwoLetterWords();
+          break;
+        case 'threeLetterWords':
+          results = solveThreeLetterWords();
+          break;
+        case 'fourLetterWords':
+          results = solveFourLetterWords();
+          break;
+        case 'fiveLetterWords':
+          results = solveFiveLetterWords();
+          break;
+        default:
+          results = solveAnagram(anagramInput.trim());
+      }
+      
+      // Transform results to match expected format with blank substitutions
+      const transformedResults: Record<number, AnagramResult[]> = {};
+      
+      if (searchType === 'anagram' || searchType === 'wordBuilder') {
+        // For anagram searches, we need to calculate blank substitutions
+        const upperLetters = anagramInput.trim().toUpperCase();
+        const letterCount: Record<string, number> = {};
+        let blankCount = 0;
+        
+        // Count letters and blanks
+        for (const letter of upperLetters) {
+          if (letter === '?') {
+            blankCount++;
+          } else {
+            letterCount[letter] = (letterCount[letter] || 0) + 1;
+          }
+        }
+        
+        Object.keys(results).forEach(length => {
+          const wordLength = Number(length);
+          transformedResults[wordLength] = results[wordLength].map(word => {
+            // Calculate which letters were substituted by blanks
+            const blankSubstitutions: string[] = [];
+            const wordLetterCount: Record<string, number> = {};
+            
+            // Count letters in the word
+            for (const letter of word) {
+              wordLetterCount[letter] = (wordLetterCount[letter] || 0) + 1;
+            }
+            
+            // Find which letters were formed from blanks
+            for (const [letter, count] of Object.entries(wordLetterCount)) {
+              const available = letterCount[letter] || 0;
+              if (count > available) {
+                // These extra letters came from blanks
+                const fromBlanks = count - available;
+                for (let i = 0; i < fromBlanks; i++) {
+                  blankSubstitutions.push(letter);
+                }
+              }
+            }
+            
+            return {
+              word,
+              blankSubstitutions
+            };
+          });
+        });
+      } else {
+        // For other search types, no blank substitutions needed
+        Object.keys(results).forEach(length => {
+          transformedResults[Number(length)] = results[Number(length)].map(word => ({
+            word,
+            blankSubstitutions: []
+          }));
+        });
+      }
+      
+      setAnagramResults(transformedResults);
+    } catch (err) {
+      console.error('Error solving anagram:', err);
+      setError('An error occurred while solving the anagram. Please try again.');
+    }
   };
 
   const handleAnagramInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -306,7 +358,12 @@ const AnagramSolverPage: React.FC = () => {
     
     sortedResults.forEach(([length, words]) => {
       content += `${length}-Letter Words (${words.length} ${words.length === 1 ? 'word' : 'words'}):\n`;
-      const wordList = words.map(item => item.word).join(', ');
+      const wordList = words.map(item => {
+        if (item.blankSubstitutions && item.blankSubstitutions.length > 0) {
+          return `${item.word} [blanks: ${item.blankSubstitutions.join(', ')}]`;
+        }
+        return item.word;
+      }).join(', ');
       content += `${wordList}\n\n`;
     });
     
@@ -358,7 +415,12 @@ const AnagramSolverPage: React.FC = () => {
       
       // Add words
       doc.setFont(undefined, 'normal');
-      const wordList = words.map(item => item.word).join(', ');
+      const wordList = words.map(item => {
+        if (item.blankSubstitutions && item.blankSubstitutions.length > 0) {
+          return `${item.word} [blanks: ${item.blankSubstitutions.join(', ')}]`;
+        }
+        return item.word;
+      }).join(', ');
       
       // Split long lines
       const splitText = doc.splitTextToSize(wordList, 170);
@@ -503,9 +565,9 @@ const AnagramSolverPage: React.FC = () => {
               </div>
               <button
                 onClick={handleSolveAnagram}
-                disabled={!serviceWorkerReady || (isInputRequired() && !anagramInput.trim())}
+                disabled={!dictionaryReady || (isInputRequired() && !anagramInput.trim())}
                 className={`tool-button w-full sm:w-auto ${
-                  !serviceWorkerReady || (isInputRequired() && !anagramInput.trim())
+                  !dictionaryReady || (isInputRequired() && !anagramInput.trim())
                     ? ''
                     : 'tool-button-enabled tool-button-purple'
                 }`}

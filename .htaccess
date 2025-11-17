@@ -1,0 +1,14 @@
+# Enable proper MIME types for modern web technologies
+AddType application/javascript .js
+AddType text/javascript .js
+
+# Handle Single Page Application routing
+RewriteEngine On
+
+# Allow direct access to existing files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Route all other requests to index.html
+RewriteRule ^ index.html [L]
