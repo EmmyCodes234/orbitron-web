@@ -31,11 +31,11 @@ const LoadingSpinner = () => (
 // Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  
+
   return null;
 };
 
@@ -50,7 +50,7 @@ const AppContent: React.FC = () => {
           <Layout /> component (and thus the main site header) from being rendered.
         */}
         <Route path="/chatbot" element={<ChatbotPage />} />
-        
+
         {/* All other pages remain nested within the Layout route */}
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />

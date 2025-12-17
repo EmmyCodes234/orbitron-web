@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ChatbaseChatbot from '../components/ChatbaseChatbot';
-import LanguageSelector from '../components/LanguageSelector'; 
+import RagChatbot from '../components/RagChatbot';
+import LanguageSelector from '../components/LanguageSelector';
 import EnhancedSearch, { SearchSuggestion } from '../components/EnhancedSearch';
 import { useLocalization } from '../contexts/LocalizationContext';
 
@@ -34,191 +34,63 @@ const ChatbotPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-950 text-gray-100 flex flex-col">
-      {/* Main Content Area - Removed overflow-hidden to allow mobile menu to display properly */}
-      <main className="flex-grow flex flex-col">
-        
-        {/* CHATBOT HEADER */}
-        <div className="border-b border-gray-700/50 bg-gray-800/80 backdrop-blur-sm py-2 sm:py-3 px-3 sm:px-4 md:px-6 flex-shrink-0 sticky top-0 z-30">
-          <div className="max-w-6xl mx-auto flex flex-col xs:flex-row items-center justify-between gap-2 sm:gap-3 md:gap-4 w-full">
-            {/* Branding/Bot Info */}
-            <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 w-full xs:w-auto">
-              <div className="flex-shrink-0">
-                {/* Removed green background from logo */}
-                <img src="/panasa-logo.png" alt="PANASA Logo" className="h-7 w-auto sm:h-8" />
-              </div>
-              
-              <div className="flex-grow xs:flex-grow-0">
-                <div className="flex items-center space-x-2">
-                    <h1 className="text-base sm:text-lg md:text-xl font-bold text-gray-100 whitespace-nowrap">PANASA Bot</h1>
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" title="Online"></div>
-                </div>
-                <p className="text-[10px] sm:text-xs text-gray-400 hidden xs:block">WESPA Scrabble rules expert</p>
-              </div>
+    <div className="h-screen bg-[#0f1117] text-gray-100 flex flex-col overflow-hidden relative selection:bg-cyan-500/30 selection:text-cyan-200">
+
+      {/* Abstract Background Elements (Subtle Gemini-like Glows) */}
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none" />
+
+      {/* Main Content Area */}
+      <main className="flex-grow flex flex-col relative z-10 h-full overflow-hidden">
+
+        {/* Minimal Header - Floating/Transparent */}
+        <div className="absolute top-0 left-0 right-0 z-50 p-4 sm:p-6 flex justify-between items-start pointer-events-none">
+          {/* Logo - Minimal */}
+          <div className="pointer-events-auto">
+            {/* Logo + Subtle Title */}
+            <div className="flex items-center gap-3 bg-black/20 backdrop-blur-md border border-white/5 rounded-full px-4 py-2 hover:bg-black/40 transition-all cursor-pointer group" onClick={() => setIsInfoVisible(!isInfoVisible)}>
+              <img src="/panasa-logo.png" alt="PANASA" className="h-6 w-auto opacity-80 group-hover:opacity-100 transition-opacity" />
+              <span className="text-sm font-medium text-gray-400 group-hover:text-gray-200 transition-colors">PANASA Bot</span>
             </div>
-            
-            <div className="flex items-center space-x-1 sm:space-x-2 w-full xs:w-auto justify-end">
-              <Link to="/tools" className="hidden md:inline tool-button tool-button-enabled tool-button-cyan text-sm sm:text-base">
-                Back to Tools
-              </Link>
-            </div>
-            
-            {/* NAVIGATION CONTROLS - Desktop */}
-            <div className="hidden md:flex items-center justify-end space-x-1 sm:space-x-2">
-                <button 
-                  onClick={() => setIsInfoVisible(!isInfoVisible)}
-                  className="p-1.5 sm:p-2 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
-                  aria-label={isInfoVisible ? "Hide information" : "Show information"}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </button>
-                <LanguageSelector /> 
-            </div>
-            
-            {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-1 sm:space-x-2">
-              <button 
-                onClick={() => setIsInfoVisible(!isInfoVisible)}
-                className="p-1.5 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors"
-                aria-label={isInfoVisible ? "Hide information" : "Show information"}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button>
+          </div>
+
+          {/* Controls - Minimal Pill */}
+          <div className="flex items-center gap-2 pointer-events-auto">
+            <Link to="/tools" className="flex items-center justify-center p-2 rounded-full bg-black/20 backdrop-blur-md border border-white/5 text-gray-400 hover:text-white hover:bg-black/40 transition-all" title="Back to Tools">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+            </Link>
+            <div className="hidden sm:block">
               <LanguageSelector />
-              <Link to="/tools" className="md:hidden tool-button tool-button-enabled tool-button-cyan text-xs sm:text-sm py-1.5 px-2.5 sm:px-3">
-                Back
-              </Link>
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-400 hover:text-white focus:outline-none focus:text-white p-1.5 rounded-md hover:bg-slate-800/50 transition-all duration-300 touch-target"
-                aria-label="Toggle menu"
-                aria-expanded={isMenuOpen}
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  {isMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-slate-800/30 bg-slate-900/90 backdrop-blur-xl z-50">
-            <div className="px-3 pt-3 pb-4 space-y-2 sm:px-4">
-              <Link to="/" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.home')}</Link>
-              <Link to="/about" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.about')}</Link>
-              
-              {/* Mobile Activity Dropdown */}
-              <div className="space-y-2">
-                <button 
-                  className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all flex justify-between items-center mobile-nav-item focus:outline-none focus:ring-2 focus:ring-green-400/50"
-                  onClick={() => setIsActivityDropdownOpen(!isActivityDropdownOpen)}
-                  aria-expanded={isActivityDropdownOpen}
-                >
-                  <span>{t('navigation.activity')}</span>
-                  <svg className={`w-4 h-4 transition-transform ${isActivityDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {isActivityDropdownOpen && (
-                  <div className="pl-6 space-y-1">
-                    <Link to="/ratings" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.ratings')}</Link>
-                    <Link to="/news" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.news')}</Link>
-                    <Link to="/gallery" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.gallery')}</Link>
-                  </div>
-                )}
-              </div>
-              
-              {/* Mobile Support Dropdown */}
-              <div className="space-y-2">
-                <button 
-                  className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all flex justify-between items-center mobile-nav-item focus:outline-none focus:ring-2 focus:ring-green-400/50"
-                  onClick={() => setIsSupportDropdownOpen(!isSupportDropdownOpen)}
-                  aria-expanded={isSupportDropdownOpen}
-                >
-                  <span>{t('navigation.support')}</span>
-                  <svg className={`w-4 h-4 transition-transform ${isSupportDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {isSupportDropdownOpen && (
-                  <div className="pl-6 space-y-1">
-                    <Link to="/federations" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.federations')}</Link>
-                    <Link to="/resources" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.resources')}</Link>
-                  </div>
-                )}
-              </div>
-              
-              <Link to="/contact" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.contact')}</Link>
-              <Link to="/payments" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.payments')}</Link>
-              <Link to="/chatbot" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>PANASA Bot</Link>
-              
-              {/* Mobile Search */}
-              <div className="px-2 pt-2">
-                <EnhancedSearch 
-                  onSearch={handleSearch}
-                  placeholder={t('search.mobilePlaceholder')}
-                  suggestions={searchSuggestions}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Information Panel */}
+        {/* Information Panel - Overlay Modal Style */}
         {isInfoVisible && (
-          <div className="border-b border-gray-700/50 bg-gray-800/50 px-3 sm:px-4 md:px-6 py-2 sm:py-3 flex-shrink-0">
-            <div className="max-w-6xl mx-auto">
-              <div className="bg-gradient-to-r from-gray-800/50 to-gray-800/30 rounded-lg p-2.5 sm:p-3 md:p-4 border border-gray-700/50">
-                <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-3">
-                  <div className="flex-shrink-0 mt-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="flex-grow">
-                    <h3 className="text-sm font-medium text-gray-200">About PANASA Bot</h3>
-                    <div className="mt-1 text-xs sm:text-sm text-gray-400">
-                      <p>PANASA Bot is your expert assistant for WESPA Scrabble rules. Ask questions about gameplay, challenges, penalties, and more.</p>
-                      <p className="mt-1">Responses reference WESPA Rules V5.1. Please verify important information.</p>
-                    </div>
-                  </div>
+          <div className="absolute top-20 left-6 z-50 max-w-sm w-full animate-in fade-in slide-in-from-top-4 duration-200">
+            <div className="bg-[#1a1d26]/90 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl">
+              <div className="flex items-start gap-3">
+                <div className="mt-1 p-1 bg-green-500/20 rounded-full">
+                  <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
+                <div>
+                  <h3 className="text-sm font-medium text-white mb-1">WESPA Rules V5.1 Expert</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    This AI arbiter is trained on the official WESPA rulebook. It provides precise rulings for competitive Scrabble play.
+                  </p>
+                </div>
+                <button onClick={() => setIsInfoVisible(false)} className="text-gray-500 hover:text-white"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Chat Content - SCROLLABLE Content Area */}
-        <div className="flex-grow overflow-hidden">
-          <div className="h-full w-full mx-auto py-2 sm:py-3 md:py-4 px-2 sm:px-4 md:px-6">
-            
-            <div className="h-full bg-gradient-to-br from-gray-800/40 to-gray-900/60 backdrop-blur-sm p-2 sm:p-4 md:p-5 lg:p-6 rounded-2xl border border-gray-700/50 shadow-2xl mx-0 sm:mx-2 md:mx-4 lg:mx-8">
-                <ChatbaseChatbot />
-            </div>
-
-          </div>
+        {/* Chat Interface - Full Screen Canvas */}
+        <div className="w-full h-full flex flex-col relative">
+          <RagChatbot />
         </div>
-        
+
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-gray-800/30 bg-gray-900/50 backdrop-blur-sm flex-shrink-0">
-        <div className="max-w-7xl mx-auto py-2 sm:py-3 px-3 sm:px-6 lg:px-8">
-          <div className="text-center text-gray-500 text-xs sm:text-sm">
-            <p>&copy; 2025 Pan African Scrabble Association. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

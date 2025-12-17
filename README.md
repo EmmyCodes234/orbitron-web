@@ -1,222 +1,177 @@
-# PANASA - Pan African Scrabble Association
+# Supabase CLI
 
-The official website for the Pan African Scrabble Association, showcasing the premier Scrabble organization across Africa.
+[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
+](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
 
-## 🌟 Features
+[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
 
-### Modern UI/UX Enhancements
-- **Enhanced Visual Design**: Gradient backgrounds, glassmorphism effects, and modern card designs
-- **Improved Animations**: Smooth transitions, hover effects, and entrance animations
-- **Responsive Layout**: Fully optimized for all device sizes
-- **Accessibility**: Proper focus states, reduced motion support, and semantic HTML
+This repository contains all the functionality for Supabase CLI.
 
-### Core Functionality
-- **Player Rankings**: Real-time player statistics and rankings
-- **Events Management**: Upcoming tournaments and championship information
-- **News & Announcements**: Latest updates from the Scrabble community
-- **Federation Directory**: Member nations and contact information
-- **Search System**: Enhanced search with autocomplete and suggestions
-- **Multi-language Support**: English, French, and Swahili translations
-- **Contact Form**: Functional contact form with email notifications
-- **AI Chatbot**: Chatbase integration for answering user questions
-- **Scrabble Tools**: Word checker and anagram solver with CSW24 dictionary
+- [x] Running Supabase locally
+- [x] Managing database migrations
+- [x] Creating and deploying Supabase Functions
+- [x] Generating types directly from your database schema
+- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
 
-### Technical Features
-- **Real-time Updates**: Live data synchronization with Supabase
-- **Internationalization**: Context-based translation system
-- **Performance Optimized**: Lazy loading, code splitting, and efficient rendering
-- **Mobile First**: Touch-friendly interface with mobile-specific optimizations
-- **Offline Support**: Service Worker caching for dictionary tools
+## Getting started
 
-### AI Chatbot Integration
-- **Dedicated Chat Page**: Full-page chat interface for better user experience
-- **Real-time Streaming**: Instant responses as the AI generates them
-- **Custom Styling**: Matches the website's color scheme and design
-- **Multi-language Support**: Responds in user's preferred language
-- **Copy Functionality**: Users can copy both questions and responses
-- **Mobile Optimized**: Responsive design for all device sizes
+### Install the CLI
 
-### Scrabble Tools
-- **Word Checker**: Validate words against the official CSW24 dictionary
-- **Anagram Solver**: Find all possible words from a set of letters
-- **Blank Tile Support**: Use "?" to represent blank tiles in both tools
-- **Lightning Fast**: Service Worker caching for instant lookups
-- **Offline Capability**: Tools work even without internet connection
+Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
 
-## 🎨 UI/UX Improvements
-
-### Layout & Navigation
-- Enhanced header with improved logo visibility and navigation
-- Modern footer with social media links and organized content
-- Mobile-responsive navigation with hamburger menu
-- Consistent spacing and typography throughout
-
-### Components
-- **Cards**: Enhanced visual design with hover effects and consistent styling
-- **Buttons**: Gradient backgrounds with smooth hover animations
-- **Forms**: Improved input fields with better focus states
-- **Tables**: Modern styling with hover effects and proper spacing
-
-### Animations & Transitions
-- Fade-in animations for content loading
-- Slide-in effects for page transitions
-- Hover animations for interactive elements
-- Smooth scrolling and page navigation
-
-### Color Scheme
-- Primary: Green (#22c55e) - Success and growth
-- Secondary: Cyan (#06b6d4) - Technology and innovation
-- Accent: Purple (#8b5cf6) - Creativity and excellence
-- Background: Dark blue gradients (#0a0f1e to #0f172a)
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn
-- Supabase CLI for function deployment
-
-### Installation
 ```bash
-# Clone the repository
-git clone <repository-url>
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
+npm i supabase --save-dev
 ```
 
-### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run build:netlify` - Build for Netlify deployment
-- `npm run preview` - Preview production build
-- `npm run supabase:deploy` - Deploy Supabase functions
+When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
 
-## 📁 Project Structure
 ```
-panasaweb/
-├── components/          # Reusable UI components
-├── pages/              # Page components
-├── contexts/           # React contexts
-├── constants/          # Constants and translations
-├── src/                # Services and utilities
-├── public/             # Static assets
-├── data/               # Fallback data
-├── supabase/           # Database schemas and functions
-└── docs/               # Documentation files
+NODE_OPTIONS=--no-experimental-fetch yarn add supabase
 ```
 
-## 🌍 Internationalization
+> **Note**
+For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
 
-The website supports three languages:
-- **English** (default)
-- **French** 
-- **Swahili**
+<details>
+  <summary><b>macOS</b></summary>
 
-Language can be switched using the language selector in the header.
+  Available via [Homebrew](https://brew.sh). To install:
 
-## 🔧 Supabase Integration
+  ```sh
+  brew install supabase/tap/supabase
+  ```
 
-The website integrates with Supabase for:
-- Real-time data synchronization
-- Player rankings
-- Events management
-- News articles
-- Federation information
-- Contact form submissions
+  To install the beta release channel:
+  
+  ```sh
+  brew install supabase/tap/supabase-beta
+  brew link --overwrite supabase-beta
+  ```
+  
+  To upgrade:
 
-### Contact Form Functionality
+  ```sh
+  brew upgrade supabase
+  ```
+</details>
 
-The contact form system includes:
-1. **Frontend Form**: Collects and validates user input
-2. **Database Storage**: Stores submissions in a Supabase table
-3. **Admin Panel**: Allows admins to view all submissions
+<details>
+  <summary><b>Windows</b></summary>
 
-See [CONTACT_FORM_SYSTEM.md](CONTACT_FORM_SYSTEM.md) for detailed documentation.
+  Available via [Scoop](https://scoop.sh). To install:
 
-## 🤖 AI Chatbot Integration
+  ```powershell
+  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+  scoop install supabase
+  ```
 
-The website integrates with Chatbase for an AI-powered assistant:
+  To upgrade:
 
-### Features
-- **Real-time Responses**: Streaming API for instant replies
-- **Context Awareness**: Remembers conversation history
-- **Multi-language Support**: Answers in user's preferred language
-- **Custom Knowledge**: Trained on PANASA-specific information
-- **Copy Functionality**: Users can copy both questions and responses
-- **Mobile Optimized**: Responsive design for all device sizes
+  ```powershell
+  scoop update supabase
+  ```
+</details>
 
-### Setup
-1. Obtain API credentials from [Chatbase Dashboard](https://www.chatbase.co/dashboard)
-2. Configure environment variables (see [CHATBASE_ENV_SETUP.md](CHATBASE_ENV_SETUP.md))
-3. Customize the chatbot in [components/ChatbaseChatbot.tsx](components/ChatbaseChatbot.tsx)
+<details>
+  <summary><b>Linux</b></summary>
 
-### Documentation
-- [CHATBASE_INTEGRATION.md](CHATBASE_INTEGRATION.md) - Complete integration guide
-- [CHATBASE_ENV_SETUP.md](CHATBASE_ENV_SETUP.md) - Environment configuration
+  Available via [Homebrew](https://brew.sh) and Linux packages.
 
-## 📱 Mobile Optimization
+  #### via Homebrew
 
-- Touch-friendly interface
-- Optimized layouts for small screens
-- Fast loading times
-- Offline fallback data
-- Safe area handling for notched devices
+  To install:
 
-## 🎯 Performance Features
+  ```sh
+  brew install supabase/tap/supabase
+  ```
 
-- Lazy loading of images and components
-- Code splitting for faster initial load
-- Efficient rendering with React.memo
-- Optimized animations
-- Caching strategies
+  To upgrade:
 
-## 🚀 Deployment
+  ```sh
+  brew upgrade supabase
+  ```
 
-### Netlify Deployment
-The website is configured for deployment on Netlify with the following settings:
+  #### via Linux packages
 
-#### Configuration Files
-- `netlify.toml` - Build settings and environment configuration
-- `.npmrc` - npm configuration to resolve dependency issues
-- `vite.config.ts` - Vite build optimization for Netlify
+  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
 
-#### Environment Variables
-Configure the following environment variables in Netlify:
-- `VITE_CHATBASE_API_KEY` - Chatbase API key
-- `VITE_CHATBASE_CHATBOT_ID` - Chatbase chatbot ID
+  ```sh
+  sudo apk add --allow-untrusted <...>.apk
+  ```
 
-#### Build Settings
-- **Build command**: `npm run build`
-- **Publish directory**: `dist`
+  ```sh
+  sudo dpkg -i <...>.deb
+  ```
 
-### Troubleshooting
-Common deployment issues and solutions:
-- **Missing script errors**: Ensure `build:netlify` script exists in package.json
-- **Build failures**: Check Netlify logs for specific error messages
-- **Runtime errors**: Verify environment variables are correctly set
+  ```sh
+  sudo rpm -i <...>.rpm
+  ```
 
-## 🛠️ Technologies Used
+  ```sh
+  sudo pacman -U <...>.pkg.tar.zst
+  ```
+</details>
 
-- **Frontend**: React, TypeScript, Vite
-- **Styling**: Tailwind CSS, Custom CSS
-- **Routing**: React Router
-- **Backend**: Supabase
-- **AI Integration**: Chatbase API
-- **Fonts**: Orbitron, JetBrains Mono
-- **Deployment**: Netlify
+<details>
+  <summary><b>Other Platforms</b></summary>
 
-## 📄 License
+  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
 
-This project is proprietary to Pan African Scrabble Association.
+  ```sh
+  go install github.com/supabase/cli@latest
+  ```
 
-## 🤝 Contributing
+  Add a symlink to the binary in `$PATH` for easier access:
 
-For development inquiries, please contact the PANASA technical team.
+  ```sh
+  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
+  ```
 
-## 📞 Support
+  This works on other non-standard Linux distros.
+</details>
 
-For support, contact info@panafricanscrabble.com
+<details>
+  <summary><b>Community Maintained Packages</b></summary>
+
+  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
+  To install in your working directory:
+
+  ```bash
+  pkgx install supabase
+  ```
+
+  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
+</details>
+
+### Run the CLI
+
+```bash
+supabase bootstrap
+```
+
+Or using npx:
+
+```bash
+npx supabase bootstrap
+```
+
+The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
+
+## Docs
+
+Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
+
+## Breaking changes
+
+We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
+
+However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
+
+## Developing
+
+To run from source:
+
+```sh
+# Go >= 1.22
+go run . help
+```
