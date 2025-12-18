@@ -32,27 +32,27 @@ const countryFlags: { [key: string]: string } = {
 const parseRT2File = (rt2Content: string): Player[] => {
   const lines = rt2Content.split('\n');
   const players: Player[] = [];
-  
+
   // Skip the first line (header)
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
     if (!line.trim()) continue;
-    
+
     // Split the line by whitespace to get all parts
     const parts = line.trim().split(/\s+/);
 
     // Handle potential empty lines at the end
-    if (parts.length < 5) continue; 
-    
+    if (parts.length < 5) continue;
+
     // The last 3 parts are games, rating, and lastPlayed
     const games = parseInt(parts[parts.length - 3], 10);
     const rating = parseInt(parts[parts.length - 2], 10);
     const lastPlayed = parts[parts.length - 1];
-    
+
     // The name is everything between country and the last 3 parts
     const nameParts = parts.slice(2, parts.length - 3);
     const name = nameParts.join(' ');
-    
+
     players.push({
       nick: parts[0],
       country: parts[1],
@@ -62,13 +62,13 @@ const parseRT2File = (rt2Content: string): Player[] => {
       lastPlayed
     });
   }
-  
+
   // Handle duplicate nicknames by making them unique
   const nickCounts: Record<string, number> = {};
   const uniquePlayers = players.map(player => {
     const count = nickCounts[player.nick] || 0;
     nickCounts[player.nick] = count + 1;
-    
+
     // If this is the first occurrence, keep the original nick
     // If this is a duplicate, append a number to make it unique
     if (count > 0) {
@@ -77,10 +77,10 @@ const parseRT2File = (rt2Content: string): Player[] => {
         nick: `${player.nick}${count}`
       };
     }
-    
+
     return player;
   });
-  
+
   // Sort by rating descending (this is the "default" sort)
   return uniquePlayers.sort((a, b) => b.rating - a.rating);
 };
@@ -114,7 +114,7 @@ const RatingsPage: React.FC = () => {
   // These are the single source of truth.
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCountry, setFilterCountry] = useState('');
-  
+
   // The debouncedSearchTerm is used for *filtering* the list.
   // The country filter is applied *instantly*.
   // The text search is *debounced* by 300ms.
@@ -125,7 +125,7 @@ const RatingsPage: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(25);
   const searchStartTime = useRef<number>(0);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  
+
   // Removed `searchTimeout` ref and `appliedFilters` state.
   // Removed sortBy and sortOrder state variables
   // const [sortBy, setSortBy] = useState<keyof Player>('rating');
@@ -136,12 +136,12 @@ const RatingsPage: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       // 1. Parse the imported RT2 content directly
       //    No fetch is needed!
       const parsedPlayers = parseRT2File(rt2Content);
       setPlayersData(parsedPlayers);
-      
+
     } catch (err) {
       // 2. Fallback logic remains the same
       console.error('Error parsing local RT2 data:', err);
@@ -187,13 +187,13 @@ const RatingsPage: React.FC = () => {
   // Generate search suggestions based on the *instant* searchTerm for immediate UX feedback.
   const searchSuggestions = useMemo(() => {
     if (!searchTerm || searchTerm.length < 2) return [];
-    
+
     const normalizedSearchTerm = normalizeText(searchTerm);
     const suggestions = new Set<string>();
-    
+
     // Limit to first 100 players for performance
     const playersToCheck = playersData.slice(0, 100);
-    
+
     for (const player of playersToCheck) {
       if (suggestions.size >= 5) break; // Stop once we have 5 suggestions
 
@@ -201,7 +201,7 @@ const RatingsPage: React.FC = () => {
       if (normalizedName.includes(normalizedSearchTerm)) {
         suggestions.add(player.name);
       }
-      
+
       if (suggestions.size >= 5) break;
 
       const normalizedNick = normalizeText(player.nick);
@@ -209,7 +209,7 @@ const RatingsPage: React.FC = () => {
         suggestions.add(player.nick);
       }
     }
-    
+
     return Array.from(suggestions);
   }, [searchTerm, playersData]); // Depends on instant searchTerm
   // --- END: Fixed Suggestions ---
@@ -219,24 +219,24 @@ const RatingsPage: React.FC = () => {
   // Uses debouncedSearchTerm for performance and instant filterCountry for responsiveness.
   const filteredAndSortedPlayers = useMemo(() => {
     if (playersData.length === 0) return [];
-    
+
     // 🔑 Start Fresh: Always start from the master list
     let filteredResults = [...playersData];
-    
+
     // Apply Country Filter (if any)
     if (filterCountry) {
       filteredResults = filteredResults.filter(player => player.country === filterCountry);
     }
-    
+
     // Apply Search Query (if any)
     const normalizedSearchTerm = normalizeText(debouncedSearchTerm);
     if (normalizedSearchTerm) {
       // First, check for exact matches in name or nickname
-      const exactMatch = filteredResults.find(player => 
-        normalizeText(player.name) === normalizedSearchTerm || 
+      const exactMatch = filteredResults.find(player =>
+        normalizeText(player.name) === normalizedSearchTerm ||
         normalizeText(player.nick) === normalizedSearchTerm
       );
-      
+
       if (exactMatch) {
         // ✅ Exact match found - show only that player
         filteredResults = [exactMatch];
@@ -257,10 +257,10 @@ const RatingsPage: React.FC = () => {
 
   // Adjust items per page based on results count
   const shouldShowAllResults = filteredAndSortedPlayers.length <= itemsPerPage;
-  const effectiveItemsPerPage = shouldShowAllResults 
+  const effectiveItemsPerPage = shouldShowAllResults
     ? Math.max(filteredAndSortedPlayers.length, 1) // Use 1 to prevent division by zero
     : itemsPerPage;
-  
+
   // Pagination logic
   const totalPages = Math.ceil(filteredAndSortedPlayers.length / effectiveItemsPerPage);
   const startIndex = (currentPage - 1) * effectiveItemsPerPage;
@@ -306,7 +306,7 @@ const RatingsPage: React.FC = () => {
         }
       }
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -317,7 +317,7 @@ const RatingsPage: React.FC = () => {
 
   const formatDate = (dateString: string) => {
     if (!dateString) return 'N/A';
-    
+
     if (dateString.includes('-') && dateString.length === 10) {
       // Format: YYYY-MM-DD
       const parts = dateString.split('-');
@@ -345,18 +345,18 @@ const RatingsPage: React.FC = () => {
   // Function to highlight search terms in text
   const highlightText = (text: string, searchTerm: string) => {
     if (!searchTerm) return text;
-    
+
     const normalizedText = normalizeText(text);
     const normalizedSearch = normalizeText(searchTerm);
-    
+
     if (!normalizedText.includes(normalizedSearch)) return text;
-    
+
     const regex = new RegExp(`(${normalizedSearch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
     const parts = text.split(regex);
-    
-    return parts.map((part, index) => 
-      regex.test(part) ? 
-        <span key={index} className="search-highlight">{part}</span> : 
+
+    return parts.map((part, index) =>
+      regex.test(part) ?
+        <span key={index} className="search-highlight">{part}</span> :
         part
     );
   };
@@ -413,7 +413,7 @@ const RatingsPage: React.FC = () => {
       if (currentPage - sidePages <= 2) {
         end = 1 + totalPagesToShow;
       }
-      
+
       if (currentPage + sidePages >= totalPages - 1) {
         start = totalPages - totalPagesToShow;
       }
@@ -445,7 +445,7 @@ const RatingsPage: React.FC = () => {
 
       {/* Tournament Ratings Text */}
       <div className="tournament-info-text">
-        <p>Ratings after Lagos Unified Scrabble Meet 2025</p>
+        <p>Ratings after Lagos Unified Scrabble Meet 2025 (1st November, 2025)</p>
       </div>
 
       <div className="ratings-content">
@@ -494,14 +494,14 @@ const RatingsPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Search suggestions with enhanced UI */}
               {showSuggestions && (
                 <div className="search-suggestions absolute z-10 mt-2 w-full bg-slate-800 border border-slate-700 rounded-xl shadow-lg overflow-hidden" id="search-suggestions">
                   <ul role="listbox">
                     {searchSuggestions.length > 0 ? (
                       searchSuggestions.map((suggestion, index) => (
-                        <li 
+                        <li
                           key={index}
                           className="suggestion-item px-4 py-3 hover:bg-slate-700 cursor-pointer transition-colors flex items-center"
                           onMouseDown={() => {
@@ -534,7 +534,7 @@ const RatingsPage: React.FC = () => {
                 </div>
               )}
             </div>
-            
+
             {/* Search progress indicator */}
             {searchTerm && debouncedSearchTerm !== searchTerm && (
               <div className="mt-2 flex items-center text-sm text-cyan-400">
@@ -565,7 +565,7 @@ const RatingsPage: React.FC = () => {
                 ))}
               </select>
             </div>
-            
+
             {/* Removed Sort By Filter */}
             {/* Removed Sort Order Filter */}
           </div>
@@ -574,13 +574,13 @@ const RatingsPage: React.FC = () => {
             <div className="sr-only" aria-live="polite">
               {debouncedSearchTerm && `${filteredAndSortedPlayers.length} players found for "${debouncedSearchTerm}"`}
             </div>
-            
+
             <div className="stats-summary">
               <span className="results-count font-medium">
-                {t('ratings.results', { 
-                  start: filteredAndSortedPlayers.length > 0 ? startIndex + 1 : 0, 
-                  end: Math.min(startIndex + effectiveItemsPerPage, filteredAndSortedPlayers.length), 
-                  total: filteredAndSortedPlayers.length 
+                {t('ratings.results', {
+                  start: filteredAndSortedPlayers.length > 0 ? startIndex + 1 : 0,
+                  end: Math.min(startIndex + effectiveItemsPerPage, filteredAndSortedPlayers.length),
+                  total: filteredAndSortedPlayers.length
                 })}
               </span>
               {shouldShowAllResults && filteredAndSortedPlayers.length > 0 && (
@@ -594,7 +594,7 @@ const RatingsPage: React.FC = () => {
                 </span>
               )}
             </div>
-            
+
             {(searchTerm || filterCountry) && (
               <button
                 onClick={() => {
@@ -658,7 +658,7 @@ const RatingsPage: React.FC = () => {
               </div>
             </div>
           )}
-          
+
           {/* Desktop Table */}
           {filteredAndSortedPlayers.length > 0 && (
             <div className="desktop-table">
@@ -724,9 +724,9 @@ const RatingsPage: React.FC = () => {
                                   const target = e.target as HTMLImageElement;
                                   target.style.display = 'none';
                                   const parent = target.parentElement;
-                                  if(parent) {
-                                      const placeholder = parent.querySelector('.country-placeholder');
-                                      if (placeholder) (placeholder as HTMLElement).style.display = 'inline-block';
+                                  if (parent) {
+                                    const placeholder = parent.querySelector('.country-placeholder');
+                                    if (placeholder) (placeholder as HTMLElement).style.display = 'inline-block';
                                   }
                                 }}
                               />
@@ -782,8 +782,8 @@ const RatingsPage: React.FC = () => {
                                 target.style.display = 'none';
                                 const parent = target.parentElement;
                                 if (parent) {
-                                    const placeholder = parent.querySelector('.country-placeholder-mobile');
-                                    if(placeholder) (placeholder as HTMLElement).style.display = 'inline-block';
+                                  const placeholder = parent.querySelector('.country-placeholder-mobile');
+                                  if (placeholder) (placeholder as HTMLElement).style.display = 'inline-block';
                                 }
                               }}
                             />
@@ -811,10 +811,10 @@ const RatingsPage: React.FC = () => {
 
         <div className="pagination-section">
           <div className="pagination-info">
-            {t('ratings.results', { 
-              start: filteredAndSortedPlayers.length > 0 ? startIndex + 1 : 0, 
-              end: Math.min(startIndex + effectiveItemsPerPage, filteredAndSortedPlayers.length), 
-              total: filteredAndSortedPlayers.length 
+            {t('ratings.results', {
+              start: filteredAndSortedPlayers.length > 0 ? startIndex + 1 : 0,
+              end: Math.min(startIndex + effectiveItemsPerPage, filteredAndSortedPlayers.length),
+              total: filteredAndSortedPlayers.length
             })}
             {shouldShowAllResults && filteredAndSortedPlayers.length > 0 && (
               <span className="showing-all-notice">
@@ -822,7 +822,7 @@ const RatingsPage: React.FC = () => {
               </span>
             )}
           </div>
-          
+
           {totalPages > 1 && (
             <div className="pagination-controls">
               <button
@@ -845,7 +845,7 @@ const RatingsPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              
+
               {/* Better pagination logic */}
               {paginationPages.map((pageNum, index) => {
                 if (typeof pageNum === 'string') {
@@ -855,7 +855,7 @@ const RatingsPage: React.FC = () => {
                     </span>
                   );
                 }
-                
+
                 return (
                   <button
                     key={pageNum}
@@ -891,7 +891,7 @@ const RatingsPage: React.FC = () => {
               </button>
             </div>
           )}
-          
+
           <div className="items-per-page">
             <label htmlFor="itemsPerPage" className="items-label">{t('ratings.show')}:</label>
             <select

@@ -43,9 +43,23 @@ async function extractTextFromPDF(pdfPath) {
 
     console.log(`Extracting text from PDF (${pdfDocument.numPages} pages)...`);
     for (let i = 1; i <= pdfDocument.numPages; i++) {
+        // EXCLUSION: Appendix 1 starts on Page 37. We stop completely if we hit it.
+        // Also adding a content check just in case page numbers shift slightly in future versions.
+        if (i >= 37) {
+            console.log(`Skipping page ${i} (Appendix 1 exclusion rule). Stopping extraction.`);
+            break;
+        }
+
         const page = await pdfDocument.getPage(i);
         const textContent = await page.getTextContent();
         const pageText = textContent.items.map(item => item.str).join(' ');
+
+        // Safegaurd content check
+        if (pageText.includes('Appendix 1') && pageText.includes('Scrabble')) {
+            console.log(`Found 'Appendix 1' content on page ${i}. Stopping extraction.`);
+            break;
+        }
+
         fullText += pageText + '\n';
     }
     return fullText;

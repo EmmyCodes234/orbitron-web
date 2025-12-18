@@ -7,6 +7,7 @@ import ParticleBackground from '../components/ParticleBackground';
 import { getNews, getEvents } from '../src/services/supabaseService';
 import { useLocalization } from '../contexts/LocalizationContext';
 import TechButton from '../components/TechButton';
+import AscTimeline from '../components/AscTimeline';
 
 const HomePage: React.FC = () => {
   const { t, language } = useLocalization();
@@ -24,7 +25,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     // Detect low power mode to optimize performance
     const isLowPowerMode = (navigator as any).connection && (navigator as any).connection.saveData;
-    
+
     // On mobile devices, prefer image over video for better performance
     if (isMobile() || isLowPowerMode) {
       setUseVideoBackground(false);
@@ -36,14 +37,14 @@ const HomePage: React.FC = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch news
         const newsData = await getNews(language);
         if (newsData) {
           // Get only the first 2 articles for the homepage
           setLatestNews(newsData.slice(0, 2));
         }
-        
+
         // Fetch events
         const eventsData = await getEvents();
         if (eventsData) {
@@ -76,11 +77,11 @@ const HomePage: React.FC = () => {
             <ParticleBackground isMobile={true} />
             <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/70 to-slate-950/95"></div>
           </div>
-          
+
           {/* Image/video background for desktop */}
           <div className="hidden md:block absolute inset-0">
             {useVideoBackground && !videoError ? (
-              <video 
+              <video
                 autoPlay
                 loop
                 muted
@@ -91,7 +92,7 @@ const HomePage: React.FC = () => {
               >
                 <source src="/hero-background.mp4" type="video/mp4" />
                 {/* Fallback to image if video fails to load */}
-                <img 
+                <img
                   src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1920&h=1080&fit=crop&crop=center&q=80"
                   alt="High quality Scrabble board with wooden letter tiles"
                   className="w-full h-full object-cover opacity-25"
@@ -102,7 +103,7 @@ const HomePage: React.FC = () => {
             ) : (
               <>
                 {/* Desktop background - using the original image */}
-                <img 
+                <img
                   src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1920&h=1080&fit=crop&crop=center&q=80"
                   alt="High quality Scrabble board with wooden letter tiles"
                   className="w-full h-full object-cover opacity-25"
@@ -112,56 +113,56 @@ const HomePage: React.FC = () => {
               </>
             )}
           </div>
-          
+
           {/* Smart gradient overlays for text readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/70 to-slate-950/95 md:bg-gradient-to-b md:from-slate-950/90 md:via-slate-950/70 md:to-slate-950/95"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-transparent to-slate-950/60"></div>
           {/* Subtle animated overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-green-900/10 via-transparent to-cyan-900/10 animate-pulse"></div>
         </div>
-        
+
         <div className="relative z-10 max-w-5xl mx-auto px-4 pt-4 sm:pt-0">
           {/* Announcement Pill */}
           <div className="flex justify-center -mt-4">
             <AnnouncementPill text="WESPAC Ghana 2025" />
           </div>
-          
+
           {/* Main title with enhanced styling */}
           <h1 className="hero-title font-orbitron text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 mb-5 sm:mb-6 md:mb-7 animate-fade-in-up leading-tight tracking-tight">
             {t('home.title')}
           </h1>
-          
+
           {/* Subtitle with enhanced styling */}
           <p className="hero-subtitle max-w-3xl mx-auto text-gray-300 text-base sm:text-lg md:text-xl animate-fade-in-up opacity-0 leading-relaxed px-2 font-medium" style={{ animationDelay: '1.3s', animationFillMode: 'forwards' }}>
             {t('home.subtitle')}
           </p>
-          
+
           {/* Enhanced buttons with better styling */}
           <div className="mt-8 sm:mt-10 md:mt-12 flex flex-col sm:flex-row justify-center gap-4 sm:gap-5 md:gap-7 animate-fade-in-up opacity-0 px-4 hero-buttons" style={{ animationDelay: '1.5s', animationFillMode: 'forwards' }}>
-            <Link 
-              to="/ratings" 
+            <Link
+              to="/ratings"
               className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm sm:text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-green-400 to-cyan-500 group-hover:from-green-400 group-hover:to-cyan-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 min-h-[48px] sm:min-h-[52px] touch-manipulation hero-button shadow-xl w-full sm:w-auto tech-btn"
             >
               <span className="relative px-6 sm:px-7 md:px-9 py-3 sm:py-4 transition-all ease-in duration-300 bg-slate-900 rounded-lg group-hover:bg-opacity-0 flex items-center justify-center gap-2 sm:gap-3 w-full text-white font-bold tracking-wide">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
                 <span className="whitespace-nowrap">{t('home.playerRankings')}</span>
               </span>
             </Link>
-            <Link 
-              to="/federations" 
+            <Link
+              to="/federations"
               className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm sm:text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30 min-h-[48px] sm:min-h-[52px] touch-manipulation hero-button shadow-xl w-full sm:w-auto tech-btn"
             >
               <span className="relative px-6 sm:px-7 md:px-9 py-3 sm:py-4 transition-all ease-in duration-300 bg-slate-900 rounded-lg group-hover:bg-opacity-0 flex items-center justify-center gap-2 sm:gap-3 w-full text-white font-bold tracking-wide">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                 </svg>
                 <span className="whitespace-nowrap">{t('home.findFederation')}</span>
               </span>
             </Link>
           </div>
-          
+
           {/* Enhanced stats with better styling */}
           <div className="mt-12 sm:mt-16 md:mt-20 lg:mt-24 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 md:gap-7 animate-fade-in-up opacity-0 px-2 hero-stats" style={{ animationDelay: '2s', animationFillMode: 'forwards' }}>
             <div className="bg-slate-900/50 backdrop-blur-lg rounded-2xl p-4 sm:p-5 md:p-6 border border-green-400/30 hover:border-green-400/50 transition-all duration-300 hover:transform hover:scale-105 text-center stat-card shadow-xl hover:shadow-2xl tech-card">
@@ -215,8 +216,8 @@ const HomePage: React.FC = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-7 lg:gap-9">
               {latestNews.map((article, index) => (
-                <div 
-                  key={article.id} 
+                <div
+                  key={article.id}
                   className={`hover-lift animate-fade-in-up opacity-0 stagger-${index + 1} grid-card`}
                   style={{ animationDelay: `${4 + index * 0.2}s`, animationFillMode: 'forwards' }}
                 >
@@ -233,18 +234,18 @@ const HomePage: React.FC = () => {
                   >
                     <div className="relative z-10 flex-1 p-[10px] box-border flex flex-col">
                       <div className="flex-1 flex items-center justify-center">
-                        <img 
+                        <img
                           src={
-                            article.title === 'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship' 
-                              ? '/kofiBingo.png' 
+                            article.title === 'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship'
+                              ? '/kofiBingo.png'
                               : article.title === 'Team Nigeria Dominates at the 2nd African Youth Scrabble Championship in Kenya'
-                              ? '/ayscbanner.png'
-                              : article.title === 'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi'
-                              ? '/triumvirate.png'
-                              : article.image
-                          } 
-                          alt={article.title} 
-                          loading="lazy" 
+                                ? '/ayscbanner.png'
+                                : article.title === 'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi'
+                                  ? '/triumvirate.png'
+                                  : article.image
+                          }
+                          alt={article.title}
+                          loading="lazy"
                           className="w-full h-48 object-cover rounded-[10px] border-2 border-white/20"
                         />
                       </div>
@@ -262,6 +263,9 @@ const HomePage: React.FC = () => {
             </div>
           )}
         </section>
+
+        {/* ASC Timeline Section */}
+        <AscTimeline />
 
         {/* Divider with tech feel */}
         <div className="tech-divider"></div>

@@ -52,12 +52,12 @@ const WordCheckerPage: React.FC = () => {
   const handleWordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase();
     setWordInput(value);
-    
+
     // Clear result when input changes
     if (moveResult.isValid !== null) {
       setMoveResult({ isValid: null });
     }
-    
+
     // Clear word count message when input changes
     if (wordCountMessage) {
       setWordCountMessage(null);
@@ -77,38 +77,38 @@ const WordCheckerPage: React.FC = () => {
 
   const handleCheckMove = () => {
     if (!wordInput.trim()) return;
-    
+
     if (!dictionaryReady) {
       setError('Dictionary is not ready yet. Please wait a moment and try again.');
       return;
     }
-    
+
     // Split input by spaces or commas and filter out empty strings
     const words = wordInput.trim()
       .split(/[\s,]+/)
       .map(word => word.trim())
       .filter(word => word.length > 0);
-    
+
     // Check if we have the correct number of words
     if (wordCount && words.length !== wordCount) {
       setWordCountMessage(`Please enter exactly ${wordCount} word${wordCount > 1 ? 's' : ''}. You entered ${words.length}.`);
       return;
     }
-    
+
     // Clear previous result immediately
     setMoveResult({ isValid: null });
     setWordCountMessage(null);
     setValidatedWords(words);
     setIsProcessing(true);
-    
+
     try {
       // Check if all words are valid
       const allWordsValid = words.length > 0 && words.every(word => isWordValid(word));
-      
+
       setMoveResult({
         isValid: allWordsValid
       });
-      
+
       setIsProcessing(false);
       setStep('result');
     } catch (err) {
@@ -138,13 +138,13 @@ const WordCheckerPage: React.FC = () => {
             Back to Tools
           </Link>
         </div>
-        
+
         {error && (
           <div className="bg-red-900/50 border border-red-700/50 rounded-xl p-3 sm:p-4 mb-6 text-center animate-fadeIn">
             <p className="text-red-300 font-medium text-sm sm:text-base">{error}</p>
           </div>
         )}
-        
+
         <div className="tool-card">
           {step === 'wordCount' && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] py-4">
@@ -169,7 +169,7 @@ const WordCheckerPage: React.FC = () => {
               </p>
             </div>
           )}
-          
+
           {step === 'wordInput' && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] py-4">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-2 text-white">
@@ -181,38 +181,28 @@ const WordCheckerPage: React.FC = () => {
               <p className="text-xs sm:text-sm text-center mb-3 text-gray-400">
                 (Press TAB or ENTER to validate)
               </p>
-              
-              <div 
-                className="w-full h-24 sm:h-32 flex items-center justify-center mb-3 cursor-text"
-                onClick={() => inputRef.current?.focus()}
-              >
-                {wordInput ? (
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-white break-all px-3">
-                    {wordInput}
-                  </h2>
-                ) : (
-                  <p className="text-base sm:text-lg md:text-xl text-gray-600 text-center">
-                    Type your word{wordCount && wordCount > 1 ? 's' : ''} here...
-                  </p>
-                )}
-              </div>
-              
+
               {wordCountMessage && (
                 <div className="mb-3 p-2 sm:p-3 bg-yellow-900/50 border border-yellow-700/50 rounded-lg">
                   <p className="text-yellow-400 text-center text-xs sm:text-sm">{wordCountMessage}</p>
                 </div>
               )}
-              
+
               <input
                 ref={inputRef}
                 type="text"
                 value={wordInput}
                 onChange={handleWordInputChange}
                 onKeyDown={handleKeyDown}
-                placeholder={`Enter ${wordCount && wordCount > 1 ? wordCount + ' words' : 'a word'}...`}
-                className="absolute opacity-0 w-0 h-0"
+                placeholder={wordInput ? '' : `Type your word${wordCount && wordCount > 1 ? 's' : ''} here...`}
+                className="w-full h-24 sm:h-32 text-xl sm:text-2xl md:text-3xl font-bold text-center text-white bg-transparent border-none focus:outline-none focus:ring-0 placeholder-gray-600 caret-green-500"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="characters"
+                spellCheck="false"
+                autoFocus
               />
-              
+
               <div className="flex flex-col gap-2 mt-3 w-full max-w-xs">
                 <button
                   onClick={handleReset}
@@ -223,35 +213,33 @@ const WordCheckerPage: React.FC = () => {
                 <button
                   onClick={handleCheckMove}
                   disabled={!dictionaryReady || !wordInput.trim() || isProcessing}
-                  className={`px-3 py-2 text-sm rounded-lg font-bold transition-all ${
-                    !dictionaryReady || !wordInput.trim() || isProcessing
-                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                      : 'bg-green-600 hover:bg-green-500 text-white transform hover:scale-105'
-                  }`}
+                  className={`px-3 py-2 text-sm rounded-lg font-bold transition-all ${!dictionaryReady || !wordInput.trim() || isProcessing
+                    ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                    : 'bg-green-600 hover:bg-green-500 text-white transform hover:scale-105'
+                    }`}
                 >
                   {isProcessing ? 'Checking...' : 'Validate Move'}
                 </button>
               </div>
             </div>
           )}
-          
+
           {step === 'result' && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] py-4">
-              <div className={`p-4 sm:p-5 rounded-xl border-4 text-center w-full max-w-xs sm:max-w-md ${
-                moveResult.isValid 
-                  ? 'bg-green-900/30 border-green-500 text-green-400' 
-                  : 'bg-red-900/30 border-red-500 text-red-400'
-              }`}>
+              <div className={`p-4 sm:p-5 rounded-xl border-4 text-center w-full max-w-xs sm:max-w-md ${moveResult.isValid
+                ? 'bg-green-900/30 border-green-500 text-green-400'
+                : 'bg-red-900/30 border-red-500 text-red-400'
+                }`}>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
                   {validatedWords.join(', ')}
                 </h2>
                 <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl">
-                  {moveResult.isValid 
-                    ? 'Yes, the move is valid in CSW24' 
+                  {moveResult.isValid
+                    ? 'Yes, the move is valid in CSW24'
                     : 'No, the move is invalid in CSW24'}
                 </p>
               </div>
-              
+
               <div className="flex flex-col gap-2 mt-4 w-full max-w-xs">
                 <button
                   onClick={handleReset}
@@ -263,7 +251,7 @@ const WordCheckerPage: React.FC = () => {
             </div>
           )}
         </div>
-        
+
         {/* Processing indicator - only shown during processing */}
         {isProcessing && (
           <div className="tool-processing-overlay">

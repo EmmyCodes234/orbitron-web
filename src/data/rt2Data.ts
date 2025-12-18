@@ -314,7 +314,7 @@ MONY NGA Martins Onyehi         15 1630 20250417
 FBAY GHA Fatawu Bayenang       227 1629 20251004
 MPAU KEN Mathuu Paul            35 1629 20230409
 SKER NGA Sydney Keru            17 1629 20240825
-BKIM UGA Benson Kimanthi        36 1628 20250424
+BKIM KEN Benson Kimanthi        36 1628 20250424
 PAKH NGA Priscilla Akhabue     124 1627 20250929
 APAM NGA Abiori Pamaro          19 1627 20231007
 ATIN UGA Armstrong Tinka       203 1626 20251101
@@ -553,7 +553,7 @@ OKIN NGA Omolaja Kingsley       18 1359 20240929
 AADE NGA Adewale Adedayo        10 1357 20240831
 IMIN KEN Isaac Mindah           65 1355 20250818
 AMAT NGA Ajayi Matthew          18 1354 20240608
-AWAB UGA Andrew Wabwire        127 1353 20250818
+AWAB KEN Andrew Wabwire        127 1353 20250818
 NGER NGA Nwadiaro Gerald Afam   15 1351 20250803
 JAUK KEN Julius Auka           399 1349 20251101
 ROTI UGA Richard Otika          78 1349 20240128
@@ -575,7 +575,7 @@ EEFA NGA Emmanuel Efanga        18 1328 20250803
 LMOO ZMB Levy Moonga           221 1326  9072025
 GOVI NGA Gabriel Ovie           53 1324 20250929
 MBJO ZAF Marten Bjorkman        42 1324 20250203
-WWAM UGA Winnie Wambugu         18 1322 20230000
+WWAM KEN Winnie Wambugu         18 1322 20230000
 AKUY NGA Ademola Kuye           88 1316 20250929
 GMAI KEN Gachomo Maina          18 1316 20231105
 MDOY NGA Maye Doyin             30 1315 20240622
@@ -709,7 +709,7 @@ PLLO ZAF Parkerson Lloydd       42 1090 20250203
 AMIC NGA Awosika Michael        17 1089 20250706
 ATAI UGA Ali Taibu              18 1087 20251101
 AGBA NGA Ahmed Gbadamosi        18 1083 20240929
-YSIT UGA Yvonne Situma          44 1080 20241023
+YSIT KEN Yvonne Situma          44 1080 20241023
 GOJI NGA Godfrey Ojile          34 1078 20250929
 LOGB NGA Lovejoy Ogbuokiri      54 1076 20241117
 MKOL NGA Majeed Kolawole        17 1074 20250706

@@ -187,10 +187,10 @@ export const MOCK_FEDERATIONS = [
     name: 'Rwanda Scrabble Federation',
     president: 'Anaclet Ruzindana',
     secretary: null,
-    email: 'info@rwandascrabble.org',
+    email: 'rwandascrabble@gmail.com',
     phone: '+250 788 123 456',
     address: 'Kigali, Rwanda',
-    website: 'http://www.rwandascrabble.com',
+    website: 'https://rwandascrabble.com',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   }

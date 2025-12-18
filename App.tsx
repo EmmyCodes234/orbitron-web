@@ -20,6 +20,7 @@ import AnagramSolverPage from './pages/AnagramSolverPage';
 import { LocalizationProvider } from './contexts/LocalizationContext';
 
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
+import AscPage from './pages/AscPage';
 
 // Loading component for Suspense
 const LoadingSpinner = () => (
@@ -62,6 +63,7 @@ const AppContent: React.FC = () => {
           <Route path="/resources" element={<ResourcesPage />} />
           <Route path="/gallery/:collectionId" element={<CollectionPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/asc" element={<AscPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/admin" element={<AdminPage />} />

@@ -204,7 +204,7 @@ const FederationsPage: React.FC = () => {
                   </div>
                 )}
               </div>
-              
+
               <h4 className="font-bold text-gray-200 mb-4 text-base group-hover:text-white transition-colors">
                 {federation.name}
               </h4>
@@ -213,19 +213,19 @@ const FederationsPage: React.FC = () => {
                 <div className="flex items-center group-hover:text-gray-200 transition-colors">
                   <div className="w-8 h-8 rounded-lg bg-green-400/10 flex items-center justify-center mr-3 flex-shrink-0">
                     <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
                   </div>
                   <span className="truncate font-medium">
-                    {federation.country === 'Nigeria' && federation.name === 'Nigeria Scrabble Federation' 
-                      ? 'Engr. Bright Idahosa' 
+                    {federation.country === 'Nigeria' && federation.name === 'Nigeria Scrabble Federation'
+                      ? 'Engr. Bright Idahosa'
                       : federation.president}
                   </span>
                 </div>
                 <div className="flex items-center group-hover:text-gray-200 transition-colors">
                   <div className="w-8 h-8 rounded-lg bg-cyan-400/10 flex items-center justify-center mr-3 flex-shrink-0">
                     <svg className="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                     </svg>
                   </div>
                   <span className="truncate font-medium">{federation.email}</span>
@@ -233,7 +233,7 @@ const FederationsPage: React.FC = () => {
                 <div className="flex items-center group-hover:text-gray-200 transition-colors">
                   <div className="w-8 h-8 rounded-lg bg-purple-400/10 flex items-center justify-center mr-3 flex-shrink-0">
                     <svg className="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                     </svg>
                   </div>
                   <span className="truncate font-medium">{federation.address}</span>
@@ -283,7 +283,7 @@ const FederationsPage: React.FC = () => {
                     className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-slate-700/50"
                   >
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                     </svg>
                   </button>
                 </div>
@@ -296,14 +296,14 @@ const FederationsPage: React.FC = () => {
                         <div className="flex items-center group">
                           <div className="w-10 h-10 rounded-lg bg-green-400/10 flex items-center justify-center mr-4 flex-shrink-0">
                             <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                             </svg>
                           </div>
                           <div>
                             <p className="text-gray-400 text-sm font-medium">President</p>
                             <p className="text-white font-bold text-lg">
-                              {selectedFederation.country === 'Nigeria' && selectedFederation.name === 'Nigeria Scrabble Federation' 
-                                ? 'Engr. Bright Idahosa' 
+                              {selectedFederation.country === 'Nigeria' && selectedFederation.name === 'Nigeria Scrabble Federation'
+                                ? 'Engr. Bright Idahosa'
                                 : selectedFederation.president}
                             </p>
                           </div>
@@ -312,7 +312,7 @@ const FederationsPage: React.FC = () => {
                           <div className="flex items-center group">
                             <div className="w-10 h-10 rounded-lg bg-cyan-400/10 flex items-center justify-center mr-4 flex-shrink-0">
                               <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                               </svg>
                             </div>
                             <div>
@@ -324,7 +324,7 @@ const FederationsPage: React.FC = () => {
                         <div className="flex items-center group">
                           <div className="w-10 h-10 rounded-lg bg-purple-400/10 flex items-center justify-center mr-4 flex-shrink-0">
                             <svg className="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                             </svg>
                           </div>
                           <div>
@@ -337,7 +337,7 @@ const FederationsPage: React.FC = () => {
                         <div className="flex items-center group">
                           <div className="w-10 h-10 rounded-lg bg-yellow-400/10 flex items-center justify-center mr-4 flex-shrink-0">
                             <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                             </svg>
                           </div>
                           <div>
@@ -358,7 +358,7 @@ const FederationsPage: React.FC = () => {
                         <div className="flex items-center group">
                           <div className="w-10 h-10 rounded-lg bg-green-400/10 flex items-center justify-center mr-4 flex-shrink-0">
                             <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                             </svg>
                           </div>
                           <div>
@@ -369,12 +369,12 @@ const FederationsPage: React.FC = () => {
                         <div className="flex items-center group">
                           <div className="w-10 h-10 rounded-lg bg-cyan-400/10 flex items-center justify-center mr-4 flex-shrink-0">
                             <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
                             </svg>
                           </div>
                           <div>
                             <p className="text-gray-400 text-sm font-medium">Website</p>
-                            <a href={`https://${selectedFederation.website}`} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 font-bold text-lg break-all transition-colors">
+                            <a href={selectedFederation.website} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 font-bold text-lg break-all transition-colors">
                               {selectedFederation.website}
                             </a>
                           </div>
@@ -394,7 +394,7 @@ const FederationsPage: React.FC = () => {
                     </span>
                   </a>
                   <a
-                    href={`https://${selectedFederation.website}`}
+                    href={selectedFederation.website}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 relative inline-flex items-center justify-center p-0.5 overflow-hidden text-base font-bold text-gray-900 rounded-xl group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/30"
