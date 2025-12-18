@@ -333,6 +333,55 @@ const fr = {
   goBack: 'Retour',
   close: 'Fermer',
 
+  // ASC Page
+  asc: {
+    title: 'Championnat d\'Afrique de Scrabble',
+    badge: 'Histoire et Gloire',
+    description: 'Le Championnat d\'Afrique de Scrabble (ASC) est le premier tournoi continental organisé par l\'Association Panafricaine de Scrabble (PANASA). Depuis sa création en 1994, c\'est le champ de bataille ultime pour les meilleurs forgerons de mots du continent.',
+    highlights: 'Points Forts',
+    hallOfFame: 'Temple de la Renommée',
+    totalEditions: 'Éditions Totales : {count}',
+    schedulingNote: 'Note de programmation : Le championnat se tient généralement tous les deux ans. Un écart s\'est produit entre 2018 et 2022 en raison de la pandémie de COVID-19.',
+    backToHome: 'Retour à l\'Accueil',
+    table: {
+      edition: 'Éd.',
+      year: 'Année',
+      winner: 'Vainqueur',
+      country: 'Pays',
+      host: 'Hôte'
+    },
+    cards: {
+      edition: '{edition} Édition',
+      winner: 'Vainqueur',
+      country: 'Pays',
+      host: 'Hôte'
+    },
+    highlightsList: {
+      nigeriaDominance: {
+        title: "Domination du Nigeria",
+        content: "Les joueurs nigérians ont remporté 14 des 15 éditions organisées à ce jour, confirmant leur statut de puissance du Scrabble africain."
+      },
+      multipleChampions: {
+        title: "Champions Multiples",
+        content: "Dennis Ikekeregor (2004, 2006) et Wellington Jighere (2008, 2010) sont les seuls joueurs à avoir remporté le titre deux fois."
+      },
+      trevorHovelmeier: {
+        title: "Trevor Hovelmeier",
+        content: "Il reste le seul non-Nigérian à avoir remporté le titre individuel africain, le décrochant pour l'Afrique du Sud en 2002."
+      },
+      youngestChampion: {
+        title: "Plus Jeune Champion",
+        content: "Oluwatimilehin Doko est devenu le plus jeune vainqueur de l'histoire en remportant la 15ème édition à Kigali, Rwanda, à l'âge de 24 ans."
+      }
+    },
+    timeline: {
+      title: 'Champions d\'Afrique',
+      subtitle: 'Hommage aux légendes qui ont conquis le Championnat d\'Afrique de Scrabble.',
+      viewHistory: 'Voir l\'Histoire Complète',
+      host: 'Hôte :'
+    }
+  },
+
   // Payments Page
   payments: {
     title: 'Paiements de Tournoi et Demandes de Classement',

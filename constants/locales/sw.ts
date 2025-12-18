@@ -331,6 +331,55 @@ const sw = {
   goBack: 'Rudi Nyuma',
   close: 'Funga',
 
+  // ASC Page
+  asc: {
+    title: 'Mabingwa ya Scrabble ya Afrika',
+    badge: 'Historia na Utukufu',
+    description: 'Mabingwa ya Scrabble ya Afrika (ASC) ni mashindano ya bara ya kwanza yaliyoandaliwa na Shirikisho la Scrabble la Pan-Afrika (PANASA). Tangu kuanzishwa kwake mwaka 1994, imekuwa uwanja wa vita wa mwisho kwa mafundi wa maneno bora wa bara.',
+    highlights: 'Vipengele Muhimu',
+    hallOfFame: 'Ukumbi wa Umaarufu',
+    totalEditions: 'Jumla ya Matoleo: {count}',
+    schedulingNote: 'Mwongozo wa Ratiba: Mashindano hufanyika kwa kawaida kila baada ya miaka miwili. Pengo lilitokea kati ya 2018 na 2022 kutokana na janga la COVID-19.',
+    backToHome: 'Rudi Nyumbani',
+    table: {
+      edition: 'Tol.',
+      year: 'Mwaka',
+      winner: 'Mshindi',
+      country: 'Nchi',
+      host: 'Mwenyeji'
+    },
+    cards: {
+      edition: 'Toleo la {edition}',
+      winner: 'Mshindi',
+      country: 'Nchi',
+      host: 'Mwenyeji'
+    },
+    highlightsList: {
+      nigeriaDominance: {
+        title: "Utawala wa Nigeria",
+        content: "Wachezaji wa Nigeria wameshinda matoleo 14 kati ya 15 yaliyofanyika hadi sasa, wakiimarisha hadhi yao kama nguvu ya Scrabble ya Afrika."
+      },
+      multipleChampions: {
+        title: "Mabingwa wa Mara Nyingi",
+        content: "Dennis Ikekeregor (2004, 2006) na Wellington Jighere (2008, 2010) ni wachezaji pekee walioshinda taji mara mbili."
+      },
+      trevorHovelmeier: {
+        title: "Trevor Hovelmeier",
+        content: "Anabaki kuwa mtu asiye Mnigeria pekee aliyewahi kushinda taji la kibinafsi la Afrika, akilinyakua kwa Afrika Kusini mwaka 2002."
+      },
+      youngestChampion: {
+        title: "Bingwa Mdogo Zaidi",
+        content: "Oluwatimilehin Doko aliweka historia kwa kuwa mshindi mdogo zaidi aliposhinda toleo la 15 nchini Kigali, Rwanda, akiwa na umri wa miaka 24."
+      }
+    },
+    timeline: {
+      title: 'Mabingwa wa Afrika',
+      subtitle: 'Kuheshimu hadithi walioshinda Mabingwa ya Scrabble ya Afrika.',
+      viewHistory: 'Tazama Historia Kamili',
+      host: 'Mwenyeji:'
+    }
+  },
+
   // Payments Page
   payments: {
     title: 'Malipo ya Mashindano na Maombi ya Daraja',

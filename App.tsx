@@ -57,8 +57,8 @@ const AppContent: React.FC = () => {
           <Route index element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/ratings" element={<RatingsPage />} />
-          <Route path="/news" element={<NewsPage />} />
-          <Route path="/news/:id" element={<NewsPage />} />
+          {/* <Route path="/news" element={<NewsPage />} /> */}
+          {/* <Route path="/news/:id" element={<NewsPage />} /> */}
           <Route path="/federations" element={<FederationsPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
           <Route path="/gallery/:collectionId" element={<CollectionPage />} />

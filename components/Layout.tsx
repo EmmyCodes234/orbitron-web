@@ -44,7 +44,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="hidden md:block">
         <ParticleBackground isMobile={false} />
       </div>
-      
+
       {/* Header */}
       <header className="bg-slate-900/80 backdrop-blur-xl border-b border-slate-700/30 sticky top-0 z-50 shadow-xl">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
@@ -60,7 +60,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </span>
               </Link>
             </div>
-            
+
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1 ml-6">
               <Link to="/" className="text-gray-300 hover:text-white transition-all px-3 py-2.5 rounded-md text-sm font-medium hover:bg-slate-800/50 relative group">
@@ -71,10 +71,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {t('navigation.about')}
                 <span className="absolute bottom-1.5 left-1/2 w-0 h-0.5 bg-gradient-to-r from-green-400 to-cyan-400 transition-all duration-200 group-hover:w-1/2 group-hover:left-1/4"></span>
               </Link>
-              
+
               {/* Activity Dropdown */}
               <div className="relative group">
-                <button 
+                <button
                   onMouseEnter={() => {
                     if (activityDropdownTimer) {
                       clearTimeout(activityDropdownTimer);
@@ -97,9 +97,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                
+
                 {isActivityDropdownOpen && (
-                  <div 
+                  <div
                     className="absolute left-0 mt-2 w-48 rounded-lg bg-slate-800/90 backdrop-blur-xl border border-slate-700/50 shadow-2xl z-50"
                     onMouseEnter={() => {
                       if (activityDropdownTimer) {
@@ -120,19 +120,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <Link to="/ratings" className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-slate-700/50 rounded-t-md transition-colors touch-target focus:outline-none focus:bg-slate-700/70 focus:text-white" role="menuitem">
                       {t('navigation.ratings')}
                     </Link>
-                    <Link to="/news" className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-slate-700/50 transition-colors touch-target focus:outline-none focus:bg-slate-700/70 focus:text-white" role="menuitem">
-                      {t('navigation.news')}
-                    </Link>
+
                     <Link to="/gallery" className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-slate-700/50 rounded-b-md transition-colors touch-target focus:outline-none focus:bg-slate-700/70 focus:text-white" role="menuitem">
                       {t('navigation.gallery')}
                     </Link>
                   </div>
                 )}
               </div>
-              
+
               {/* Support Dropdown */}
               <div className="relative group">
-                <button 
+                <button
                   onMouseEnter={() => {
                     if (supportDropdownTimer) {
                       clearTimeout(supportDropdownTimer);
@@ -155,9 +153,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                
+
                 {isSupportDropdownOpen && (
-                  <div 
+                  <div
                     className="absolute left-0 mt-2 w-48 rounded-lg bg-slate-800/90 backdrop-blur-xl border border-slate-700/50 shadow-2xl z-50"
                     onMouseEnter={() => {
                       if (supportDropdownTimer) {
@@ -184,7 +182,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </div>
                 )}
               </div>
-              
+
               <Link to="/contact" className="text-gray-300 hover:text-white transition-all px-3 py-2.5 rounded-md text-sm font-medium hover:bg-slate-800/50 relative group touch-target">
                 {t('navigation.contact')}
                 <span className="absolute bottom-1.5 left-1/2 w-0 h-0.5 bg-gradient-to-r from-green-400 to-cyan-400 transition-all duration-200 group-hover:w-1/2 group-hover:left-1/4"></span>
@@ -203,7 +201,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="hidden md:flex items-center space-x-3">
               <LanguageSelector />
               <div className="w-52">
-                <EnhancedSearch 
+                <EnhancedSearch
                   onSearch={handleSearch}
                   placeholder={t('search.placeholder')}
                   suggestions={searchSuggestions}
@@ -238,10 +236,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="px-3 pt-3 pb-4 space-y-1 sm:px-4">
               <Link to="/" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.home')}</Link>
               <Link to="/about" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.about')}</Link>
-              
+
               {/* Mobile Activity Dropdown */}
               <div className="space-y-1">
-                <button 
+                <button
                   className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all flex justify-between items-center mobile-nav-item focus:outline-none focus:ring-2 focus:ring-green-400/50"
                   onClick={() => setIsActivityDropdownOpen(!isActivityDropdownOpen)}
                   aria-expanded={isActivityDropdownOpen}
@@ -254,15 +252,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {isActivityDropdownOpen && (
                   <div className="pl-6 space-y-1">
                     <Link to="/ratings" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.ratings')}</Link>
-                    <Link to="/news" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.news')}</Link>
+
                     <Link to="/gallery" className="block px-4 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item focus:outline-none focus:bg-slate-700/70 focus:text-white" onClick={handleNavigation}>{t('navigation.gallery')}</Link>
                   </div>
                 )}
               </div>
-              
+
               {/* Mobile Support Dropdown */}
               <div className="space-y-1">
-                <button 
+                <button
                   className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all flex justify-between items-center mobile-nav-item focus:outline-none focus:ring-2 focus:ring-green-400/50"
                   onClick={() => setIsSupportDropdownOpen(!isSupportDropdownOpen)}
                   aria-expanded={isSupportDropdownOpen}
@@ -279,14 +277,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </div>
                 )}
               </div>
-              
+
               <Link to="/contact" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.contact')}</Link>
               <Link to="/payments" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.payments')}</Link>
               <Link to="/tools" className="block px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all mobile-nav-item" onClick={handleNavigation}>{t('navigation.tools')}</Link>
-              
+
               {/* Mobile Search */}
               <div className="px-4 pt-2">
-                <EnhancedSearch 
+                <EnhancedSearch
                   onSearch={handleSearch}
                   placeholder={t('search.mobilePlaceholder')}
                   suggestions={searchSuggestions}
@@ -354,7 +352,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <li><Link to="/" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.home')}</Link></li>
                 <li><Link to="/about" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.about')}</Link></li>
                 <li><Link to="/ratings" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.ratings')}</Link></li>
-                <li><Link to="/news" className="text-base text-gray-400 hover:text-white transition-colors" onClick={handleNavigation}>{t('navigation.news')}</Link></li>
+
               </ul>
             </div>
             <div>

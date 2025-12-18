@@ -4,7 +4,7 @@ import Card from '../components/Card';
 import FlagLoop from '../components/FlagLoop';
 import AnnouncementPill from '../components/AnnouncementPill';
 import ParticleBackground from '../components/ParticleBackground';
-import { getNews, getEvents } from '../src/services/supabaseService';
+import { getEvents } from '../src/services/supabaseService';
 import { useLocalization } from '../contexts/LocalizationContext';
 import TechButton from '../components/TechButton';
 import AscTimeline from '../components/AscTimeline';
@@ -32,18 +32,11 @@ const HomePage: React.FC = () => {
     }
   }, []);
 
-  // Fetch latest news and events from Supabase
+  // Fetch events from Supabase
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-
-        // Fetch news
-        const newsData = await getNews(language);
-        if (newsData) {
-          // Get only the first 2 articles for the homepage
-          setLatestNews(newsData.slice(0, 2));
-        }
 
         // Fetch events
         const eventsData = await getEvents();
@@ -59,7 +52,7 @@ const HomePage: React.FC = () => {
     };
 
     fetchData();
-  }, [language]);
+  }, []);
 
   // Handle video error and fallback to image
   const handleVideoError = () => {
@@ -196,73 +189,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Latest News Section with enhanced styling */}
-        <section className="animate-slide-in-left opacity-0 content-group" style={{ animationDelay: '3.5s', animationFillMode: 'forwards' }}>
-          <div className="flex items-center justify-between mb-6 sm:mb-8 md:mb-10">
-            <h2 className="font-orbitron text-xl sm:text-2xl md:text-3xl font-extrabold text-left text-gray-100 section-title">
-              {t('home.latestNews')}
-            </h2>
-            <Link to="/news" className="text-green-400 hover:text-cyan-400 text-sm sm:text-base font-bold flex items-center group transition-colors duration-300 ml-auto touch-target">
-              {t('home.viewAll')}
-              <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 7l-8 8-4-4-6 6" />
-              </svg>
-            </Link>
-          </div>
-          {loading ? (
-            <div className="flex justify-center items-center h-32 sm:h-40">
-              <div className="animate-spin rounded-full h-8 w-8 sm:h-10 sm:w-10 border-b-2 border-green-400"></div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-7 lg:gap-9">
-              {latestNews.map((article, index) => (
-                <div
-                  key={article.id}
-                  className={`hover-lift animate-fade-in-up opacity-0 stagger-${index + 1} grid-card`}
-                  style={{ animationDelay: `${4 + index * 0.2}s`, animationFillMode: 'forwards' }}
-                >
-                  {/* Using the same card design as "meet the team" section but with uniform dimensions */}
-                  <article
-                    className="group relative flex flex-col w-full h-full rounded-[20px] overflow-hidden border-2 border-transparent transition-all duration-300 cursor-pointer hover:scale-[1.02] shadow-lg tech-card"
-                    style={
-                      {
-                        '--card-border': '#10B981',
-                        background: 'linear-gradient(145deg, #10B981, #065F46)',
-                      } as React.CSSProperties
-                    }
-                    onClick={() => window.location.href = `/news/${article.id}`}
-                  >
-                    <div className="relative z-10 flex-1 p-[10px] box-border flex flex-col">
-                      <div className="flex-1 flex items-center justify-center">
-                        <img
-                          src={
-                            article.title === 'Ghana Welcomes the World: Accra to Host the 2025 World Scrabble Championship'
-                              ? '/kofiBingo.png'
-                              : article.title === 'Team Nigeria Dominates at the 2nd African Youth Scrabble Championship in Kenya'
-                                ? '/ayscbanner.png'
-                                : article.title === 'Blitzkrieg Triumphs at Triumvirate Showdown in Nairobi'
-                                  ? '/triumvirate.png'
-                                  : article.image
-                          }
-                          alt={article.title}
-                          loading="lazy"
-                          className="w-full h-48 object-cover rounded-[10px] border-2 border-white/20"
-                        />
-                      </div>
-                    </div>
-                    <footer className="relative z-10 p-4 text-white font-sans flex flex-col flex-grow">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="m-0 text-[1.1rem] font-bold line-clamp-2">{article.title}</h3>
-                      </div>
-                      <p className="m-0 text-[0.85rem] font-medium opacity-90 mb-2">{`By ${article.author} on ${new Date(article.created_at).toLocaleDateString()}`}</p>
-                      <p className="m-0 text-[0.8rem] opacity-80 line-clamp-3 flex-grow">{article.summary}</p>
-                    </footer>
-                  </article>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+
 
         {/* ASC Timeline Section */}
         <AscTimeline />

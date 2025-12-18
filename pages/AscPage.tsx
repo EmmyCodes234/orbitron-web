@@ -2,8 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import ParticleBackground from '../components/ParticleBackground';
+import { useLocalization } from '../contexts/LocalizationContext';
 
 const AscPage: React.FC = () => {
+    const { t } = useLocalization();
+
     const winners = [
         { edition: '1st', year: '1994', winner: 'Ify Onyeonwu', country: 'Nigeria', host: 'Kenya' },
         { edition: '2nd', year: '1996', winner: 'Femi Awowade', country: 'Nigeria', host: 'Nigeria' },
@@ -24,20 +27,20 @@ const AscPage: React.FC = () => {
 
     const highlights = [
         {
-            title: "Nigeria's Dominance",
-            content: "Nigerian players have won 14 out of the 15 editions held to date, cementing their status as the powerhouse of African Scrabble."
+            title: t('asc.highlightsList.nigeriaDominance.title'),
+            content: t('asc.highlightsList.nigeriaDominance.content')
         },
         {
-            title: "Multiple-Time Champions",
-            content: "Dennis Ikekeregor (2004, 2006) and Wellington Jighere (2008, 2010) are the only players to have won the title twice."
+            title: t('asc.highlightsList.multipleChampions.title'),
+            content: t('asc.highlightsList.multipleChampions.content')
         },
         {
-            title: "Trevor Hovelmeier",
-            content: "He remains the only non-Nigerian to ever win the African individual title, clinching it for South Africa in 2002."
+            title: t('asc.highlightsList.trevorHovelmeier.title'),
+            content: t('asc.highlightsList.trevorHovelmeier.content')
         },
         {
-            title: "Youngest Champion",
-            content: "Oluwatimilehin Doko became the youngest winner in history when he won the 15th edition in Kigali, Rwanda, at the age of 24."
+            title: t('asc.highlightsList.youngestChampion.title'),
+            content: t('asc.highlightsList.youngestChampion.content')
         }
     ];
 
@@ -69,14 +72,14 @@ const AscPage: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         className="inline-block py-1 px-3 rounded-full bg-green-500/10 text-green-400 text-xs md:text-sm font-bold tracking-widest uppercase mb-4 border border-green-500/20"
                     >
-                        History & Glory
+                        {t('asc.badge')}
                     </motion.span>
                     <motion.h1
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         className="text-3xl md:text-6xl font-extrabold font-orbitron bg-clip-text text-transparent bg-gradient-to-r from-white via-green-200 to-green-500 mb-6 leading-tight"
                     >
-                        Africa Scrabble Championship
+                        {t('asc.title')}
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -84,7 +87,7 @@ const AscPage: React.FC = () => {
                         transition={{ delay: 0.2 }}
                         className="text-base md:text-lg text-slate-300 leading-relaxed px-2"
                     >
-                        The Africa Scrabble Championship (ASC) is the premier continental tournament organized by the Pan-African Scrabble Association (PANASA). Since its inception in 1994, it has been the ultimate battleground for the continent's finest wordsmiths.
+                        {t('asc.description')}
                     </motion.p>
                 </div>
             </section>
@@ -92,7 +95,7 @@ const AscPage: React.FC = () => {
             {/* Highlights Grid */}
             <section className="py-12 md:py-16 px-4 bg-slate-900/50">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-2xl md:text-3xl font-bold font-orbitron text-center mb-8 md:mb-12 text-white"> Key <span className="text-green-400">Highlights</span></h2>
+                    <h2 className="text-2xl md:text-3xl font-bold font-orbitron text-center mb-8 md:mb-12 text-white"> {t('asc.highlights')}</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                         {highlights.map((item, idx) => (
                             <motion.div
@@ -114,8 +117,8 @@ const AscPage: React.FC = () => {
             <section className="py-12 md:py-20 px-4">
                 <div className="max-w-5xl mx-auto">
                     <div className="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8 gap-2">
-                        <h2 className="text-2xl md:text-3xl font-bold font-orbitron">Hall of <span className="text-yellow-400">Fame</span></h2>
-                        <div className="text-sm text-slate-400">Total Editions: 15</div>
+                        <h2 className="text-2xl md:text-3xl font-bold font-orbitron">{t('asc.hallOfFame')}</h2>
+                        <div className="text-sm text-slate-400">{t('asc.totalEditions').replace('{count}', '15')}</div>
                     </div>
 
                     <div className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-slate-900/80 backdrop-blur-md">
@@ -125,23 +128,23 @@ const AscPage: React.FC = () => {
                             {winners.map((row, idx) => (
                                 <div key={idx} className="bg-slate-800/50 p-4 rounded-xl border border-white/5 hover:border-green-500/30 transition-all">
                                     <div className="flex justify-between items-start mb-2">
-                                        <span className="text-xs font-bold text-slate-400 bg-white/5 px-2 py-1 rounded">{row.edition} Edition</span>
+                                        <span className="text-xs font-bold text-slate-400 bg-white/5 px-2 py-1 rounded">{t('asc.cards.edition').replace('{edition}', row.edition)}</span>
                                         <span className="text-lg font-orbitron font-bold text-white">{row.year}</span>
                                     </div>
                                     <div className="mb-3">
-                                        <span className="text-xs text-slate-500 block mb-1 uppercase tracking-wider">Winner</span>
+                                        <span className="text-xs text-slate-500 block mb-1 uppercase tracking-wider">{t('asc.cards.winner')}</span>
                                         <div className="text-xl font-bold text-green-300">{row.winner}</div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4 pt-3 border-t border-white/5 text-sm">
                                         <div>
-                                            <span className="text-xs text-slate-500 block mb-1 uppercase tracking-wider">Country</span>
+                                            <span className="text-xs text-slate-500 block mb-1 uppercase tracking-wider">{t('asc.cards.country')}</span>
                                             <div className="flex items-center gap-2 text-slate-300">
                                                 <img src={`https://flagcdn.com/w20/${getCountryCode(row.country)}.png`} alt={row.country} className="w-5 h-auto rounded-sm" />
                                                 <span>{row.country}</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <span className="text-xs text-slate-500 block mb-1 uppercase tracking-wider">Host</span>
+                                            <span className="text-xs text-slate-500 block mb-1 uppercase tracking-wider">{t('asc.cards.host')}</span>
                                             <div className="flex items-center gap-2 text-slate-400">
                                                 <img src={`https://flagcdn.com/w20/${getCountryCode(row.host)}.png`} alt={row.host} className="w-5 h-auto rounded-sm opacity-70" />
                                                 <span>{row.host}</span>
@@ -157,11 +160,11 @@ const AscPage: React.FC = () => {
                             <table className="w-full text-left border-collapse min-w-full">
                                 <thead>
                                     <tr className="bg-white/5 text-slate-300 border-b border-white/10">
-                                        <th className="p-4 font-bold uppercase text-xs tracking-wider whitespace-nowrap">Ed.</th>
-                                        <th className="p-4 font-bold uppercase text-xs tracking-wider whitespace-nowrap">Year</th>
-                                        <th className="p-4 font-bold uppercase text-xs tracking-wider">Winner</th>
-                                        <th className="p-4 font-bold uppercase text-xs tracking-wider">Country</th>
-                                        <th className="p-4 font-bold uppercase text-xs tracking-wider">Host</th>
+                                        <th className="p-4 font-bold uppercase text-xs tracking-wider whitespace-nowrap">{t('asc.table.edition')}</th>
+                                        <th className="p-4 font-bold uppercase text-xs tracking-wider whitespace-nowrap">{t('asc.table.year')}</th>
+                                        <th className="p-4 font-bold uppercase text-xs tracking-wider">{t('asc.table.winner')}</th>
+                                        <th className="p-4 font-bold uppercase text-xs tracking-wider">{t('asc.table.country')}</th>
+                                        <th className="p-4 font-bold uppercase text-xs tracking-wider">{t('asc.table.host')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
@@ -190,14 +193,14 @@ const AscPage: React.FC = () => {
                     </div>
 
                     <div className="mt-8 text-center text-slate-500 text-xs md:text-sm px-4">
-                        <p>Scheduling Note: The championship is typically held biennially. A gap occurred between 2018 and 2022 due to the COVID-19 pandemic.</p>
+                        <p>{t('asc.schedulingNote')}</p>
                     </div>
                 </div>
             </section>
 
             <div className="pb-20 text-center">
                 <Link to="/" className="inline-flex items-center text-green-400 hover:text-white font-bold transition-colors">
-                    ← Back to Home
+                    ← {t('asc.backToHome')}
                 </Link>
             </div>
 

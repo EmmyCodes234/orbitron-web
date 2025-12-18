@@ -339,6 +339,55 @@ const en = {
   goBack: 'Go Back',
   close: 'Close',
 
+  // ASC Page
+  asc: {
+    title: 'Africa Scrabble Championship',
+    badge: 'History & Glory',
+    description: 'The Africa Scrabble Championship (ASC) is the premier continental tournament organized by the Pan-African Scrabble Association (PANASA). Since its inception in 1994, it has been the ultimate battleground for the continent\'s finest wordsmiths.',
+    highlights: 'Key Highlights',
+    hallOfFame: 'Hall of Fame',
+    totalEditions: 'Total Editions: {count}',
+    schedulingNote: 'Scheduling Note: The championship is typically held biennially. A gap occurred between 2018 and 2022 due to the COVID-19 pandemic.',
+    backToHome: 'Back to Home',
+    table: {
+      edition: 'Ed.',
+      year: 'Year',
+      winner: 'Winner',
+      country: 'Country',
+      host: 'Host'
+    },
+    cards: {
+      edition: '{edition} Edition',
+      winner: 'Winner',
+      country: 'Country',
+      host: 'Host'
+    },
+    highlightsList: {
+      nigeriaDominance: {
+        title: "Nigeria's Dominance",
+        content: "Nigerian players have won 14 out of the 15 editions held to date, cementing their status as the powerhouse of African Scrabble."
+      },
+      multipleChampions: {
+        title: "Multiple-Time Champions",
+        content: "Dennis Ikekeregor (2004, 2006) and Wellington Jighere (2008, 2010) are the only players to have won the title twice."
+      },
+      trevorHovelmeier: {
+        title: "Trevor Hovelmeier",
+        content: "He remains the only non-Nigerian to ever win the African individual title, clinching it for South Africa in 2002."
+      },
+      youngestChampion: {
+        title: "Youngest Champion",
+        content: "Oluwatimilehin Doko became the youngest winner in history when he won the 15th edition in Kigali, Rwanda, at the age of 24."
+      }
+    },
+    timeline: {
+      title: 'Champions of Africa',
+      subtitle: 'Honoring the legends who conquered the Africa Scrabble Championship.',
+      viewHistory: 'View Full History',
+      host: 'Host:'
+    }
+  },
+
   // Payments Page
   payments: {
     title: 'Tournament Payments & Rating Applications',

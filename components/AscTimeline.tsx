@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useLocalization } from '../contexts/LocalizationContext';
 
 interface AscWinner {
     edition: string;
@@ -43,6 +44,8 @@ const getCountryCode = (country: string): string => {
 };
 
 const AscTimeline: React.FC = () => {
+    const { t } = useLocalization();
+
     return (
         <section className="py-20 bg-slate-950 relative overflow-hidden">
             {/* Background Elements */}
@@ -59,7 +62,7 @@ const AscTimeline: React.FC = () => {
                         transition={{ duration: 0.6 }}
                         className="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400 mb-4 font-orbitron"
                     >
-                        Champions of Africa
+                        {t('asc.timeline.title')}
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -67,7 +70,7 @@ const AscTimeline: React.FC = () => {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-gray-400 text-lg max-w-2xl mx-auto"
                     >
-                        Honoring the legends who conquered the Africa Scrabble Championship.
+                        {t('asc.timeline.subtitle')}
                     </motion.p>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -76,7 +79,7 @@ const AscTimeline: React.FC = () => {
                         className="mt-6"
                     >
                         <Link to="/asc" className="inline-flex items-center text-green-400 hover:text-green-300 font-bold transition-colors">
-                            View Full History <span className="ml-2">→</span>
+                            {t('asc.timeline.viewHistory')} <span className="ml-2">→</span>
                         </Link>
                     </motion.div>
                 </div>
@@ -102,7 +105,7 @@ const AscTimeline: React.FC = () => {
                                     <div className={`${index % 2 === 0 ? 'md:text-left md:pl-12 md:pr-0' : ''}`}>
                                         <div className="bg-slate-900/50 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:border-green-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10 group-hover:-translate-y-1">
                                             <div className="flex items-center justify-between mb-2">
-                                                <span className="text-sm font-bold text-green-400 tracking-wider uppercase">{item.edition} Edition</span>
+                                                <span className="text-sm font-bold text-green-400 tracking-wider uppercase">{t('asc.cards.edition').replace('{edition}', item.edition)}</span>
                                                 <span className="text-xl font-orbitron font-bold text-white">{item.year}</span>
                                             </div>
                                             <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-green-300 transition-colors">{item.winner}</h3>
@@ -117,7 +120,7 @@ const AscTimeline: React.FC = () => {
                                                 </div>
                                             </div>
                                             <div className="mt-3 text-xs text-slate-500 uppercase tracking-widest font-semibold border-t border-white/5 pt-2 flex items-center justify-between">
-                                                <span>Host: <span className="text-slate-400 ml-1">{item.host}</span></span>
+                                                <span>{t('asc.timeline.host')} <span className="text-slate-400 ml-1">{item.host}</span></span>
                                                 <img
                                                     src={`https://flagcdn.com/w20/${getCountryCode(item.host)}.png`}
                                                     alt={item.host}
