@@ -24,6 +24,7 @@ const en = {
     playerRankings: 'Player Rankings',
     findFederation: 'Find Your Federation',
     memberNations: 'Our Member Nations',
+    announcement: 'African Scrabble Championship',
     countries: 'Countries',
     players: 'Players',
     years: 'Years',

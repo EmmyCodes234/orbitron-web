@@ -1,0 +1,41 @@
+name: Build and Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main  # or the name of your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_CHATBASE_API_KEY: ${{ secrets.VITE_CHATBASE_API_KEY }}
+          VITE_CHATBASE_CHATBOT_ID: ${{ secrets.VITE_CHATBASE_CHATBOT_ID }}
+
+      - name: Deploy to cPanel via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/ # Adjust this if your site is in a subdomain or subfolder
+          local-dir: ./dist/
+          dangerous-clean-slate: false # Set to true if you want to delete files on server that aren't in dist

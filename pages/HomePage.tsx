@@ -117,7 +117,10 @@ const HomePage: React.FC = () => {
         <div className="relative z-10 max-w-5xl mx-auto px-4 pt-4 sm:pt-0">
           {/* Announcement Pill */}
           <div className="flex justify-center -mt-4">
-            <AnnouncementPill text="WESPAC Ghana 2025" />
+            <AnnouncementPill
+              text={t('home.announcement')}
+              href="https://asc.liberiascrabble.com"
+            />
           </div>
 
           {/* Main title with enhanced styling */}

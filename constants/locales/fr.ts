@@ -24,6 +24,7 @@ const fr = {
     playerRankings: 'Classements des Joueurs',
     findFederation: 'Trouver Votre Fédération',
     memberNations: 'Nos Nations Membres',
+    announcement: "Championnat d'Afrique de Scrabble",
     countries: 'Pays',
     players: 'Joueurs',
     years: 'Années',

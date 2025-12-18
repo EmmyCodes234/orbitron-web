@@ -24,6 +24,7 @@ const sw = {
     playerRankings: 'Daraja za Wachezaji',
     findFederation: 'Tafuta Shirikisho Lako',
     memberNations: 'Nchi Zetu Wanachama',
+    announcement: 'Mashindano ya Scrabble ya Afrika',
     countries: 'Nchi',
     players: 'Wachezaji',
     years: 'Miaka',
