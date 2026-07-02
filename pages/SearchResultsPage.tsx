@@ -26,7 +26,7 @@ const SearchResultsPage: React.FC = () => {
     const params = new URLSearchParams(location.search);
     const searchQuery = params.get('q') || '';
     setQuery(searchQuery);
-    
+
     if (searchQuery) {
       performSearch(searchQuery);
     } else {
@@ -37,7 +37,7 @@ const SearchResultsPage: React.FC = () => {
   const performSearch = async (searchQuery: string) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // Fetch all data types
       const [players, news, events, federations] = await Promise.all([
@@ -56,24 +56,24 @@ const SearchResultsPage: React.FC = () => {
           // Calculate relevance score based on multiple factors
           let relevanceScore = 0;
           const searchLower = searchQuery.toLowerCase();
-          
+
           // Exact matches get higher scores
           if (player.name.toLowerCase() === searchLower) relevanceScore += 10;
           else if (player.name.toLowerCase().includes(searchLower)) relevanceScore += 5;
-          
+
           if (player.nick.toLowerCase() === searchLower) relevanceScore += 8;
           else if (player.nick.toLowerCase().includes(searchLower)) relevanceScore += 4;
-          
+
           if (player.country.toLowerCase() === searchLower) relevanceScore += 7;
           else if (player.country.toLowerCase().includes(searchLower)) relevanceScore += 3;
-          
+
           // Partial matches in any field
           if (player.name.toLowerCase().includes(searchLower) ||
-              player.nick.toLowerCase().includes(searchLower) ||
-              player.country.toLowerCase().includes(searchLower)) {
+            player.nick.toLowerCase().includes(searchLower) ||
+            player.country.toLowerCase().includes(searchLower)) {
             relevanceScore += 2;
           }
-          
+
           // If we have a relevance score, add to results
           if (relevanceScore > 0) {
             allResultsWithScores.push({
@@ -95,16 +95,16 @@ const SearchResultsPage: React.FC = () => {
         news.forEach((article: any) => {
           let relevanceScore = 0;
           const searchLower = searchQuery.toLowerCase();
-          
+
           // Check title, content, and summary
           if (article.title.toLowerCase().includes(searchLower)) relevanceScore += 5;
           if (article.content.toLowerCase().includes(searchLower)) relevanceScore += 3;
           if (article.summary.toLowerCase().includes(searchLower)) relevanceScore += 4;
           if (article.author && article.author.toLowerCase().includes(searchLower)) relevanceScore += 2;
-          
+
           // Exact matches in title get highest score
           if (article.title.toLowerCase() === searchLower) relevanceScore += 10;
-          
+
           if (relevanceScore > 0) {
             allResultsWithScores.push({
               id: article.id,
@@ -125,15 +125,15 @@ const SearchResultsPage: React.FC = () => {
         events.forEach((event: any) => {
           let relevanceScore = 0;
           const searchLower = searchQuery.toLowerCase();
-          
+
           // Check title, description, and location
           if (event.title.toLowerCase().includes(searchLower)) relevanceScore += 5;
           if (event.description.toLowerCase().includes(searchLower)) relevanceScore += 3;
           if (event.location && event.location.toLowerCase().includes(searchLower)) relevanceScore += 4;
-          
+
           // Exact matches in title get highest score
           if (event.title.toLowerCase() === searchLower) relevanceScore += 10;
-          
+
           if (relevanceScore > 0) {
             allResultsWithScores.push({
               id: event.id,
@@ -154,17 +154,17 @@ const SearchResultsPage: React.FC = () => {
         federations.forEach((federation: any) => {
           let relevanceScore = 0;
           const searchLower = searchQuery.toLowerCase();
-          
+
           // Check country, name, president, and address
           if (federation.country.toLowerCase().includes(searchLower)) relevanceScore += 5;
           if (federation.name.toLowerCase().includes(searchLower)) relevanceScore += 4;
           if (federation.president.toLowerCase().includes(searchLower)) relevanceScore += 3;
           if (federation.address && federation.address.toLowerCase().includes(searchLower)) relevanceScore += 2;
-          
+
           // Exact matches get highest score
           if (federation.country.toLowerCase() === searchLower) relevanceScore += 10;
           if (federation.name.toLowerCase() === searchLower) relevanceScore += 8;
-          
+
           if (relevanceScore > 0) {
             allResultsWithScores.push({
               id: federation.id,
@@ -182,10 +182,10 @@ const SearchResultsPage: React.FC = () => {
 
       // Sort results by relevance score (highest first)
       allResultsWithScores.sort((a, b) => b.relevance - a.relevance);
-      
+
       // Remove relevance property before setting results
       const finalResults = allResultsWithScores.map(({ relevance, ...rest }) => rest);
-      
+
       setResults(finalResults);
     } catch (err) {
       setError('An error occurred while searching. Please try again.');
@@ -197,20 +197,64 @@ const SearchResultsPage: React.FC = () => {
 
   const getPlayerCountryCode = (country: string) => {
     const countryCodes: { [key: string]: string } = {
-      'Nigeria': 'ng',
-      'Ghana': 'gh',
-      'Kenya': 'ke',
-      'South Africa': 'za',
-      'Uganda': 'ug',
-      'Tanzania': 'tz',
-      'Zambia': 'zm',
-      'Botswana': 'bw',
-      'Cameroon': 'cm',
-      'Gambia': 'gm',
-      'Liberia': 'lr',
-      'Sierra Leone': 'sl',
-      'Mauritius': 'mu',
-      'Togo': 'tg'
+      'Nigeria': 'ng', 'NGA': 'ng',
+      'Ghana': 'gh', 'GHA': 'gh',
+      'Kenya': 'ke', 'KEN': 'ke',
+      'South Africa': 'za', 'ZAF': 'za',
+      'Uganda': 'ug', 'UGA': 'ug',
+      'Tanzania': 'tz', 'TZA': 'tz',
+      'Zambia': 'zm', 'ZMB': 'zm',
+      'Botswana': 'bw', 'BWA': 'bw',
+      'Cameroon': 'cm', 'CMR': 'cm',
+      'Gambia': 'gm', 'GMB': 'gm',
+      'Liberia': 'lr', 'LBR': 'lr',
+      'Sierra Leone': 'sl', 'SLE': 'sl',
+      'Mauritius': 'mu', 'MUS': 'mu',
+      'Togo': 'tg', 'TGO': 'tg',
+      'Lebanon': 'lb', 'LBN': 'lb',
+      'USA': 'us',
+      'Zimbabwe': 'zw', 'ZWE': 'zw',
+      'Rwanda': 'rw', 'RWA': 'rw',
+      'Malawi': 'mw', 'MWI': 'mw',
+      'Mozambique': 'mz', 'MOZ': 'mz',
+      'Namibia': 'na', 'NAM': 'na',
+      'Eswatini': 'sz', 'SWZ': 'sz',
+      'Lesotho': 'ls', 'LSO': 'ls',
+      'Tunisia': 'tn', 'TUN': 'tn',
+      'Morocco': 'ma', 'MAR': 'ma',
+      'Algeria': 'dz', 'DZA': 'dz', 'ALG': 'dz',
+      'Egypt': 'eg', 'EGY': 'eg',
+      'Senegal': 'sn', 'SEN': 'sn',
+      'Ivory Coast': 'ci', 'CIV': 'ci',
+      'Mali': 'ml', 'MLI': 'ml',
+      'Benin': 'bj', 'BEN': 'bj',
+      'Niger': 'ne', 'NER': 'ne',
+      'Burkina Faso': 'bf', 'BFA': 'bf',
+      'Chad': 'td', 'TCD': 'td',
+      'Sudan': 'sd', 'SDN': 'sd',
+      'South Sudan': 'ss', 'SSD': 'ss',
+      'Ethiopia': 'et', 'ETH': 'et',
+      'Somalia': 'so', 'SOM': 'so',
+      'Djibouti': 'dj', 'DJI': 'dj',
+      'Eritrea': 'er', 'ERI': 'er',
+      'Central African Republic': 'cf', 'CAF': 'cf',
+      'Congo': 'cg', 'COG': 'cg',
+      'DR Congo': 'cd', 'COD': 'cd',
+      'Gabon': 'ga', 'GAB': 'ga',
+      'Equatorial Guinea': 'gq', 'GNQ': 'gq',
+      'Sao Tome and Principe': 'st', 'STP': 'st',
+      'Seychelles': 'sc', 'SYC': 'sc',
+      'Comoros': 'km', 'COM': 'km',
+      'Madagascar': 'mg', 'MDG': 'mg',
+      'Mauritania': 'mr', 'MRT': 'mr',
+      'Guinea': 'gn', 'GIN': 'gn',
+      'Guinea-Bissau': 'gw', 'GNB': 'gw',
+      'Cape Verde': 'cv', 'CPV': 'cv',
+      'Western Sahara': 'eh', 'ESH': 'eh',
+      'Libya': 'ly', 'LBY': 'ly',
+      'Burundi': 'bi', 'BDI': 'bi',
+      'Mayotte': 'yt', 'MYT': 'yt',
+      'Reunion': 're', 'REU': 're'
     };
     return countryCodes[country] || 'ng';
   };
@@ -246,31 +290,31 @@ const SearchResultsPage: React.FC = () => {
       case 'player':
         return (
           <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
           </svg>
         );
       case 'news':
         return (
           <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
           </svg>
         );
       case 'event':
         return (
           <svg className="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
           </svg>
         );
       case 'federation':
         return (
           <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
           </svg>
         );
       default:
         return (
           <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
           </svg>
         );
     }
@@ -338,15 +382,15 @@ const SearchResultsPage: React.FC = () => {
         {results.length > 0 && (
           <div className="space-y-6">
             {results.map((result) => (
-              <div 
-                key={`${result.type}-${result.id}`} 
+              <div
+                key={`${result.type}-${result.id}`}
                 className="bg-slate-900/50 rounded-2xl p-6 border border-slate-800/50 hover:border-green-400/40 transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-xl group"
               >
                 <div className="flex items-start gap-5">
                   {result.image && (
                     <div className="flex-shrink-0">
-                      <img 
-                        src={result.image} 
+                      <img
+                        src={result.image}
                         alt={result.title}
                         className="w-20 h-20 object-contain rounded-xl border border-slate-700/50 p-2 bg-slate-800/50 group-hover:scale-105 transition-transform duration-300"
                         onError={(e) => {

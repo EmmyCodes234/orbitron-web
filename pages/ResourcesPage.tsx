@@ -30,12 +30,12 @@ const ResourcesPage: React.FC = () => {
     },
     {
       id: 2,
-      title: 'PANASA Bylaws',
-      description: 'Official bylaws and regulations governing the Pan African Scrabble Association.',
-      fileSize: '0.1 KB',
+      title: 'PANASA Rules V5.1',
+      description: 'Official rules and regulations governing the Pan African Scrabble Association.',
+      fileSize: '485 KB',
       lastUpdated: '2025-01-10',
-      url: '/panasa-bylaws.docx',
-      type: 'docx',
+      url: '/Rules-V5.1.pdf',
+      type: 'pdf',
       category: 'officialRules'
     },
     {
@@ -151,7 +151,7 @@ const ResourcesPage: React.FC = () => {
       hoverBorderColor: 'hover:border-green-400/50',
       icon: (
         <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-3" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
       )
     },
@@ -163,7 +163,7 @@ const ResourcesPage: React.FC = () => {
       hoverBorderColor: 'hover:border-cyan-400/50',
       icon: (
         <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-3" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2 1l-3 4v7h2v7h3v-7h1v7h3z"/>
+          <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2 1l-3 4v7h2v7h3v-7h1v7h3z" />
         </svg>
       )
     },
@@ -175,7 +175,7 @@ const ResourcesPage: React.FC = () => {
       hoverBorderColor: 'hover:border-purple-400/50',
       icon: (
         <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-3" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
         </svg>
       )
     },
@@ -231,9 +231,9 @@ const ResourcesPage: React.FC = () => {
                           )}
                           <div className="mt-4">
                             {resource.type === 'link' ? (
-                              <a 
-                                href={resource.url} 
-                                target="_blank" 
+                              <a
+                                href={resource.url}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className={`inline-flex items-center ${category.color.replace('text-', 'text-').replace('400', '400')} hover:text-green-400 font-medium text-sm transition-colors`}
                               >
@@ -243,8 +243,8 @@ const ResourcesPage: React.FC = () => {
                                 </svg>
                               </a>
                             ) : (
-                              <a 
-                                href={resource.url} 
+                              <a
+                                href={resource.url}
                                 download
                                 className={`inline-flex items-center ${category.color.replace('text-', 'text-').replace('400', '400')} hover:text-green-400 font-medium text-sm transition-colors`}
                               >

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useLocalization } from '../contexts/LocalizationContext';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { processCompletedPayment } from '../src/services/paypalService';
+import { processCompletedPayment, processCompletedCustomPayment } from '../src/services/paypalService';
+import { adjustEndDate, validateRatingApplication } from '../utils/formHelpers';
 
 // Types for our payment system
 interface PaymentData {
@@ -14,6 +15,7 @@ interface PaymentData {
 interface RatingApplicationData {
   organizerName: string;
   email: string;
+  phoneNumber: string;
   eventName: string;
   startDate: string;
   endDate: string;
@@ -26,8 +28,16 @@ interface RatingApplicationData {
 
 const PaymentsPage: React.FC = () => {
   const { t } = useLocalization();
-  const [activeTab, setActiveTab] = useState<'rating'>('rating');
-  
+  const [activeTab, setActiveTab] = useState<'rating' | 'custom'>('rating');
+
+  // Custom payment state
+  const [customPaymentData, setCustomPaymentData] = useState({
+    payerName: '',
+    amount: 10,
+    currency: 'USD',
+    description: ''
+  });
+
   // Payment form state
   const [paymentData, setPaymentData] = useState<PaymentData>({
     tournamentName: '',
@@ -35,11 +45,12 @@ const PaymentsPage: React.FC = () => {
     playerName: '',
     currency: 'USD'
   });
-  
+
   // Rating application form state
   const [ratingData, setRatingData] = useState<RatingApplicationData>({
     organizerName: '',
     email: '',
+    phoneNumber: '',
     eventName: '',
     startDate: '',
     endDate: '',
@@ -49,14 +60,23 @@ const PaymentsPage: React.FC = () => {
     agreedToTerms: false,
     amount: 20 // Fixed amount for rating application
   });
-  
+
   // UI states
   const [isProcessing, setIsProcessing] = useState(false);
   const [applicationSuccess, setApplicationSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPayPal, setShowPayPal] = useState(false);
-  const [payPalContext, setPayPalContext] = useState<'tournament' | 'rating'>('rating'); // Track which form is using PayPal
-  
+  const [payPalContext, setPayPalContext] = useState<'tournament' | 'rating' | 'custom'>('rating'); // Track which form is using PayPal
+
+  // Handle custom payment form changes
+  const handleCustomPaymentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setCustomPaymentData(prev => ({
+      ...prev,
+      [name]: name === 'amount' ? parseFloat(value) || 0 : value
+    }));
+  };
+
   // Handle payment form changes
   const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -65,16 +85,16 @@ const PaymentsPage: React.FC = () => {
       [name]: name === 'amount' ? parseFloat(value) || 0 : value
     }));
   };
-  
+
   // Handle rating form changes
   const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    
+
     // Prevent changing the fixed amount
     if (name === 'amount') {
       return;
     }
-    
+
     // Type guard for checkbox inputs
     if (type === 'checkbox') {
       const checkbox = e.target as HTMLInputElement;
@@ -83,39 +103,33 @@ const PaymentsPage: React.FC = () => {
         [name]: checkbox.checked
       }));
     } else {
-      setRatingData(prev => ({
-        ...prev,
-        [name]: name === 'expectedParticipants' ? parseInt(value) || 0 : value
-      }));
+      setRatingData(prev => {
+        const newData = {
+          ...prev,
+          [name]: name === 'expectedParticipants' ? parseInt(value) || 0 : value
+        };
+
+        // Auto-update end date if start date changes using helper
+        if (name === 'startDate') {
+          newData.endDate = adjustEndDate(value, newData.endDate);
+        }
+
+        return newData;
+      });
     }
   };
-  
+
   // Process rating application with payment
   const processRatingApplication = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
-      // Validate required fields
-      if (!ratingData.organizerName.trim()) {
-        throw new Error('Please enter organizer name');
+      // Validate using helper
+      const validation = validateRatingApplication(ratingData);
+      if (!validation.isValid) {
+        throw new Error(validation.error);
       }
-      
-      if (!ratingData.email.trim()) {
-        throw new Error('Please enter email address');
-      }
-      
-      if (!ratingData.eventName.trim()) {
-        throw new Error('Please enter event name');
-      }
-      
-      if (!ratingData.startDate || !ratingData.endDate) {
-        throw new Error('Please enter start and end dates');
-      }
-      
-      if (!ratingData.agreedToTerms) {
-        throw new Error('You must agree to the terms and conditions');
-      }
-      
+
       // Show PayPal buttons for rating application payment
       setPayPalContext('rating');
       setShowPayPal(true);
@@ -123,21 +137,43 @@ const PaymentsPage: React.FC = () => {
       setError(err instanceof Error ? err.message : 'An error occurred submitting your application');
     }
   };
-  
+
+  // Process custom payment
+  const processCustomPayment = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (customPaymentData.amount <= 0) {
+      setError(`Custom payment amount must be greater than 0.`);
+      return;
+    }
+    setError(null);
+    setPayPalContext('custom');
+    setShowPayPal(true);
+  };
+
   // Handle PayPal payment success
   const onPayPalSuccess = async (details: any) => {
     console.log("Payment successful:", details);
-    
+
     try {
       setIsProcessing(true);
-      
-      // Process the completed payment with our backend service
-      const success = await processCompletedPayment(
-        details.id, // PayPal order ID
+
+      let success = false;
+      if (payPalContext === 'custom') {
+        success = await processCompletedCustomPayment(
+          details.id,
+          details.payer?.payer_id || 'N/A',
+          customPaymentData.amount,
+          customPaymentData.currency
+        );
+      } else {
+        // Process the completed payment with our backend service
+        success = await processCompletedPayment(
+          details.id, // PayPal order ID
         details.payer?.payer_id || 'N/A', // Payer ID
         {
           organizerName: ratingData.organizerName,
           email: ratingData.email,
+          phoneNumber: ratingData.phoneNumber,
           eventName: ratingData.eventName,
           startDate: ratingData.startDate,
           endDate: ratingData.endDate,
@@ -147,7 +183,8 @@ const PaymentsPage: React.FC = () => {
           amount: 20.00 // Fixed amount
         }
       );
-      
+      }
+
       if (success) {
         setApplicationSuccess(true);
       } else {
@@ -159,19 +196,27 @@ const PaymentsPage: React.FC = () => {
     } finally {
       setIsProcessing(false);
       setShowPayPal(false);
-      
+
       // Reset forms after success
       setTimeout(() => {
+        setCustomPaymentData({
+          payerName: '',
+          amount: 10,
+          currency: 'USD',
+          description: ''
+        });
+
         setPaymentData({
           tournamentName: '',
           amount: 0,
           playerName: '',
           currency: 'USD'
         });
-        
+
         setRatingData({
           organizerName: '',
           email: '',
+          phoneNumber: '', // Added phoneNumber to reset state
           eventName: '',
           startDate: '',
           endDate: '',
@@ -181,37 +226,37 @@ const PaymentsPage: React.FC = () => {
           agreedToTerms: false,
           amount: 20 // Fixed amount for rating application
         });
-        
+
         setApplicationSuccess(false);
       }, 5000);
     }
   };
-  
+
   // Handle PayPal payment cancellation
   const onPayPalCancel = () => {
     console.log("Payment cancelled");
     setShowPayPal(false);
     setError("Payment was cancelled. Please try again if you wish to complete your payment.");
   };
-  
+
   // Handle PayPal payment error
   const onPayPalError = (err: any) => {
     console.error("Payment error:", err);
     setShowPayPal(false);
     setError("An error occurred during payment processing. Please try again.");
   };
-  
+
   // Currency conversion function (placeholder)
   const convertToUSD = (amount: number, fromCurrency: string): number => {
     // In a real implementation, this would use a currency conversion API
     // For now, we'll assume all inputs are already in USD
     return amount;
   };
-  
+
   return (
-    <PayPalScriptProvider options={{ 
+    <PayPalScriptProvider options={{
       "clientId": "ATVeDvB8w2Xaf2OtP5O8un3oZQy1r_ahR3-rlzhJJPP6rJ5TPkyKki6KsdtRA44JeokoRNNMYHk6BXD_",
-      currency: "USD",
+      currency: activeTab === 'custom' ? customPaymentData.currency : "USD",
       intent: "capture"
     }}>
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 py-12 px-4 sm:px-6 lg:px-8">
@@ -232,21 +277,20 @@ const PaymentsPage: React.FC = () => {
               {error}
             </div>
           )}
-          
+
           {applicationSuccess && (
             <div className="mb-6 p-4 bg-green-900/50 border border-green-500/50 rounded-lg text-green-200 text-center">
               Rating application and payment processed successfully! Our team will review your application and contact you within 3-5 business days.
             </div>
           )}
 
-          {/* Tab Navigation - Only Rating Application Tab */}
-          <div className="flex border-b border-slate-700/50 mb-8">
+          {/* Tab Navigation */}
+          <div className="flex border-b border-slate-700/50 mb-8 overflow-x-auto">
             <button
-              className={`py-4 px-6 text-lg font-medium transition-colors relative font-orbitron ${
-                activeTab === 'rating'
-                  ? 'text-gray-100'
-                  : 'text-gray-400 hover:text-white'
-              }`}
+              className={`py-4 px-6 text-lg font-medium transition-colors relative font-orbitron whitespace-nowrap ${activeTab === 'rating'
+                ? 'text-gray-100'
+                : 'text-gray-400 hover:text-white'
+                }`}
               onClick={() => {
                 setActiveTab('rating');
                 setError(null);
@@ -259,9 +303,27 @@ const PaymentsPage: React.FC = () => {
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-green-400 to-cyan-400"></span>
               )}
             </button>
+            <button
+              className={`py-4 px-6 text-lg font-medium transition-colors relative font-orbitron whitespace-nowrap ${activeTab === 'custom'
+                ? 'text-gray-100'
+                : 'text-gray-400 hover:text-white'
+                }`}
+              onClick={() => {
+                setActiveTab('custom');
+                setError(null);
+                setApplicationSuccess(false);
+                setShowPayPal(false);
+              }}
+            >
+              Custom Payment
+              {activeTab === 'custom' && (
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-green-400 to-cyan-400"></span>
+              )}
+            </button>
           </div>
 
           {/* Rating Application Section */}
+          {activeTab === 'rating' && (
           <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl border border-green-400/30 p-8 shadow-xl">
             <h2 className="text-2xl font-bold text-white mb-6 font-orbitron">
               {t('payments.ratingApplication')}
@@ -269,7 +331,7 @@ const PaymentsPage: React.FC = () => {
             <p className="text-gray-300 mb-8">
               {t('payments.ratingDescription')}
             </p>
-            
+
             {!showPayPal || payPalContext !== 'rating' ? (
               <form onSubmit={processRatingApplication} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -301,8 +363,22 @@ const PaymentsPage: React.FC = () => {
                       required
                     />
                   </div>
+                  <div>
+                    <label className="block text-gray-300 mb-2 font-orbitron">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phoneNumber"
+                      value={ratingData.phoneNumber}
+                      onChange={handleRatingChange}
+                      className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                      placeholder="+1 (555) 000-0000"
+                      required
+                    />
+                  </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-gray-300 mb-2 font-orbitron">
                     {t('payments.eventName')}
@@ -317,7 +393,7 @@ const PaymentsPage: React.FC = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-gray-300 mb-2 font-orbitron">
@@ -340,13 +416,14 @@ const PaymentsPage: React.FC = () => {
                       type="date"
                       name="endDate"
                       value={ratingData.endDate}
+                      min={ratingData.startDate}
                       onChange={handleRatingChange}
                       className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
                       required
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-gray-300 mb-2 font-orbitron">
                     {t('payments.location')}
@@ -360,7 +437,7 @@ const PaymentsPage: React.FC = () => {
                     placeholder={t('payments.enterLocation')}
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-gray-300 mb-2 font-orbitron">
                     {t('payments.expectedParticipants')}
@@ -375,7 +452,7 @@ const PaymentsPage: React.FC = () => {
                     placeholder={t('payments.enterParticipants')}
                   />
                 </div>
-                
+
                 {/* Fixed payment amount display */}
                 <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/30">
                   <h4 className="text-lg font-semibold text-white mb-3 font-orbitron">
@@ -389,7 +466,7 @@ const PaymentsPage: React.FC = () => {
                     <div className="text-gray-400">Fixed Application Fee</div>
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-gray-300 mb-2 font-orbitron">
                     {t('payments.additionalInfo')}
@@ -403,7 +480,7 @@ const PaymentsPage: React.FC = () => {
                     placeholder={t('payments.enterAdditionalInfo')}
                   ></textarea>
                 </div>
-                
+
                 <div className="flex items-center">
                   <input
                     type="checkbox"
@@ -416,8 +493,8 @@ const PaymentsPage: React.FC = () => {
                   />
                   <label htmlFor="terms" className="ml-2 text-gray-300">
                     {t('payments.agreeToTerms')}{' '}
-                    <a 
-                      href="/terms-and-conditions" 
+                    <a
+                      href="/terms-and-conditions"
                       className="text-green-400 hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -445,7 +522,7 @@ const PaymentsPage: React.FC = () => {
                   You will be charged $20.00 USD for your rating application.
                 </p>
                 <div className="mb-4">
-                  <PayPalButtons 
+                  <PayPalButtons
                     style={{ layout: "vertical" }}
                     createOrder={(data, actions: any) => {
                       return actions.order.create({
@@ -490,6 +567,150 @@ const PaymentsPage: React.FC = () => {
               </div>
             )}
           </div>
+          )}
+
+          {/* Custom Payment Section */}
+          {activeTab === 'custom' && (
+            <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-sm rounded-2xl border border-green-400/30 p-8 shadow-xl">
+              <h2 className="text-2xl font-bold text-white mb-6 font-orbitron">
+                Custom Payment
+              </h2>
+              <p className="text-gray-300 mb-8">
+                Enter any amount for your custom payment, sponsorship, or other services.
+              </p>
+
+              {!showPayPal || payPalContext !== 'custom' ? (
+                <form onSubmit={processCustomPayment} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-gray-300 mb-2 font-orbitron">
+                        Your Name / Organization
+                      </label>
+                      <input
+                        type="text"
+                        name="payerName"
+                        value={customPaymentData.payerName}
+                        onChange={handleCustomPaymentChange}
+                        className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                        placeholder="Enter name"
+                        required
+                      />
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <label className="block text-gray-300 mb-2 font-orbitron">
+                          Amount
+                        </label>
+                        <input
+                          type="number"
+                          name="amount"
+                          value={customPaymentData.amount || ''}
+                          onChange={handleCustomPaymentChange}
+                          min="0.01"
+                          step="0.01"
+                          className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                          required
+                        />
+                      </div>
+                      <div className="w-1/3">
+                        <label className="block text-gray-300 mb-2 font-orbitron">
+                          Currency
+                        </label>
+                        <select
+                          name="currency"
+                          value={customPaymentData.currency}
+                          onChange={handleCustomPaymentChange}
+                          className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                        >
+                          <option value="USD">USD</option>
+                          <option value="EUR">EUR</option>
+                          <option value="GBP">GBP</option>
+                          <option value="CAD">CAD</option>
+                          <option value="AUD">AUD</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-300 mb-2 font-orbitron">
+                      Description / Reason for Payment
+                    </label>
+                    <textarea
+                      name="description"
+                      value={customPaymentData.description}
+                      onChange={handleCustomPaymentChange}
+                      rows={4}
+                      className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 transition-all"
+                      placeholder="E.g., Sponsorship for upcoming event"
+                      required
+                    ></textarea>
+                  </div>
+
+                  <div className="pt-4">
+                    <button
+                      type="submit"
+                      className="w-full md:w-auto bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold py-3 px-8 rounded-lg hover:from-purple-600 hover:to-cyan-600 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-400/50 font-orbitron"
+                    >
+                      Proceed to Custom Payment
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/30">
+                  <h4 className="text-lg font-semibold text-white mb-4 font-orbitron">
+                    Complete Your Custom Payment
+                  </h4>
+                  <p className="text-gray-300 mb-4">
+                    You will be charged {Number(customPaymentData.amount).toFixed(2)} {customPaymentData.currency}.
+                  </p>
+                  <div className="mb-4">
+                    <PayPalButtons
+                      style={{ layout: "vertical" }}
+                      createOrder={(data, actions: any) => {
+                        return actions.order.create({
+                          purchase_units: [
+                            {
+                              amount: {
+                                value: Number(customPaymentData.amount).toFixed(2),
+                                currency_code: customPaymentData.currency
+                              },
+                              description: `Custom Payment: ${customPaymentData.description.substring(0, 100)} by ${customPaymentData.payerName}`
+                            }
+                          ]
+                        });
+                      }}
+                      onApprove={async (data, actions: any) => {
+                        try {
+                          const details = await actions.order.capture();
+                          await onPayPalSuccess(details);
+                          return details;
+                        } catch (err) {
+                          onPayPalError(err);
+                          throw err;
+                        }
+                      }}
+                      onCancel={() => onPayPalCancel()}
+                      onError={(err: any) => onPayPalError(err)}
+                      disabled={isProcessing}
+                    />
+                  </div>
+                  {isProcessing && (
+                    <div className="text-center text-gray-300">
+                      Processing your payment...
+                    </div>
+                  )}
+                  <button
+                    onClick={() => setShowPayPal(false)}
+                    className="w-full bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-600 transition-all focus:outline-none focus:ring-2 focus:ring-slate-500/50 font-orbitron"
+                    disabled={isProcessing}
+                  >
+                    Back to Form
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </PayPalScriptProvider>

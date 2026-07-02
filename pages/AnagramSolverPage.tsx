@@ -11,18 +11,18 @@ interface AnagramResult {
 }
 
 // Define search types
-type SearchType = 
-  | 'anagram' 
-  | 'wordBuilder' 
-  | 'startsWith' 
-  | 'endsWith' 
-  | 'containing' 
-  | 'qWithoutU' 
-  | 'bingo7' 
-  | 'bingo8' 
-  | 'twoLetterWords' 
-  | 'threeLetterWords' 
-  | 'fourLetterWords' 
+type SearchType =
+  | 'anagram'
+  | 'wordBuilder'
+  | 'startsWith'
+  | 'endsWith'
+  | 'containing'
+  | 'qWithoutU'
+  | 'bingo7'
+  | 'bingo8'
+  | 'twoLetterWords'
+  | 'threeLetterWords'
+  | 'fourLetterWords'
   | 'fiveLetterWords';
 
 const AnagramSolverPage: React.FC = () => {
@@ -53,20 +53,20 @@ const AnagramSolverPage: React.FC = () => {
   const handleSolveAnagram = () => {
     // For specific word lists, we don't need input
     const noInputRequired = [
-      'qWithoutU', 
-      'twoLetterWords', 
-      'threeLetterWords', 
-      'fourLetterWords', 
+      'qWithoutU',
+      'twoLetterWords',
+      'threeLetterWords',
+      'fourLetterWords',
       'fiveLetterWords'
     ];
-    
+
     if (!noInputRequired.includes(searchType) && !anagramInput.trim()) return;
-    
+
     if (!dictionaryReady) {
       setError('Dictionary is not ready yet. Please wait a moment and try again.');
       return;
     }
-    
+
     // Check for too many blank tiles (only for anagram searches)
     if (searchType === 'anagram' || searchType === 'wordBuilder' || searchType === 'bingo7' || searchType === 'bingo8') {
       const blankCount = (anagramInput.trim().match(/\?/g) || []).length;
@@ -75,15 +75,15 @@ const AnagramSolverPage: React.FC = () => {
         return;
       }
     }
-    
+
     // Clear previous results immediately
     setAnagramResults(null);
     // Don't set isProcessing to true to eliminate loading spinner
     // setIsProcessing(true);
-    
+
     try {
       let results: Record<number, string[]> = {};
-      
+
       switch (searchType) {
         case 'wordBuilder':
           results = solveWordBuilder(anagramInput.trim());
@@ -115,16 +115,16 @@ const AnagramSolverPage: React.FC = () => {
         default:
           results = solveAnagram(anagramInput.trim());
       }
-      
+
       // Transform results to match expected format with blank substitutions
       const transformedResults: Record<number, AnagramResult[]> = {};
-      
+
       if (searchType === 'anagram' || searchType === 'wordBuilder') {
         // For anagram searches, we need to calculate blank substitutions
         const upperLetters = anagramInput.trim().toUpperCase();
         const letterCount: Record<string, number> = {};
         let blankCount = 0;
-        
+
         // Count letters and blanks
         for (const letter of upperLetters) {
           if (letter === '?') {
@@ -133,19 +133,19 @@ const AnagramSolverPage: React.FC = () => {
             letterCount[letter] = (letterCount[letter] || 0) + 1;
           }
         }
-        
+
         Object.keys(results).forEach(length => {
           const wordLength = Number(length);
           transformedResults[wordLength] = results[wordLength].map(word => {
             // Calculate which letters were substituted by blanks
             const blankSubstitutions: string[] = [];
             const wordLetterCount: Record<string, number> = {};
-            
+
             // Count letters in the word
             for (const letter of word) {
               wordLetterCount[letter] = (wordLetterCount[letter] || 0) + 1;
             }
-            
+
             // Find which letters were formed from blanks
             for (const [letter, count] of Object.entries(wordLetterCount)) {
               const available = letterCount[letter] || 0;
@@ -157,7 +157,7 @@ const AnagramSolverPage: React.FC = () => {
                 }
               }
             }
-            
+
             return {
               word,
               blankSubstitutions
@@ -173,7 +173,7 @@ const AnagramSolverPage: React.FC = () => {
           }));
         });
       }
-      
+
       setAnagramResults(transformedResults);
     } catch (err) {
       console.error('Error solving anagram:', err);
@@ -185,17 +185,17 @@ const AnagramSolverPage: React.FC = () => {
     // Ensure input is always uppercase
     const upperCaseValue = e.target.value.toUpperCase();
     setAnagramInput(upperCaseValue);
-    
+
     // Clear result when input changes
     if (anagramResults) {
       setAnagramResults(null);
     }
-    
+
     // Clear processing state when input changes
     if (isProcessing) {
       setIsProcessing(false);
     }
-    
+
     // Clear error when input changes
     if (error) {
       setError(null);
@@ -214,7 +214,7 @@ const AnagramSolverPage: React.FC = () => {
         }
       }, 0);
     }
-    
+
     // Handle Enter key for submission
     if (e.key === 'Enter') {
       handleSolveAnagram();
@@ -246,15 +246,15 @@ const AnagramSolverPage: React.FC = () => {
     if (!blankSubstitutions || blankSubstitutions.length === 0) {
       return word;
     }
-    
+
     // Create a copy of blankSubstitutions to track which ones we've used
     const remainingSubstitutions = [...blankSubstitutions];
     const highlightedChars: React.ReactNode[] = [];
-    
+
     // Go through each character in the word
     for (let i = 0; i < word.length; i++) {
       const char = word[i];
-      
+
       // Check if this character was formed from a blank tile
       const substitutionIndex = remainingSubstitutions.indexOf(char);
       if (substitutionIndex !== -1) {
@@ -269,7 +269,7 @@ const AnagramSolverPage: React.FC = () => {
         highlightedChars.push(<span key={i}>{char}</span>);
       }
     }
-    
+
     return <>{highlightedChars}</>;
   };
 
@@ -332,19 +332,38 @@ const AnagramSolverPage: React.FC = () => {
   // Check if input is required for current search type
   const isInputRequired = () => {
     const noInputRequired = [
-      'qWithoutU', 
-      'twoLetterWords', 
-      'threeLetterWords', 
-      'fourLetterWords', 
+      'qWithoutU',
+      'twoLetterWords',
+      'threeLetterWords',
+      'fourLetterWords',
       'fiveLetterWords'
     ];
     return !noInputRequired.includes(searchType);
   };
 
+  // Helper to format word with blanks (lowercase for blank tiles)
+  const formatWordWithBlanks = (word: string, blankSubstitutions?: string[]) => {
+    if (!blankSubstitutions || blankSubstitutions.length === 0) return word;
+
+    let formatted = '';
+    const remaining = [...blankSubstitutions];
+
+    for (const char of word) {
+      const idx = remaining.indexOf(char);
+      if (idx !== -1) {
+        formatted += char.toLowerCase();
+        remaining.splice(idx, 1);
+      } else {
+        formatted += char;
+      }
+    }
+    return formatted;
+  };
+
   // Generate TXT content for export
   const generateTxtContent = () => {
     if (!anagramResults) return '';
-    
+
     let content = `PANASA Anagram Solver Results\n`;
     content += `=========================\n\n`;
     content += `Search Type: ${searchType}\n`;
@@ -352,40 +371,36 @@ const AnagramSolverPage: React.FC = () => {
       content += `Input Letters: ${anagramInput}\n`;
     }
     content += `Generated on: ${new Date().toLocaleString()}\n\n`;
-    
+
     const sortedResults = Object.entries(anagramResults)
       .sort(([a], [b]) => parseInt(b) - parseInt(a));
-    
+
     sortedResults.forEach(([length, words]) => {
       content += `${length}-Letter Words (${words.length} ${words.length === 1 ? 'word' : 'words'}):\n`;
-      const wordList = words.map(item => {
-        if (item.blankSubstitutions && item.blankSubstitutions.length > 0) {
-          return `${item.word} [blanks: ${item.blankSubstitutions.join(', ')}]`;
-        }
-        return item.word;
-      }).join(', ');
+      // Use simple list format - one word per line is very clean
+      const wordList = words.map(item => formatWordWithBlanks(item.word, item.blankSubstitutions)).join('\n');
       content += `${wordList}\n\n`;
     });
-    
+
     return content;
   };
 
   // Generate PDF content for export
   const generatePdfContent = () => {
     if (!anagramResults) return;
-    
+
     const doc = new jsPDF();
-    
+
     // Add PANASA logo (text placeholder since we can't easily embed images in jsPDF without additional setup)
     doc.setFontSize(20);
     doc.setTextColor(0, 100, 0); // Dark green color
     doc.text('PANASA', 20, 20);
-    
+
     // Add title
     doc.setFontSize(16);
     doc.setTextColor(0, 0, 0); // Black color
     doc.text(`Anagram Results for ${anagramInput || searchType}`, 20, 35);
-    
+
     // Add search details
     doc.setFontSize(12);
     doc.text(`Search Type: ${searchType}`, 20, 45);
@@ -393,57 +408,64 @@ const AnagramSolverPage: React.FC = () => {
       doc.text(`Input Letters: ${anagramInput}`, 20, 52);
     }
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 59);
-    
+
     // Add results
     let yPosition = 70;
     const pageHeight = doc.internal.pageSize.height;
-    
+    const pageWidth = doc.internal.pageSize.width;
+    const margin = 20;
+
     const sortedResults = Object.entries(anagramResults)
       .sort(([a], [b]) => parseInt(b) - parseInt(a));
-    
+
     sortedResults.forEach(([length, words]) => {
       // Check if we need a new page
       if (yPosition > pageHeight - 30) {
         doc.addPage();
         yPosition = 20;
       }
-      
+
       // Add section header
       doc.setFont(undefined, 'bold');
-      doc.text(`${length}-Letter Words (${words.length} ${words.length === 1 ? 'word' : 'words'}` + ')', 20, yPosition);
+      doc.setTextColor(0, 100, 0);
+      doc.text(`${length}-Letter Words (${words.length} ${words.length === 1 ? 'word' : 'words'}` + ')', margin, yPosition);
       yPosition += 10;
-      
-      // Add words
+      doc.setTextColor(0, 0, 0);
+
+      // Add words in columns
       doc.setFont(undefined, 'normal');
-      const wordList = words.map(item => {
-        if (item.blankSubstitutions && item.blankSubstitutions.length > 0) {
-          return `${item.word} [blanks: ${item.blankSubstitutions.join(', ')}]`;
-        }
-        return item.word;
-      }).join(', ');
-      
-      // Split long lines
-      const splitText = doc.splitTextToSize(wordList, 170);
-      splitText.forEach((line: string) => {
-        // Check if we need a new page
-        if (yPosition > pageHeight - 20) {
+
+      const colWidth = 40;
+      const cols = Math.floor((pageWidth - 2 * margin) / colWidth);
+
+      for (let i = 0; i < words.length; i += cols) {
+        if (yPosition > pageHeight - 15) {
           doc.addPage();
           yPosition = 20;
         }
-        doc.text(line, 20, yPosition);
-        yPosition += 7;
-      });
-      
+
+        const rowWords = words.slice(i, i + cols);
+        rowWords.forEach((item, idx) => {
+          doc.text(
+            formatWordWithBlanks(item.word, item.blankSubstitutions),
+            margin + (idx * colWidth),
+            yPosition
+          );
+        });
+
+        yPosition += 6;
+      }
+
       yPosition += 5; // Space between sections
     });
-    
+
     return doc;
   };
 
   // Handle export
   const handleExport = () => {
     if (!anagramResults) return;
-    
+
     let content = '';
     if (exportFormat === 'txt') {
       content = generateTxtContent();
@@ -491,23 +513,23 @@ const AnagramSolverPage: React.FC = () => {
             Back to Tools
           </Link>
         </div>
-        
+
         {error && (
           <div className="bg-red-900/50 border border-red-700/50 rounded-xl p-4 mb-6 text-center animate-fadeIn">
             <p className="text-red-300 font-medium">{error}</p>
           </div>
         )}
-        
+
         <div className="tool-card">
           <h2 className="tool-title">
             {t('tools.anagramSolver.heading')}
           </h2>
-          
+
           <div className="space-y-4 sm:space-y-5 md:space-y-6">
             <p className="tool-description">
               {getSearchDescription()}
             </p>
-            
+
             {/* Search Type Selector */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -532,7 +554,7 @@ const AnagramSolverPage: React.FC = () => {
                 <option value="fiveLetterWords">5 Letter Words</option>
               </select>
             </div>
-            
+
             <div className="tool-input-container flex flex-col sm:flex-row gap-3">
               <div className="tool-input-wrapper flex-grow">
                 <input
@@ -566,16 +588,15 @@ const AnagramSolverPage: React.FC = () => {
               <button
                 onClick={handleSolveAnagram}
                 disabled={!dictionaryReady || (isInputRequired() && !anagramInput.trim())}
-                className={`tool-button w-full sm:w-auto ${
-                  !dictionaryReady || (isInputRequired() && !anagramInput.trim())
+                className={`tool-button w-full sm:w-auto ${!dictionaryReady || (isInputRequired() && !anagramInput.trim())
                     ? ''
                     : 'tool-button-enabled tool-button-purple'
-                }`}
+                  }`}
               >
                 {t('tools.anagramSolver.solve')}
               </button>
             </div>
-            
+
             {anagramResults && (
               <div className="tool-result-container">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
@@ -583,7 +604,7 @@ const AnagramSolverPage: React.FC = () => {
                     {t('tools.anagramSolver.results')}:
                   </h3>
                   <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 w-full sm:w-auto">
-                    <select 
+                    <select
                       value={exportFormat}
                       onChange={(e) => setExportFormat(e.target.value as 'txt' | 'pdf')}
                       className="bg-gray-800 text-white text-sm rounded-lg p-2 border border-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-transparent w-full xs:w-auto"
@@ -599,7 +620,7 @@ const AnagramSolverPage: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="tool-scrollbar bg-gray-800/30 rounded-lg border border-gray-700/50 p-2 sm:p-3 md:p-4">
                   {Object.keys(anagramResults).length > 0 ? (
                     Object.entries(anagramResults)
@@ -611,7 +632,7 @@ const AnagramSolverPage: React.FC = () => {
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             {words.map((item, index) => (
-                              <span 
+                              <span
                                 key={index}
                                 className="tool-word-chip tool-word-chip-cyan text-sm sm:text-base"
                               >
@@ -629,7 +650,7 @@ const AnagramSolverPage: React.FC = () => {
                 </div>
               </div>
             )}
-            
+
             <div className="tool-footer">
               <p>{t('tools.anagramSolver.poweredBy')}</p>
               <p className="tool-footer-italic">Instant lookups powered by Service Worker caching</p>
@@ -644,13 +665,13 @@ const AnagramSolverPage: React.FC = () => {
                     <h3 className="text-xl font-bold text-white">Export Preview</h3>
                     <p className="text-gray-400 mt-1">Review the content before downloading</p>
                   </div>
-                  
+
                   <div className="p-6 flex-grow overflow-auto bg-gray-950 rounded-b-xl">
                     <pre className="text-gray-300 whitespace-pre-wrap font-sans text-sm">
                       {exportContent}
                     </pre>
                   </div>
-                  
+
                   <div className="p-6 border-t border-gray-700 flex justify-end space-x-3">
                     <button
                       onClick={cancelExport}

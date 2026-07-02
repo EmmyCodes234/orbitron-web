@@ -241,11 +241,19 @@ const RatingsPage: React.FC = () => {
         // ✅ Exact match found - show only that player
         filteredResults = [exactMatch];
       } else {
-        // No exact match - perform normal "contains" search
+        // No exact match - perform normal "contains" search with flexible token matching
         filteredResults = filteredResults.filter(player => {
           const normalizedName = normalizeText(player.name);
           const normalizedNick = normalizeText(player.nick);
-          return normalizedName.includes(normalizedSearchTerm) || normalizedNick.includes(normalizedSearchTerm);
+
+          // Split search term into tokens
+          const searchTokens = normalizedSearchTerm.split(/\s+/).filter(Boolean);
+
+          // Check if ALL tokens are present in the name OR ALL tokens are present in the nick
+          const nameMatch = searchTokens.every(token => normalizedName.includes(token));
+          const nickMatch = searchTokens.every(token => normalizedNick.includes(token));
+
+          return nameMatch || nickMatch;
         });
       }
     }
