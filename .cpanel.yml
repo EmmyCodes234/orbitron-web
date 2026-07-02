@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/panayzob/public_html/
-    - /bin/cp -R dist/* 
+    - /bin/cp -R dist/. 
