@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instant Performance Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #22c55e;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            background: #0f172a;
+            color: white;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #0f172a;
+            border-left: 4px solid #22c55e;
+        }
+        .valid {
+            border-left-color: #22c55e;
+        }
+        .invalid {
+            border-left-color: #ef4444;
+        }
+        .words-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .word-chip {
+            background: #334155;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .status {
+            text-align: center;
+            color: #94a3b8;
+            font-style: italic;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Instant Scrabble Tools Test</h1>
+        
+        <div class="input-group">
+            <input type="text" id="wordInput" placeholder="Enter word to check (e.g. HELLO, HELLO?)" value="RETINA?">
+            <button id="checkBtn">Check Word</button>
+        </div>
+        
+        <div id="wordResult"></div>
+        
+        <div class="input-group">
+            <input type="text" id="anagramInput" placeholder="Enter letters to solve (e.g. RETINA, RETINA?)" value="AEIRST??">
+            <button id="solveBtn">Solve Anagram</button>
+        </div>
+        
+        <div id="anagramResult"></div>
+        
+        <div class="status" id="status">Initializing tools...</div>
+    </div>
+
+    <script>
+        let serviceWorkerReady = false;
+        
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('Service Worker registered');
+                    
+                    // Listen for messages from service worker
+                    navigator.serviceWorker.addEventListener('message', function(event) {
+                        if (event.data && event.data.type) {
+                            switch (event.data.type) {
+                                case 'INIT_COMPLETE':
+                                    serviceWorkerReady = true;
+                                    document.getElementById('status').textContent = 'Tools ready! Instant results.';
+                                    document.getElementById('checkBtn').disabled = false;
+                                    document.getElementById('solveBtn').disabled = false;
+                                    break;
+                                    
+                                case 'CHECK_WORD_RESULT':
+                                    showWordResult(event.data.word, event.data.isValid);
+                                    break;
+                                    
+                                case 'SOLVE_ANAGRAM_RESULT':
+                                    showAnagramResults(event.data.letters, event.data.results);
+                                    break;
+                            }
+                        }
+                    });
+                    
+                    // Initialize the service worker
+                    registration.active?.postMessage({ type: 'INIT' });
+                })
+                .catch(function(error) {
+                    console.error('Service Worker registration failed:', error);
+                    document.getElementById('status').textContent = 'Failed to initialize tools.';
+                });
+        }
+
+        function showWordResult(word, isValid) {
+            const resultDiv = document.getElementById('wordResult');
+            resultDiv.innerHTML = `
+                <div class="result ${isValid ? 'valid' : 'invalid'}">
+                    <strong>${word}</strong> is ${isValid ? 'VALID' : 'INVALID'}
+                </div>
+            `;
+        }
+
+        function showAnagramResults(letters, results) {
+            const resultDiv = document.getElementById('anagramResult');
+            
+            if (Object.keys(results).length === 0) {
+                resultDiv.innerHTML = '<div class="result">No words found</div>';
+                return;
+            }
+            
+            let html = '<div class="result"><h3>Results:</h3>';
+            
+            // Sort by length descending
+            const sortedLengths = Object.keys(results).sort((a, b) => parseInt(b) - parseInt(a));
+            
+            for (const length of sortedLengths) {
+                const words = results[length];
+                html += `<p><strong>${length} letters (${words.length} words):</strong></p>`;
+                html += '<div class="words-container">';
+                for (const word of words) {
+                    html += `<span class="word-chip">${word}</span>`;
+                }
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            resultDiv.innerHTML = html;
+        }
+
+        document.getElementById('checkBtn').addEventListener('click', function() {
+            const word = document.getElementById('wordInput').value;
+            if (!word.trim()) return;
+            
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'CHECK_WORD',
+                    word: word.trim()
+                });
+            }
+        });
+
+        document.getElementById('solveBtn').addEventListener('click', function() {
+            const letters = document.getElementById('anagramInput').value;
+            if (!letters.trim()) return;
+            
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'SOLVE_ANAGRAM',
+                    letters: letters.trim()
+                });
+            }
+        });
+
+        // Enable buttons when service worker is ready
+        document.getElementById('checkBtn').disabled = true;
+        document.getElementById('solveBtn').disabled = true;
+        
+        // Add enter key support
+        document.getElementById('wordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('checkBtn').click();
+            }
+        });
+        
+        document.getElementById('anagramInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('solveBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

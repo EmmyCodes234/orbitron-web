@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Anagram Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #22c55e;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            background: #0f172a;
+            color: white;
+            font-size: 16px;
+        }
+        button {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button:disabled {
+            background: #334155;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: #0f172a;
+            border-left: 4px solid #22c55e;
+        }
+        .error {
+            border-left-color: #ef4444;
+        }
+        .status {
+            text-align: center;
+            color: #94a3b8;
+            font-style: italic;
+            margin: 15px 0;
+            min-height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Anagram Solver Test</h1>
+        
+        <div class="input-group">
+            <input type="text" id="anagramInput" placeholder="Enter letters to solve (e.g. RETINA)" value="RET">
+            <button id="solveBtn">Solve Anagram</button>
+        </div>
+        
+        <div class="status" id="status">Ready to test</div>
+        
+        <div id="anagramResult"></div>
+    </div>
+
+    <script>
+        let serviceWorkerReady = false;
+        
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('Service Worker registered');
+                    
+                    // Listen for messages from service worker
+                    navigator.serviceWorker.addEventListener('message', function(event) {
+                        console.log('Received message:', event.data);
+                        if (event.data && event.data.type) {
+                            switch (event.data.type) {
+                                case 'INIT_COMPLETE':
+                                    serviceWorkerReady = true;
+                                    document.getElementById('status').textContent = 'Service Worker ready!';
+                                    document.getElementById('solveBtn').disabled = false;
+                                    break;
+                                    
+                                case 'SOLVE_ANAGRAM_RESULT':
+                                    showAnagramResults(event.data.letters, event.data.results);
+                                    break;
+                                    
+                                case 'CHECK_WORD_RESULT':
+                                    console.log('Word check result:', event.data);
+                                    break;
+                            }
+                        }
+                    });
+                    
+                    // Initialize the service worker
+                    registration.active?.postMessage({ type: 'INIT' });
+                })
+                .catch(function(error) {
+                    console.error('Service Worker registration failed:', error);
+                    document.getElementById('status').textContent = 'Failed to initialize Service Worker.';
+                });
+        }
+
+        function showAnagramResults(letters, results) {
+            const resultDiv = document.getElementById('anagramResult');
+            console.log('Results received:', results);
+            
+            if (results && results.error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>Error:</h3>
+                        <p>${results.error}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (!results || Object.keys(results).length === 0) {
+                resultDiv.innerHTML = `
+                    <div class="result">
+                        <h3>No words found for "${letters}"</h3>
+                    </div>
+                `;
+                return;
+            }
+            
+            let totalWords = 0;
+            let html = `<div class="result"><h3>Results for "${letters}":</h3>`;
+            
+            // Sort by length descending
+            const sortedLengths = Object.keys(results).sort((a, b) => parseInt(b) - parseInt(a));
+            
+            for (const length of sortedLengths) {
+                const words = results[length];
+                totalWords += words.length;
+                html += `<p><strong>${length} letters (${words.length} words):</strong> ${words.join(', ')}</p>`;
+            }
+            
+            html += `<p><strong>Total words found: ${totalWords}</strong></p>`;
+            html += '</div>';
+            resultDiv.innerHTML = html;
+        }
+
+        document.getElementById('solveBtn').addEventListener('click', function() {
+            const letters = document.getElementById('anagramInput').value;
+            if (!letters.trim()) return;
+            
+            console.log('Sending solve request for:', letters);
+            if (navigator.serviceWorker.controller) {
+                document.getElementById('status').textContent = 'Solving...';
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'SOLVE_ANAGRAM',
+                    letters: letters.trim()
+                });
+            } else {
+                document.getElementById('status').textContent = 'Service Worker not ready';
+            }
+        });
+
+        // Enable buttons when service worker is ready
+        document.getElementById('solveBtn').disabled = true;
+        
+        // Add enter key support
+        document.getElementById('anagramInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('solveBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

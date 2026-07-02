@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blank Tile Highlighting Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        h1 {
+            color: #fbbf24;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.7);
+            color: white;
+            font-size: 18px;
+        }
+        button {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            border-left: 5px solid #22c55e;
+        }
+        .words-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .word-chip {
+            background: rgba(51, 65, 85, 0.7);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+        .highlight {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+        .status {
+            text-align: center;
+            color: #94a3b8;
+            font-style: italic;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+        .test-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .test-case {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        .test-case:hover {
+            background: rgba(56, 139, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .expected {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔤 Blank Tile Highlighting Test</h1>
+        
+        <div class="input-group">
+            <input type="text" id="anagramInput" placeholder="Enter letters with blank tiles (e.g. RETINA?)" value="RETINA?">
+            <button id="solveBtn">Solve & Highlight</button>
+        </div>
+        
+        <div class="test-cases">
+            <div class="test-case" onclick="setTestInput('RETINA')">
+                <div><strong>RETINA</strong></div>
+                <div class="expected">No blanks - no highlighting</div>
+            </div>
+            <div class="test-case" onclick="setTestInput('RETINA?')">
+                <div><strong>RETINA?</strong></div>
+                <div class="expected">1 blank - highlight 1 letter</div>
+            </div>
+            <div class="test-case" onclick="setTestInput('RETI??')">
+                <div><strong>RETI??</strong></div>
+                <div class="expected">2 blanks - highlight 2 letters</div>
+            </div>
+            <div class="test-case" onclick="setTestInput('RET???')">
+                <div><strong>RET???</strong></div>
+                <div class="expected">3 blanks - highlight 3 letters</div>
+            </div>
+        </div>
+        
+        <div id="anagramResult"></div>
+        
+        <div class="status" id="status">Initializing highlighting tools...</div>
+    </div>
+
+    <script>
+        let serviceWorkerReady = false;
+        
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('Highlighting Service Worker registered');
+                    
+                    // Listen for messages from service worker
+                    navigator.serviceWorker.addEventListener('message', function(event) {
+                        if (event.data && event.data.type) {
+                            switch (event.data.type) {
+                                case 'INIT_COMPLETE':
+                                    serviceWorkerReady = true;
+                                    document.getElementById('status').innerHTML = '<span style="color: #22c55e;">✅ Highlighting tools ready!</span>';
+                                    document.getElementById('solveBtn').disabled = false;
+                                    break;
+                                    
+                                case 'SOLVE_ANAGRAM_RESULT':
+                                    showAnagramResults(event.data.letters, event.data.results, event.data.originalLetters);
+                                    break;
+                            }
+                        }
+                    });
+                    
+                    // Initialize the service worker
+                    registration.active?.postMessage({ type: 'INIT' });
+                })
+                .catch(function(error) {
+                    console.error('Service Worker registration failed:', error);
+                    document.getElementById('status').textContent = 'Failed to initialize tools.';
+                });
+        }
+
+        function showAnagramResults(letters, results, originalLetters) {
+            const resultDiv = document.getElementById('anagramResult');
+            
+            if (!results || Object.keys(results).length === 0) {
+                resultDiv.innerHTML = '<div class="result"><p>No words found</p></div>';
+                return;
+            }
+            
+            let html = `<div class="result"><h3>Results for "${letters}" (original: "${originalLetters}"):</h3>`;
+            
+            // Sort by length descending
+            const sortedLengths = Object.keys(results).sort((a, b) => parseInt(b) - parseInt(a));
+            
+            // Show results with highlighting
+            for (const length of sortedLengths) {
+                const words = results[length];
+                html += `<p><strong>${length} letters (${words.length} words):</strong></p>`;
+                html += '<div class="words-container">';
+                
+                // Show first 10 words with highlighting
+                const wordsToShow = words.slice(0, 10);
+                for (const word of wordsToShow) {
+                    const highlightedWord = highlightBlankTiles(word, originalLetters);
+                    html += `<span class="word-chip">${highlightedWord}</span>`;
+                }
+                
+                if (words.length > 10) {
+                    html += `<span class="word-chip">... and ${words.length - 10} more</span>`;
+                }
+                
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            resultDiv.innerHTML = html;
+        }
+
+        function highlightBlankTiles(word, originalInput) {
+            if (!originalInput || !originalInput.includes('?')) {
+                return word;
+            }
+            
+            // Count non-blank letters in the original input
+            const nonBlankLetters = originalInput.replace(/\?/g, '').length;
+            
+            // If word length is not greater than non-blank letters, no highlighting needed
+            if (word.length <= nonBlankLetters) {
+                return word;
+            }
+            
+            // Highlight the extra letters that were formed from blank tiles
+            const regularPart = word.substring(0, nonBlankLetters);
+            const blankPart = word.substring(nonBlankLetters);
+            
+            return regularPart + '<span class="highlight">' + blankPart + '</span>';
+        }
+
+        function setTestInput(value) {
+            document.getElementById('anagramInput').value = value;
+        }
+
+        document.getElementById('solveBtn').addEventListener('click', function() {
+            const letters = document.getElementById('anagramInput').value;
+            if (!letters.trim()) return;
+            
+            // Check for too many blank tiles
+            const blankCount = (letters.match(/\?/g) || []).length;
+            if (blankCount > 3) {
+                document.getElementById('anagramResult').innerHTML = '<div class="result" style="border-left-color: #ef4444;"><p>Too many blank tiles. Maximum 3 blank tiles allowed.</p></div>';
+                return;
+            }
+            
+            document.getElementById('status').innerHTML = '<span style="color: #fbbf24;">🔍 Highlighting results...</span>';
+            
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'SOLVE_ANAGRAM',
+                    letters: letters.trim(),
+                    originalLetters: letters.trim()
+                });
+            }
+        });
+
+        // Enable button when service worker is ready
+        document.getElementById('solveBtn').disabled = true;
+        
+        // Add enter key support
+        document.getElementById('anagramInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('solveBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>
