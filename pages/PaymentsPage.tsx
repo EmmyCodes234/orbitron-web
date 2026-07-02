@@ -254,11 +254,14 @@ const PaymentsPage: React.FC = () => {
   };
 
   return (
-    <PayPalScriptProvider options={{
-      "clientId": "ATVeDvB8w2Xaf2OtP5O8un3oZQy1r_ahR3-rlzhJJPP6rJ5TPkyKki6KsdtRA44JeokoRNNMYHk6BXD_",
-      currency: activeTab === 'custom' ? customPaymentData.currency : "USD",
-      intent: "capture"
-    }}>
+    <PayPalScriptProvider 
+      key={activeTab === 'custom' ? customPaymentData.currency : "USD"}
+      options={{
+        "clientId": "ATVeDvB8w2Xaf2OtP5O8un3oZQy1r_ahR3-rlzhJJPP6rJ5TPkyKki6KsdtRA44JeokoRNNMYHk6BXD_",
+        currency: activeTab === 'custom' ? customPaymentData.currency : "USD",
+        intent: "capture"
+      }}
+    >
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
