@@ -15,7 +15,8 @@ const memberNations = [
     { name: 'Liberia', code: 'lr' },
     { name: 'Sierra Leone', code: 'sl' },
     { name: 'Mauritius', code: 'mu' },
-    { name: 'Togo', code: 'tg' }
+    { name: 'Togo', code: 'tg' },
+    { name: 'Rwanda', code: 'rw' }
 ];
 
 const FlagLoop: React.FC = () => {
